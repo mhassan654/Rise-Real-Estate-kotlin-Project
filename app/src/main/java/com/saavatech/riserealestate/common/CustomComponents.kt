@@ -60,6 +60,7 @@ import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
+import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.outlineInputunFocusedColor
 
 @Composable
@@ -111,9 +112,10 @@ fun CustomOutlinedTextField(painterResource: Painter, lableValue: String){
         shape = RoundedCornerShape(8.dp),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = ButtonBgOne,
-            focusedBorderColor = Color.Transparent,
-            focusedLabelColor = TextColorBold,
-            unfocusedContainerColor = Color.LightGray
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.Transparent,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedContainerColor = inputBg
         ),
 
         keyboardOptions = KeyboardOptions.Default,
@@ -147,9 +149,10 @@ fun CustomOutlinedPasswordTextField(lableValue: String){
         colors = OutlinedTextFieldDefaults.colors(
             //        colors = OutlinedTextFieldDefaults.colors(
             cursorColor = ButtonBgOne,
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            unfocusedContainerColor = Color.LightGray
-//            focusedLabelColor = LightPrimaryContainer,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.Transparent,
+            unfocusedContainerColor = inputBg,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
         ),
 
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

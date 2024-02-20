@@ -129,7 +129,7 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(6.dp))
 
-                        CustomOutlinedPasswordTextField("********")
+                        CustomOutlinedPasswordTextField("Password")
 
                         Spacer(modifier = Modifier.height(30.dp))
 
