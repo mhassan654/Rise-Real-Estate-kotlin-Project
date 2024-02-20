@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Rise Real Estate</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+    <string name="lets">Let\'s</string>
+    <string name="explore">explore?</string>
+    <string name="ready_to">Ready to</string>
+    <string name="continue_with_email">Continue with Email</string>
+</resources>
