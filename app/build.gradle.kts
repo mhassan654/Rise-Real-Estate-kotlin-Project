@@ -112,6 +112,9 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("com.google.accompanist:accompanist-pager:0.35.0-alpha")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.35.0-alpha")
 }
 
 // Allow references to generated code
