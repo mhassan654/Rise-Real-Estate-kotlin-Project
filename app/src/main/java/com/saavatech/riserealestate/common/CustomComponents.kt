@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -53,6 +54,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
@@ -60,6 +62,7 @@ import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
+import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.outlineInputunFocusedColor
 
 @Composable
@@ -105,15 +108,17 @@ fun CustomOutlinedTextField(painterResource: Painter, lableValue: String){
     OutlinedTextField(
         modifier= Modifier
             .fillMaxWidth()
+            .height(70.dp)
             .clip(RoundedCornerShape(1.dp)),
         label = { Text(text =lableValue) } ,
         value = text.value,
         shape = RoundedCornerShape(8.dp),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = ButtonBgOne,
-            focusedBorderColor = Color.Transparent,
-            focusedLabelColor = TextColorBold,
-            unfocusedContainerColor = Color.LightGray
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.Transparent,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedContainerColor = inputBg
         ),
 
         keyboardOptions = KeyboardOptions.Default,
@@ -140,6 +145,7 @@ fun CustomOutlinedPasswordTextField(lableValue: String){
     OutlinedTextField(
         modifier= Modifier
             .fillMaxWidth()
+            .height(70.dp)
             .clip(RoundedCornerShape(1.dp)),
         label = { Text(text =lableValue) } ,
         value = password.value,
@@ -147,9 +153,10 @@ fun CustomOutlinedPasswordTextField(lableValue: String){
         colors = OutlinedTextFieldDefaults.colors(
             //        colors = OutlinedTextFieldDefaults.colors(
             cursorColor = ButtonBgOne,
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            unfocusedContainerColor = Color.LightGray
-//            focusedLabelColor = LightPrimaryContainer,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.Transparent,
+            unfocusedContainerColor = inputBg,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
         ),
 
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -184,14 +191,14 @@ fun CustomOutlinedPasswordTextField(lableValue: String){
 }
 
 @Composable
-fun ButtonTextComponent(value: String, clickAction: ()->Unit){
+fun ButtonTextComponent(value: String, clickAction: ()->Unit, width: Dp){
     TextButton(
         modifier = Modifier
-            .width(150.dp)
+            .width(width)
             .heightIn(48.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(GreenOne),
-        shape = RoundedCornerShape(8),
+        shape = RoundedCornerShape(15),
         onClick = { clickAction.invoke() }
     ) {
         Text(text = value)
@@ -223,6 +230,7 @@ fun AppBar(
 ){
 
     CenterAlignedTopAppBar(
+        modifier = Modifier.padding(10.dp),
         colors = TopAppBarDefaults.topAppBarColors(
 //            containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.primaryContainer
@@ -230,6 +238,7 @@ fun AppBar(
         navigationIcon = {
 
             RoundedIconButton(
+                modifier = Modifier.padding(2.dp),
                 icon = icon,
                 onClick = { iconClickAction.invoke() },
                 contentDescription = "Add to favorites"
@@ -258,16 +267,16 @@ fun RoundedIconButton(
     icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    tint: Color = ButtonBgOne,
+    tint: Color = MaterialTheme.colorScheme.primary,
     contentDescription: String? = null
 ) {
     IconButton(
         onClick = onClick,
         modifier = Modifier
-            .background(colorResource(id = R.color.colorGray), RoundedCornerShape(12.dp))
+            .background(colorResource(id = R.color.socialButtonBgColor), shape = CircleShape)
             .padding(horizontal = 2.dp)
             .padding(vertical = 2.dp)
-            .size(30.dp)
+            .size(50.dp)
     ) {
         Icon(
             imageVector = icon,
@@ -368,7 +377,9 @@ fun SocialButton(
     ) {
         Icon(
             modifier = Modifier.size(30.dp),
-            painter = icon, contentDescription = null
+            painter = icon,
+            contentDescription = null,
+            tint = TextColorOne
         )
 
     }
@@ -377,12 +388,12 @@ fun SocialButton(
 @Preview(showBackground = true)
 @Composable
 fun ComponentsPreview(){
-    Column {
+    Column(modifier=Modifier.padding(10.dp)) {
         CustomOutlinedPasswordTextField("sample label")
         Spacer(modifier = Modifier.height(6.dp))
         CustomOutlinedTextField(painterResource(id = R.drawable.profile), "saghsadg")
         Spacer(modifier = Modifier.height(6.dp))
-        ButtonTextComponent(value = "button with text", clickAction = {})
+        ButtonTextComponent(value = "button with text", clickAction = {},150.dp)
         Spacer(modifier = Modifier.height(6.dp))
 
         RoundedIconTextButton(

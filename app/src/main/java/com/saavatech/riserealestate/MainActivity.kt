@@ -73,7 +73,7 @@ fun MainNavigation(){
         }
 //
         composable(Destinations.Register.route){
-            RegisterScreen()
+            RegisterScreen(destinationsNavigator)
         }
         // Add other destinations here if needed
     }

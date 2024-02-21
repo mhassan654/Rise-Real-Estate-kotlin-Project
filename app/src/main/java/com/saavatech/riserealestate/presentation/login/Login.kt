@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Scaffold
@@ -61,14 +62,12 @@ fun LoginScreen(
                 title = null,
                 actionIcon = null,
                icon= Icons.AutoMirrored.Filled.ArrowBack,
-                iconClickAction = {}
+                iconClickAction = {navController.navigateUp()}
                 )
         },
-    ) {
-
-        Surface {
+    ) {innerPadding->
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().padding(innerPadding)
             ) {
 
                 Column(
@@ -81,7 +80,7 @@ fun LoginScreen(
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(190.dp),
+                            .height(180.dp),
                         contentScale = ContentScale.Fit
                     )
 
@@ -115,7 +114,6 @@ fun LoginScreen(
                         modifier = Modifier
                             .padding(10.dp)
                     ) {
-
                         Text(
                             text = "Welcome back, please sign in to continue to your account",
                             fontSize = 12.sp,
@@ -123,15 +121,43 @@ fun LoginScreen(
                             color = TextColorOne
                         )
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
 
                         Spacer(modifier = Modifier.height(6.dp))
 
-                        CustomOutlinedPasswordTextField("********")
+                        // password field
+                        CustomOutlinedPasswordTextField("Password")
 
-                        Spacer(modifier = Modifier.height(30.dp))
+                        Row(horizontalArrangement = Arrangement.Start) {
+                            TextButton(
+                                onClick = {
+                                    navController.navigateUp()
+                                    navController.navigateTo(Destinations.Register.route)
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = buildAnnotatedString {
+                                        withStyle(
+                                            style = SpanStyle(
+                                                color = TextColorOne,
+                                                fontSize = 13.sp,
+                                                fontWeight = FontWeight(500),
+                                            )
+                                        ) {
+                                            append(stringResource(id = R.string.forgot_password))
+                                        }
+                                    },
+                                    fontFamily = FontFamily.SansSerif,
+                                    textAlign = TextAlign.Center,
+                                    color = TextColorBold
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -139,7 +165,7 @@ fun LoginScreen(
                                 .fillMaxSize()
                                 .padding(8.dp),
                         ) {
-                            ButtonTextComponent(value = "Login", clickAction = {  })
+                            ButtonTextComponent(value = "Login", clickAction = {  }, 280.dp)
 
                             Spacer(modifier = Modifier.height(30.dp))
                             DividerTextComponent()
@@ -166,7 +192,7 @@ fun LoginScreen(
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(30.dp))
+                            Spacer(modifier = Modifier.height(6.dp))
 
                             TextButton(
                                 onClick = {
@@ -184,7 +210,7 @@ fun LoginScreen(
                                                 fontWeight = FontWeight(400),
                                             )
                                         ) {
-                                            append("Don't have an account?")
+                                            append(stringResource(id = R.string.dont_have_account))
                                         }
                                         append(" ")
                                         withStyle(
@@ -194,7 +220,7 @@ fun LoginScreen(
                                                 fontSize = 18.sp,
                                             )
                                         ) {
-                                            append("Register")
+                                            append(stringResource(id = R.string.register))
                                         }
                                     },
                                     fontFamily = FontFamily.SansSerif,
@@ -206,17 +232,13 @@ fun LoginScreen(
                         }
                     }
 
-
-
-
-
                 }
 
 
             }
         }
 
-    }
+
 
 }
 

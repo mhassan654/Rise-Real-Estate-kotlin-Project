@@ -6,4 +6,11 @@
     <string name="explore">explore?</string>
     <string name="ready_to">Ready to</string>
     <string name="continue_with_email">Continue with Email</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="dont_have_account">"Don't have an account?"</string>
+    <string name="create_your_account">"Create your"</string>
+    <string name="account">"account"</string>
+    <string name="terms_of_service">"Terms of Service"</string>
+    <string name="enter_the_code">"Enter the"</string>
+    <string name="code">"code"</string>
 </resources>

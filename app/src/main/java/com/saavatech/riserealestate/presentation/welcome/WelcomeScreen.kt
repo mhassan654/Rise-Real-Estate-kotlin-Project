@@ -92,7 +92,13 @@ fun WelcomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 10.dp, vertical = 20.dp),
         ) {
-            ButtonTextComponent(value = "let's Start", clickAction = { navController.navigateTo(Destinations.LoginOption.route) })
+            ButtonTextComponent(
+                value = "let's Start",
+                clickAction = {
+                    navController.navigateTo(Destinations.LoginOption.route)
+                              }
+                ,150.dp
+            )
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "Made with love",
                 fontSize = 10.sp,

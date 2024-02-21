@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val WelcomeBgOne = Color(0xFF234F68)
 val WelcomeBgTwo = Color(0xFF21628A)
+val inputBg = Color(0xFFF1F1F1)
 
 
 val TextColorOne = Color(0xFF204D6C)
