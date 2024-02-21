@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -58,7 +59,7 @@ fun RegisterScreen( navController: DestinationsNavigator){
             AppBar(
                 title = null,
                 actionIcon = null,
-                icon= Icons.AutoMirrored.Filled.ArrowBack,
+                icon= Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 iconClickAction = { navController.navigateUp()}
             )
         },

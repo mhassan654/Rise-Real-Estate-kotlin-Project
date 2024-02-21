@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Scaffold
@@ -61,7 +62,7 @@ fun LoginScreen(
             AppBar(
                 title = null,
                 actionIcon = null,
-               icon= Icons.AutoMirrored.Filled.ArrowBack,
+               icon= Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 iconClickAction = {navController.navigateUp()}
                 )
         },
