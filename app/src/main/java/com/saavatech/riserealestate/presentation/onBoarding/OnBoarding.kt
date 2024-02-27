@@ -1,8 +1,5 @@
 package com.saavatech.riserealestate.presentation.onBoarding
 
-// import androidx.compose.foundation.layout.FlowColumnScopeInstance.align
-// import com.saavatech.onboardingscreen.Destinations
-// import com.saavatech.onboardingscreen.viewmodel.WelcomeViewModel
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -56,7 +53,8 @@ import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.RoundedIconButton
-import com.saavatech.riserealestate.domain.WelcomeViewModel
+import com.saavatech.riserealestate.navigation.Destinations
+import com.saavatech.riserealestate.presentation.WelcomeViewModel
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -68,7 +66,7 @@ import kotlinx.coroutines.launch
 fun OnBoardingScreen(
     navController: DestinationsNavigator,
     welcomeViewModel: WelcomeViewModel = hiltViewModel(),
-)  {
+) {
     val pages =
         listOf(
             OnBoardingPage.First,
@@ -77,10 +75,9 @@ fun OnBoardingScreen(
         )
 
     val scope = rememberCoroutineScope()
+    val pageState = rememberPagerState(pageCount = { 3 })
 
     Column(Modifier.fillMaxSize()) {
-        val pageState = rememberPagerState(pageCount = { 3 })
-
         TopSection(
             onSkipClick = {
                 if (pageState.currentPage + 1 < pages.size) {
@@ -90,6 +87,8 @@ fun OnBoardingScreen(
                 }
             },
         )
+
+//        Text(text = (pageState.currentPage).toString())
 
         HorizontalPager(
             state = pageState,
@@ -109,12 +108,11 @@ fun OnBoardingScreen(
             // For example, you can navigate to the previous page
             // or perform any other action you desire
 
-            if (pageState.currentPage - 1 < pages.size)
-                {
-                    scope.launch {
-                        pageState.scrollToPage(pageState.currentPage - 1)
-                    }
+            if (pageState.currentPage - 1 < pages.size) {
+                scope.launch {
+                    pageState.scrollToPage(pageState.currentPage - 1)
                 }
+            }
         }
 
         var onNextClicked: () -> Unit = {
@@ -122,25 +120,33 @@ fun OnBoardingScreen(
             // For example, you can navigate to the next page
             // or perform any other action you desire
 
-            if (pageState.currentPage + 1 < pages.size)
-                {
-                    scope.launch {
-                        pageState.scrollToPage(pageState.currentPage + 1)
-                    }
+            if (pageState.currentPage + 1 < pages.size) {
+                scope.launch {
+                    pageState.scrollToPage(pageState.currentPage + 1)
                 }
+            }
         }
 
-        ButtomSection(
-            size = pages.size,
-            index = pageState.currentPage,
-            onPreviousClicked.also { onPreviousClicked = it },
-            onNextClicked.also { onNextClicked = it },
-        )
+        FinishButton(
+            modifier = Modifier.weight(1f),
+            pagerState = pageState,
+        ) {
+            welcomeViewModel.saveOnBoardingState(completed = true)
+            navController.navigateUp()
+            navController.navigateTo(Destinations.Home.route)
+        }
+
+//        ButtomSection(
+//            size = pages.size,
+//            index = pageState.currentPage,
+//            onPreviousClicked.also { onPreviousClicked = it },
+//            onNextClicked.also { onNextClicked = it },
+//        )
     }
 }
 
 @Composable
-fun TopSection(onSkipClick: () -> Unit = {})  {
+fun TopSection(onSkipClick: () -> Unit = {}) {
     Box(
         modifier =
             Modifier
@@ -172,7 +178,7 @@ fun TopSection(onSkipClick: () -> Unit = {})  {
 }
 
 @Composable
-fun OnBoardingPagerScreen(onBoardingPage: OnBoardingPage)  {
+fun OnBoardingPagerScreen(onBoardingPage: OnBoardingPage) {
     Box {
         Column(
             modifier =
@@ -257,7 +263,7 @@ fun ButtomSection(
     index: Int,
     onPreviousClicked: () -> Unit,
     onNextClicked: () -> Unit,
-)  {
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier =
@@ -297,16 +303,10 @@ fun ButtomSection(
 }
 
 @Composable
-@Preview(showBackground = true)
-fun BottomPreview()  {
-    ButtomSection(3, 1, {}, {})
-}
-
-@Composable
 fun Indicators(
     size: Int,
     index: Int,
-)  {
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -351,15 +351,13 @@ fun FinishButton(
     onClick: () -> Unit,
 ) {
     Row(
-        modifier =
-            modifier
-                .padding(horizontal = 40.dp),
+        modifier = modifier.padding(horizontal = 40.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Center,
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 3,
+            visible = pagerState.currentPage == 2,
         ) {
             Button(
                 onClick = onClick,
@@ -378,7 +376,7 @@ fun FinishButton(
 
 @Preview(showBackground = true)
 @Composable
-fun FirstScreen()  {
+fun FirstScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.First)
     }
@@ -386,7 +384,7 @@ fun FirstScreen()  {
 
 @Preview(showBackground = true)
 @Composable
-fun SecondScreen()  {
+fun SecondScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.Second)
     }
@@ -394,7 +392,7 @@ fun SecondScreen()  {
 
 @Preview(showBackground = true)
 @Composable
-fun ThirdScreen()  {
+fun ThirdScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.Third)
     }

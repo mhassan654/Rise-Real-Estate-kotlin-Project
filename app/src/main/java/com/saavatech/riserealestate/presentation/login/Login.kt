@@ -13,13 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -39,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.saavatech.riserealestate.Destinations
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.AppBar
@@ -47,205 +41,201 @@ import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.CustomOutlinedPasswordTextField
 import com.saavatech.riserealestate.common.CustomOutlinedTextField
 import com.saavatech.riserealestate.common.DividerTextComponent
-import com.saavatech.riserealestate.common.RoundedIconTextButton
 import com.saavatech.riserealestate.common.SocialButton
+import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(
-    navController: DestinationsNavigator,
-){
+fun LoginScreen(navController: DestinationsNavigator)  {
     Scaffold(
         topBar = {
             AppBar(
                 title = null,
                 actionIcon = null,
-               icon= Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                iconClickAction = {navController.navigateUp()}
-                )
+                icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                iconClickAction = { navController.navigateUp() },
+            )
         },
-    ) {innerPadding->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding)
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+        ) {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-
-                    Image(
-                        painter = painterResource(id = R.drawable.undraw_city_life_gnpr_1),//painterResource(id = R.drawable.login3),
-                        contentDescription = null,
-                        modifier = Modifier
+                Image(
+                    painter = painterResource(id = R.drawable.undraw_city_life_gnpr_1), // painterResource(id = R.drawable.login3),
+                    contentDescription = null,
+                    modifier =
+                        Modifier
                             .fillMaxWidth()
                             .height(180.dp),
-                        contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier =
+                        Modifier
+                            .padding(vertical = 30.dp, horizontal = 10.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.lets),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight(400),
+                        color = TextColorOne,
                     )
 
-                    Row(
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Bottom,
-                        modifier = Modifier
-                            .padding(vertical = 30.dp, horizontal = 10.dp)
-                    ) {
+                    Spacer(modifier = Modifier.width(5.dp))
 
-                        Text(
+                    Text(
+                        text = stringResource(id = R.string.sign_in),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight(700),
+                        color = TextColorBold,
+                    )
+                }
 
-                            text = stringResource(id = R.string.lets),
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(400),
-                            color = TextColorOne
-                        )
+                Column(
+                    modifier =
+                        Modifier
+                            .padding(10.dp),
+                ) {
+                    Text(
+                        text = "Welcome back, please sign in to continue to your account",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight(500),
+                        color = TextColorOne,
+                    )
 
-                        Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                        Text(
-                            text = stringResource(id = R.string.sign_in),
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(700),
-                            color = TextColorBold
-                        )
-                    }
+                    CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
 
+                    Spacer(modifier = Modifier.height(6.dp))
 
-                    Column(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
-                        Text(
-                            text = "Welcome back, please sign in to continue to your account",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight(500),
-                            color = TextColorOne
-                        )
+                    // password field
+                    CustomOutlinedPasswordTextField("Password")
 
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
-
-                        Spacer(modifier = Modifier.height(6.dp))
-
-                        // password field
-                        CustomOutlinedPasswordTextField("Password")
-
-                        Row(horizontalArrangement = Arrangement.Start) {
-                            TextButton(
-                                onClick = {
-                                    navController.navigateUp()
-                                    navController.navigateTo(Destinations.Register.route)
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = buildAnnotatedString {
+                    Row(horizontalArrangement = Arrangement.Start) {
+                        TextButton(
+                            onClick = {
+                                navController.navigateUp()
+                                navController.navigateTo(Destinations.Register.route)
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                text =
+                                    buildAnnotatedString {
                                         withStyle(
-                                            style = SpanStyle(
-                                                color = TextColorOne,
-                                                fontSize = 13.sp,
-                                                fontWeight = FontWeight(500),
-                                            )
+                                            style =
+                                                SpanStyle(
+                                                    color = TextColorOne,
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight(500),
+                                                ),
                                         ) {
                                             append(stringResource(id = R.string.forgot_password))
                                         }
                                     },
-                                    fontFamily = FontFamily.SansSerif,
-                                    textAlign = TextAlign.Center,
-                                    color = TextColorBold
-                                )
-                            }
+                                fontFamily = FontFamily.SansSerif,
+                                textAlign = TextAlign.Center,
+                                color = TextColorBold,
+                            )
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier =
+                            Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),
+                    ) {
+                        ButtonTextComponent(value = "Login", clickAction = { }, 280.dp)
+
+                        Spacer(modifier = Modifier.height(30.dp))
+                        DividerTextComponent()
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.Bottom,
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth(),
                         ) {
-                            ButtonTextComponent(value = "Login", clickAction = {  }, 280.dp)
+                            SocialButton(
+                                icon = painterResource(id = R.drawable.google_48),
+                                onClick = {},
+                            )
 
-                            Spacer(modifier = Modifier.height(30.dp))
-                            DividerTextComponent()
+                            Spacer(modifier = Modifier.width(10.dp))
 
-                            Spacer(modifier = Modifier.height(20.dp))
+                            SocialButton(
+                                icon = painterResource(id = R.drawable.icons8_facebook_48),
+                                onClick = {},
+                            )
+                        }
 
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.Bottom,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
+                        Spacer(modifier = Modifier.height(6.dp))
 
-                                SocialButton(
-                                    icon= painterResource(id = R.drawable.google_48),
-                                    onClick = {}
-                                )
-
-                                Spacer(modifier = Modifier.width(10.dp))
-
-                                SocialButton(
-                                    icon= painterResource(id = R.drawable.icons8_facebook_48),
-                                    onClick = {}
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(6.dp))
-
-                            TextButton(
-                                onClick = {
-                                    navController.navigateUp()
-                                    navController.navigateTo(Destinations.Register.route)
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = buildAnnotatedString {
+                        TextButton(
+                            onClick = {
+                                navController.navigateUp()
+                                navController.navigateTo(Destinations.Register.route)
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                text =
+                                    buildAnnotatedString {
                                         withStyle(
-                                            style = SpanStyle(
-                                                color = TextColorOne,
-                                                fontSize = 15.sp,
-                                                fontWeight = FontWeight(400),
-                                            )
+                                            style =
+                                                SpanStyle(
+                                                    color = TextColorOne,
+                                                    fontSize = 15.sp,
+                                                    fontWeight = FontWeight(400),
+                                                ),
                                         ) {
                                             append(stringResource(id = R.string.dont_have_account))
                                         }
                                         append(" ")
                                         withStyle(
-                                            style = SpanStyle(
-                                                color = TextColorBold,
-                                                fontWeight = FontWeight(700),
-                                                fontSize = 18.sp,
-                                            )
+                                            style =
+                                                SpanStyle(
+                                                    color = TextColorBold,
+                                                    fontWeight = FontWeight(700),
+                                                    fontSize = 18.sp,
+                                                ),
                                         ) {
                                             append(stringResource(id = R.string.register))
                                         }
                                     },
-                                    fontFamily = FontFamily.SansSerif,
-                                    textAlign = TextAlign.Center,
-                                    color = TextColorBold
-                                )
-                            }
-
+                                fontFamily = FontFamily.SansSerif,
+                                textAlign = TextAlign.Center,
+                                color = TextColorBold,
+                            )
                         }
                     }
-
                 }
-
-
             }
         }
-
-
-
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginPreview(){
+fun LoginPreview()  {
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
     LoginScreen(destinationsNavigator)
