@@ -42,7 +42,8 @@ fun WelcomeScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.welcome_image),
+        Image(
+            painter = painterResource(id = R.drawable.welcome_image),
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.lighting(WelcomeBgOne, WelcomeBgTwo),
             modifier= Modifier

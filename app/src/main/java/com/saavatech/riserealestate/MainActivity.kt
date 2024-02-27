@@ -17,9 +17,14 @@ import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.presentation.Register.RegisterScreen
 import com.saavatech.riserealestate.presentation.login.LoginScreen
 import com.saavatech.riserealestate.presentation.login.LoginScreenOption
+import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingPage
+import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingScreen
 import com.saavatech.riserealestate.presentation.welcome.WelcomeScreen
 import com.saavatech.riserealestate.ui.theme.RiseRealEstateTheme
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +64,7 @@ fun MainNavigation(){
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
 
-    NavHost(navController = navController, startDestination = Destinations.Welcome.route) {
+    NavHost(navController = navController, startDestination = Destinations.OnBoarding.route) {
         composable(Destinations.LoginOption.route) {
             LoginScreenOption(destinationsNavigator)
         }
@@ -74,6 +79,10 @@ fun MainNavigation(){
 //
         composable(Destinations.Register.route){
             RegisterScreen(destinationsNavigator)
+        }
+
+        composable(Destinations.OnBoarding.route){
+            OnBoardingScreen(destinationsNavigator)
         }
         // Add other destinations here if needed
     }
@@ -96,5 +105,6 @@ sealed class Destinations(val route: String) {
     data object Register : Destinations("Register")
     data object Home : Destinations("Home")
     data object Welcome : Destinations("Welcome")
+    data object OnBoarding : Destinations("OnBoarding")
     // Define other destinations here
 }

@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
@@ -40,7 +39,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -60,10 +58,8 @@ import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.GreenOne
-import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
-import com.saavatech.riserealestate.ui.theme.outlineInputunFocusedColor
 
 @Composable
 fun NormalTextComponent(value: String){
@@ -73,7 +69,7 @@ fun NormalTextComponent(value: String){
             .fillMaxWidth()
             .heightIn(),
         style = TextStyle(
-            fontSize = 25.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
         ),
@@ -113,6 +109,7 @@ fun CustomOutlinedTextField(painterResource: Painter, lableValue: String){
         label = { Text(text =lableValue) } ,
         value = text.value,
         shape = RoundedCornerShape(8.dp),
+
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = ButtonBgOne,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
