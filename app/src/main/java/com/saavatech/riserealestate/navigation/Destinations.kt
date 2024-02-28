@@ -1,16 +1,16 @@
 package com.saavatech.riserealestate.navigation
 
 sealed class Destinations(val route: String) {
-    object Login : Destinations("login")
+    data object Login : Destinations("login")
 
-    object LoginOption : Destinations("loginOption")
+    data object LoginOption : Destinations("loginOption")
 
-    object Register : Destinations("Register")
+    data object Register : Destinations("Register")
 
-    object Home : Destinations("Home")
+    data object Home : Destinations("Home")
 
-    object Welcome : Destinations("Welcome")
+    data object Welcome : Destinations("Welcome") // Welcome
 
-    object OnBoarding : Destinations("OnBoarding")
+    data object OnBoarding : Destinations("OnBoarding")
     // Define other destinations here
 }

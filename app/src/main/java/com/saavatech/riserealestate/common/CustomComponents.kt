@@ -60,158 +60,209 @@ import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
+import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
 @Composable
-fun NormalTextComponent(value: String){
+fun NormalTextComponent(value: String) {
     Text(
         text = value,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(),
-        style = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(),
+        style =
+            TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+            ),
         color = TextColorOne,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }
 
 @Composable
-fun HeadingTextComponent(value: String){
+fun HeadingTextComponent(value: String) {
     Text(
         text = value,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 20.dp),
-        style = TextStyle(
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 20.dp),
+        style =
+            TextStyle(
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+            ),
         color = colorResource(id = R.color.colorText),
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }
 
 @Composable
-fun CustomOutlinedTextField(painterResource: Painter, lableValue: String){
-    val text = remember {
-        mutableStateOf("")
-    }
+fun CustomOutlinedTextField(
+    painterResource: Painter,
+    lableValue: String,
+) {
+    val text =
+        remember {
+            mutableStateOf("")
+        }
 
     OutlinedTextField(
-        modifier= Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-            .clip(RoundedCornerShape(1.dp)),
-        label = { Text(text =lableValue) } ,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clip(RoundedCornerShape(1.dp)),
+        label = { Text(text = lableValue) },
         value = text.value,
         shape = RoundedCornerShape(8.dp),
-
-        colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = ButtonBgOne,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = Color.Transparent,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            unfocusedContainerColor = inputBg
-        ),
-
+        colors =
+            OutlinedTextFieldDefaults.colors(
+                cursorColor = ButtonBgOne,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = Color.Transparent,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = inputBg,
+            ),
         keyboardOptions = KeyboardOptions.Default,
-        onValueChange ={
-            text.value=it
+        onValueChange = {
+            text.value = it
         },
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(20.dp),
-                painter = painterResource, contentDescription = "profile icon")
-        }
+                painter = painterResource,
+                contentDescription = "profile icon",
+            )
+        },
     )
 }
-@Composable
-fun CustomOutlinedPasswordTextField(lableValue: String){
-    val password = remember {
-        mutableStateOf("")
-    }
 
-    val passwordVisibility = remember {
-        mutableStateOf(false)
-    }
+@Composable
+fun CustomOutlinedPasswordTextField(lableValue: String) {
+    val password =
+        remember {
+            mutableStateOf("")
+        }
+
+    val passwordVisibility =
+        remember {
+            mutableStateOf(false)
+        }
 
     OutlinedTextField(
-        modifier= Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-            .clip(RoundedCornerShape(1.dp)),
-        label = { Text(text =lableValue) } ,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clip(RoundedCornerShape(1.dp)),
+        label = { Text(text = lableValue) },
         value = password.value,
         shape = RoundedCornerShape(8.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            //        colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = ButtonBgOne,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = Color.Transparent,
-            unfocusedContainerColor = inputBg,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-        ),
-
+        colors =
+            OutlinedTextFieldDefaults.colors(
+                //        colors = OutlinedTextFieldDefaults.colors(
+                cursorColor = ButtonBgOne,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = Color.Transparent,
+                unfocusedContainerColor = inputBg,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+            ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        onValueChange ={
-            password.value=it
+        onValueChange = {
+            password.value = it
         },
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(20.dp),
-                painter = painterResource(id = R.drawable.lock), contentDescription = "profile icon")
+                painter = painterResource(id = R.drawable.lock),
+                contentDescription = "profile icon",
+            )
         },
         trailingIcon = {
-            val iconImage = if (passwordVisibility.value)
-                Icons.Filled.Visibility
-            else
-                Icons.Filled.VisibilityOff
+            val iconImage =
+                if (passwordVisibility.value) {
+                    Icons.Filled.Visibility
+                } else {
+                    Icons.Filled.VisibilityOff
+                }
 
-            val description = if (passwordVisibility.value)
-                "Hide Password"
-            else "Show password"
+            val description =
+                if (passwordVisibility.value) {
+                    "Hide Password"
+                } else {
+                    "Show password"
+                }
 
             IconButton(onClick = {
                 passwordVisibility.value = !passwordVisibility.value
             }) {
-
                 Icon(imageVector = iconImage, contentDescription = description)
             }
         },
-        visualTransformation = if (passwordVisibility.value) VisualTransformation.None
-        else PasswordVisualTransformation()
+        visualTransformation =
+            if (passwordVisibility.value) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
     )
 }
 
 @Composable
-fun ButtonTextComponent(value: String, clickAction: ()->Unit, width: Dp){
+fun ButtonTextComponent(
+    value: String,
+    clickAction: () -> Unit,
+    width: Dp,
+) {
     TextButton(
-        modifier = Modifier
-            .width(width)
-            .heightIn(48.dp),
+        modifier =
+            Modifier
+                .width(width)
+                .heightIn(48.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(GreenOne),
         shape = RoundedCornerShape(15),
-        onClick = { clickAction.invoke() }
+        onClick = { clickAction.invoke() },
     ) {
         Text(text = value)
     }
 }
 
 @Composable
-fun ButtonIconComponent(value: String){
+fun CategoryButtonTextComponent(
+    value: String,
+    clickAction: () -> Unit,
+//    width: Dp,
+) {
+    TextButton(
+        modifier =
+            Modifier
+//                .width(width)
+                .heightIn(40.dp),
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(primaryBackground1),
+        shape = RoundedCornerShape(50),
+        onClick = { clickAction.invoke() },
+    ) {
+        Text(text = value)
+    }
+}
+
+@Composable
+fun ButtonIconComponent(value: String) {
     IconButton(
-        modifier = Modifier
-            .width(150.dp)
-            .heightIn(40.dp),
-//        contentPadding = PaddingValues(),
+        modifier =
+            Modifier
+                .width(150.dp)
+                .heightIn(40.dp),
+        //        contentPadding = PaddingValues(),
 //        colors = ButtonDefaults.buttonColors(GreenOne),
 //        shape = RoundedCornerShape(15),
-        onClick = {  }
+        onClick = { },
     ) {
         Text(text = value)
     }
@@ -223,31 +274,29 @@ fun AppBar(
     title: String?,
     icon: ImageVector,
     actionIcon: ImageVector?,
-    iconClickAction: ()->Unit
-){
-
+    iconClickAction: () -> Unit,
+) {
     CenterAlignedTopAppBar(
         modifier = Modifier.padding(10.dp),
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors =
+            TopAppBarDefaults.topAppBarColors(
 //            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.primaryContainer
-        ),
+                titleContentColor = MaterialTheme.colorScheme.primaryContainer,
+            ),
         navigationIcon = {
-
             RoundedIconButton(
                 modifier = Modifier.padding(2.dp),
                 icon = icon,
                 onClick = { iconClickAction.invoke() },
-                contentDescription = "Add to favorites"
+                contentDescription = "Add to favorites",
             )
-
         },
         actions = {
             if (actionIcon != null) {
                 RoundedIconButton(
                     icon = actionIcon,
                     onClick = { iconClickAction.invoke() },
-                    contentDescription = "Share to others"
+                    contentDescription = "Share to others",
                 )
             }
         },
@@ -255,7 +304,7 @@ fun AppBar(
             if (title != null) {
                 Text(title)
             }
-        }
+        },
     )
 }
 
@@ -265,21 +314,22 @@ fun RoundedIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
-    contentDescription: String? = null
+    contentDescription: String? = null,
 ) {
     IconButton(
         onClick = onClick,
-        modifier = Modifier
-            .background(colorResource(id = R.color.socialButtonBgColor), shape = CircleShape)
-            .padding(horizontal = 2.dp)
-            .padding(vertical = 2.dp)
-            .size(50.dp)
+        modifier =
+            Modifier
+                .background(colorResource(id = R.color.socialButtonBgColor), shape = CircleShape)
+                .padding(horizontal = 2.dp)
+                .padding(vertical = 2.dp)
+                .size(50.dp),
     ) {
         Icon(
             imageVector = icon,
             tint = tint,
             contentDescription = contentDescription,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(20.dp),
         )
     }
 //    }
@@ -292,49 +342,50 @@ fun RoundedIconTextButton(
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
     contentDescription: String? = null,
-    text: String
+    text: String,
 ) {
     Row {
         TextButton(
-            modifier = Modifier
-                .widthIn(278.dp)
-                .height(63.dp),
+            modifier =
+                Modifier
+                    .widthIn(278.dp)
+                    .height(63.dp),
             contentPadding = PaddingValues(),
             colors = ButtonDefaults.buttonColors(GreenOne),
             shape = RoundedCornerShape(15),
-            onClick = { onClick.invoke() }
+            onClick = { onClick.invoke() },
         ) {
             Row(
-                modifier=Modifier.padding(horizontal = 10.dp)
+                modifier = Modifier.padding(horizontal = 10.dp),
             ) {
                 Icon(
-                    modifier=Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp),
                     imageVector = icon,
-                    contentDescription = null)
+                    contentDescription = null,
+                )
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(text = text, fontSize = 16.sp, fontWeight = FontWeight(600))
             }
-
         }
-
     }
 
 //    }
 }
 
 @Composable
-fun DividerTextComponent(){
+fun DividerTextComponent() {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             color = colorResource(id = R.color.strokeColor),
-            thickness = 1.dp
+            thickness = 1.dp,
         )
 
         Text(
@@ -342,17 +393,17 @@ fun DividerTextComponent(){
             text = "OR",
             fontSize = 14.sp,
             fontWeight = FontWeight(600),
-            color = colorResource(id = R.color.strokeTextColor)
+            color = colorResource(id = R.color.strokeTextColor),
         )
 
         Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             color = colorResource(id = R.color.strokeColor),
-            thickness = 1.dp
+            thickness = 1.dp,
         )
-
     }
 }
 
@@ -360,44 +411,45 @@ fun DividerTextComponent(){
 fun SocialButton(
     icon: Painter,
     onClick: () -> Unit,
-){
+) {
     TextButton(
-        modifier = Modifier
-            .width(158.5.dp)
-            .height(70.dp),
+        modifier =
+            Modifier
+                .width(158.5.dp)
+                .height(70.dp),
         contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(
-            colorResource(id = R.color.socialButtonBgColor)
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                colorResource(id = R.color.socialButtonBgColor),
+            ),
         shape = RoundedCornerShape(40),
-        onClick = {  }
+        onClick = { },
     ) {
         Icon(
             modifier = Modifier.size(30.dp),
             painter = icon,
             contentDescription = null,
-            tint = TextColorOne
+            tint = TextColorOne,
         )
-
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ComponentsPreview(){
-    Column(modifier=Modifier.padding(10.dp)) {
+fun ComponentsPreview() {
+    Column(modifier = Modifier.padding(10.dp)) {
         CustomOutlinedPasswordTextField("sample label")
         Spacer(modifier = Modifier.height(6.dp))
         CustomOutlinedTextField(painterResource(id = R.drawable.profile), "saghsadg")
         Spacer(modifier = Modifier.height(6.dp))
-        ButtonTextComponent(value = "button with text", clickAction = {},150.dp)
+        ButtonTextComponent(value = "button with text", clickAction = {}, 150.dp)
         Spacer(modifier = Modifier.height(6.dp))
 
         RoundedIconTextButton(
             icon = Icons.Default.MailOutline,
-            onClick = {  },
+            onClick = { },
             contentDescription = "Add to favorites",
-            text = "Sample text icon button"
+            text = "Sample text icon button",
         )
         Spacer(modifier = Modifier.height(6.dp))
 
@@ -407,14 +459,14 @@ fun ComponentsPreview(){
             Icons.Filled.Share,
             iconClickAction = {
 //                navController?.navigateUp()
-            })
+            },
+        )
         Spacer(modifier = Modifier.height(6.dp))
         DividerTextComponent()
 
         SocialButton(
-           icon= painterResource(id = R.drawable.google_48),
-            onClick = {}
+            icon = painterResource(id = R.drawable.google_48),
+            onClick = {},
         )
     }
-
 }

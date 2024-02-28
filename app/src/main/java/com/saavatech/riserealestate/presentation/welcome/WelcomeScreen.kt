@@ -30,28 +30,28 @@ import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
-import com.saavatech.riserealestate.ui.theme.WelcomeBgOne
 import com.saavatech.riserealestate.ui.theme.WelcomeBgTwo
+import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
 @Composable
 fun WelcomeScreen(
     navController: DestinationsNavigator,
     modifier: Modifier = Modifier,
-)  {
+) {
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
         Image(
             painter = painterResource(id = R.drawable.welcome_image),
             contentScale = ContentScale.FillBounds,
-            colorFilter = ColorFilter.lighting(WelcomeBgOne, WelcomeBgTwo),
+            colorFilter = ColorFilter.lighting(primaryBackground1, WelcomeBgTwo),
             modifier =
                 Modifier
                     .fillMaxSize()
                     .background(
                         brush =
                             Brush.linearGradient(
-                                listOf(WelcomeBgTwo, WelcomeBgOne),
+                                listOf(WelcomeBgTwo, primaryBackground1),
                             ),
                     ),
             contentDescription = null,
@@ -127,7 +127,7 @@ fun WelcomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomePreview()  {
+fun WelcomePreview() {
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
     WelcomeScreen(destinationsNavigator)
