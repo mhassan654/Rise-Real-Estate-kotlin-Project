@@ -43,7 +43,7 @@ fun MainNavigation(
             OnBoardingScreen(destinationsNavigator)
         }
 
-        composable(Destinations.Home.route) {
+        composable(BottomScreens.Home.route) {
             Home()
         }
         // Add other destinations here if needed

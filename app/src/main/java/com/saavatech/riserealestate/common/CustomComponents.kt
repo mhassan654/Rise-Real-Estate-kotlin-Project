@@ -1,10 +1,15 @@
 package com.saavatech.riserealestate.common
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -39,7 +44,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
@@ -374,6 +384,37 @@ fun RoundedIconTextButton(
 }
 
 @Composable
+fun InnerCurvedBox(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color.Blue,
+    cornerRadius: Float = 20f,
+    curveAngle: Float = 45f,
+    content: @Composable () -> Unit,
+) {
+    Box(modifier = modifier) {
+        Canvas(modifier = Modifier.matchParentSize()) {
+            val boxWidth = size.width
+            val boxHeight = size.height
+            val innerWidth = boxWidth * 0.5f
+            val innerHeight = boxHeight * 0.5f
+            val radius = CornerRadius(cornerRadius)
+            drawRoundRect(color = backgroundColor, cornerRadius = radius)
+
+            rotate(curveAngle) {
+                drawRoundRect(
+                    color = Color.White,
+                    cornerRadius = radius,
+                    topLeft = Offset(-innerWidth / 2, -innerHeight / 2),
+                    size = Size(innerWidth, innerHeight),
+                    style = Stroke(2.dp.toPx()),
+                )
+            }
+        }
+        content()
+    }
+}
+
+@Composable
 fun DividerTextComponent() {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -440,7 +481,7 @@ fun ComponentsPreview() {
     Column(modifier = Modifier.padding(10.dp)) {
         CustomOutlinedPasswordTextField("sample label")
         Spacer(modifier = Modifier.height(6.dp))
-        CustomOutlinedTextField(painterResource(id = R.drawable.profile), "saghsadg")
+        CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "saghsadg")
         Spacer(modifier = Modifier.height(6.dp))
         ButtonTextComponent(value = "button with text", clickAction = {}, 150.dp)
         Spacer(modifier = Modifier.height(6.dp))
@@ -469,4 +510,42 @@ fun ComponentsPreview() {
             onClick = {},
         )
     }
+}
+
+@Composable
+@Preview
+fun InnerCurvedBoxDemo() {
+    InnerCurvedBox(Modifier.fillMaxSize(), backgroundColor = Color.Blue) {
+        // Add your content here
+    }
+}
+
+@Composable
+fun sectionTitles(title: String, title2: String?, onClick: () -> Unit?) {
+    Spacer(modifier = Modifier.height(25.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+            fontSize = 18.sp,
+            fontWeight = FontWeight(600),
+            textAlign = TextAlign.Left,
+        )
+
+        if (title2 != null) {
+            Text(
+                modifier = Modifier.clickable { onClick.invoke() },
+                text = title2,
+                style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+                fontSize = 14.sp,
+                fontWeight = FontWeight(400),
+                textAlign = TextAlign.Left,
+            )
+        }
+    }
+    Spacer(modifier = Modifier.height(25.dp))
 }

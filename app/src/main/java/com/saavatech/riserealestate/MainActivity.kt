@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.navigation.MainNavigation
 import com.saavatech.riserealestate.presentation.SplashViewModel
 import com.saavatech.riserealestate.ui.theme.RiseRealEstateTheme
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    MainNavigation(navController = navController, startScreen = screen)
+                    MainNavigation(navController = navController, startScreen = Destinations.Welcome.route)
                 }
             }
         }

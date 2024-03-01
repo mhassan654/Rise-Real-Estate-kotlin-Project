@@ -54,6 +54,9 @@ android {
 }
 
 dependencies {
+    val navVersion = "2.7.7"
+
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -74,6 +77,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation("androidx.compose.material:material:1.6.2")
     // extra project dependencies
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -81,8 +85,8 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
 
-    implementation("androidx.compose.material:material-icons-extended:1.6.1")
-    implementation("androidx.hilt:hilt-navigation:1.1.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.hilt:hilt-navigation:1.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC2")
@@ -109,9 +113,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation("com.google.accompanist:accompanist-pager:0.35.0-alpha")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.35.0-alpha")

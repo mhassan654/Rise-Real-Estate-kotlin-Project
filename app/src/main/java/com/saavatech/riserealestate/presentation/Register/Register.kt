@@ -38,6 +38,7 @@ import com.saavatech.riserealestate.common.AppBar
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.CustomOutlinedPasswordTextField
 import com.saavatech.riserealestate.common.CustomOutlinedTextField
+import com.saavatech.riserealestate.navigation.BottomScreens
 import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -106,7 +107,7 @@ fun RegisterScreen(navController: DestinationsNavigator) {
                 }
 
                 Spacer(modifier = Modifier.height(35.dp))
-                CustomOutlinedTextField(painterResource(id = R.drawable.profile), "Full name")
+                CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "Full name")
                 Spacer(modifier = Modifier.height(6.dp))
                 CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
                 Spacer(modifier = Modifier.height(6.dp))
@@ -150,7 +151,7 @@ fun RegisterScreen(navController: DestinationsNavigator) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    ButtonTextComponent(value = "Register", clickAction = { }, 280.dp)
+                    ButtonTextComponent(value = "Register", clickAction = { navController.navigateTo(BottomScreens.Home.route) }, 280.dp)
                 }
             }
         }
