@@ -17,4 +17,6 @@
     <color name="strokeColor">#ECEDF3</color>
     <color name="strokeTextColor">#A1A5C1</color>
     <color name="socialButtonBgColor">#F5F4F8</color>
+
+    <color name="lightPrimary">#ECEDF3</color>
 </resources>

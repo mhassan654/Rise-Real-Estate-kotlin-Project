@@ -52,6 +52,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -74,7 +75,6 @@ import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
-import com.saavatech.riserealestate.ui.theme.lightPrimary
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 import kotlinx.coroutines.launch
 
@@ -212,7 +212,7 @@ fun Home() {
 //                        columns = GridCells.Adaptive(minSize = 128.dp)
 //                    ) {
 //                        items(4) {
-                            NearbyCardItem()
+                    NearbyCardItem()
 //                        }
 //                    }
                 }
@@ -221,6 +221,7 @@ fun Home() {
 
         if (showBottomSheet) {
             ModalBottomSheet(
+                shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
 //                scrimColor = MaterialTheme.colorScheme.primary,
                 onDismissRequest = {
                     showBottomSheet = false
@@ -267,10 +268,9 @@ fun Home() {
                         }
                     }
 
-                    Column(
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         rowButton(
                             location = "Old Kampala primay school , sir appolo road",
                             bgColor = MaterialTheme.colorScheme.primary,
@@ -282,8 +282,9 @@ fun Home() {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        ButtonTextComponent(value = "Choose Location", width = 400.dp, clickAction = {})
+                        ButtonTextComponent(value = "Choose Location", width = 300.dp, clickAction = {})
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
@@ -336,6 +337,7 @@ fun bottomSheet() {
             }
         }
 
+        Spacer(modifier = Modifier.height(20.dp))
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             rowButton(
                 location = "Old Kampala primay school , sir appolo road",
@@ -348,8 +350,9 @@ fun bottomSheet() {
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            ButtonTextComponent(value = "Choose Location", width = 400.dp, clickAction = {})
+            ButtonTextComponent(value = "Choose Location", width = 300.dp, clickAction = {})
         }
+        Spacer(modifier = Modifier.height(20.dp))
 
 //
     }
@@ -359,10 +362,12 @@ fun bottomSheet() {
 fun rowButton(
     bgColor: Color,
     location: String,
+//    border:
 ) {
     Box(
         modifier =
             Modifier.padding(8.dp).fillMaxWidth().heightIn(90.dp)
+                .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                 .background(
                     color = bgColor,
                     RoundedCornerShape(25.dp),
@@ -374,7 +379,7 @@ fun rowButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = Modifier.clip(CircleShape).background(color = lightPrimary).padding(16.dp),
+                modifier = Modifier.clip(CircleShape).background(color = colorResource(id = R.color.lightPrimary)).padding(16.dp),
             ) {
                 Icon(
                     tint = Color.White,
