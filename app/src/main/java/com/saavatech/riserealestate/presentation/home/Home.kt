@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Button
@@ -36,7 +35,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -50,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -63,14 +60,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.CategoryButtonTextComponent
 import com.saavatech.riserealestate.common.CustomOutlinedTextField
+import com.saavatech.riserealestate.common.PromotionCard
 import com.saavatech.riserealestate.common.sectionTitles
 import com.saavatech.riserealestate.navigation.BottomNavigation
 import com.saavatech.riserealestate.navigation.BottomScreens
+import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -80,8 +79,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home() {
-    val navController = rememberNavController()
+fun Home(navController: DestinationsNavigator) {
+//    val navController = rememberNavController()
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -178,10 +177,12 @@ fun Home() {
                 ) {
                     LazyRow {
                         items(4) {
-                            DiscountCard(
+                            PromotionCard(
                                 title = "sample",
                                 subTitle = "All discount up to 60%",
                                 backgroundResId = painterResource(id = R.drawable.image_25),
+                                width = 260.dp,
+                                onClickAction = { navController.navigateTo(Destinations.PromotionScreen.route) },
                             )
 
                             Spacer(modifier = Modifier.width(10.dp))
@@ -268,16 +269,15 @@ fun Home() {
                         }
                     }
 
-
                     Spacer(modifier = Modifier.height(20.dp))
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         rowButton(
-                            location = "Old Kampala primay school , sir appolo road",
+                            location = "Old Kampala primary school , sir appolo road",
                             bgColor = MaterialTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         rowButton(
-                            location = "Old Kampala primay school , sir appolo road",
+                            location = "Old Kampala primary school , sir appolo road",
                             bgColor = Color.White,
                         )
                         Spacer(modifier = Modifier.height(10.dp))
@@ -397,12 +397,6 @@ fun rowButton(
 }
 
 @Composable
-@Preview(showBackground = true)
-fun HomePreview() {
-    Home()
-}
-
-@Composable
 fun featureCardItem() {
     Box(
         modifier =
@@ -507,118 +501,6 @@ fun featureCardItem() {
         }
 
 //
-    }
-}
-
-@Composable
-fun DiscountCard(
-    backgroundResId: Painter,
-    title: String,
-    subTitle: String,
-) {
-    Surface(
-        modifier =
-            Modifier
-                .width(260.dp)
-                .height(180.dp),
-        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp, bottomEnd = 28.dp, bottomStart = 0.dp),
-    ) {
-        Box {
-            Image(
-                painter = backgroundResId,
-                contentDescription = null,
-                modifier =
-                    Modifier
-                        .fillMaxSize(),
-                contentScale = ContentScale.Fit,
-            )
-
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.padding(vertical = 30.dp, horizontal = 20.dp),
-            ) {
-                TextOverlayTitle(text = title)
-                Spacer(modifier = Modifier.height(16.dp))
-                TextOverlaySubTitle(text = subTitle)
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.Start,
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(0.dp),
-            ) {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    IconButton(
-                        onClick = {},
-                        modifier =
-                            Modifier
-                                .background(
-                                    primaryBackground1,
-                                    shape =
-                                        RoundedCornerShape(
-                                            topStart = 0.dp,
-                                            topEnd = 25.dp,
-                                            bottomEnd = 0.dp,
-                                            bottomStart = 0.dp,
-                                        ),
-                                )
-                                .padding(horizontal = 10.dp)
-                                .padding(vertical = 2.dp)
-                                .width(80.dp)
-                                .height(60.dp),
-                    ) {
-                        Icon(
-                            tint = Color.White,
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TextOverlayTitle(text: String) {
-    Column(
-        modifier =
-        Modifier,
-//                .fillMaxSize()
-//                .padding(16.dp),
-//        verticalArrangement = Arrangement.Top,
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White),
-            fontSize = 20.sp,
-            fontWeight = FontWeight(700),
-            textAlign = TextAlign.Left,
-        )
-    }
-}
-
-@Composable
-private fun TextOverlaySubTitle(text: String) {
-    Column(
-        modifier =
-        Modifier,
-//                .fillMaxSize()
-//                .padding(16.dp),
-//        verticalArrangement = Arrangement.Top,
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.headlineMedium.copy(color = Color.White),
-            fontSize = 16.sp,
-            fontWeight = FontWeight(300),
-            textAlign = TextAlign.Left,
-        )
     }
 }
 

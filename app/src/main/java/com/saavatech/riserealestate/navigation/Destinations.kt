@@ -12,5 +12,7 @@ sealed class Destinations(val route: String) {
     data object Welcome : Destinations("Welcome") // Welcome
 
     data object OnBoarding : Destinations("OnBoarding")
+
+    data object PromotionScreen : Destinations("Promotion")
     // Define other destinations here
 }

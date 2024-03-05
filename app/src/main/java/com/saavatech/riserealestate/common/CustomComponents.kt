@@ -290,7 +290,6 @@ fun AppBar(
         modifier = Modifier.padding(10.dp),
         colors =
             TopAppBarDefaults.topAppBarColors(
-//            containerColor = MaterialTheme.colorScheme.primary,
                 titleContentColor = MaterialTheme.colorScheme.primaryContainer,
             ),
         navigationIcon = {
@@ -521,7 +520,11 @@ fun InnerCurvedBoxDemo() {
 }
 
 @Composable
-fun sectionTitles(title: String, title2: String?, onClick: () -> Unit?) {
+fun sectionTitles(
+    title: String,
+    title2: String?,
+    onClick: () -> Unit?,
+) {
     Spacer(modifier = Modifier.height(25.dp))
     Row(
         modifier = Modifier.fillMaxWidth(),

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.saavatech.riserealestate.DestinationsNavigator
+import com.saavatech.riserealestate.presentation.PromotionScreen
 import com.saavatech.riserealestate.presentation.Register.RegisterScreen
 import com.saavatech.riserealestate.presentation.home.Home
 import com.saavatech.riserealestate.presentation.login.LoginScreen
@@ -43,8 +44,12 @@ fun MainNavigation(
             OnBoardingScreen(destinationsNavigator)
         }
 
+        composable(route = Destinations.PromotionScreen.route) {
+            PromotionScreen(destinationsNavigator)
+        }
+
         composable(BottomScreens.Home.route) {
-            Home()
+            Home(destinationsNavigator)
         }
         // Add other destinations here if needed
     }
