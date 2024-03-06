@@ -37,6 +37,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -134,6 +136,47 @@ fun CustomOutlinedTextField(
                 cursorColor = ButtonBgOne,
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = Color.Transparent,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = inputBg,
+            ),
+        keyboardOptions = KeyboardOptions.Default,
+        onValueChange = {
+            text.value = it
+        },
+        leadingIcon = {
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painterResource,
+                contentDescription = "profile icon",
+            )
+        },
+    )
+}
+
+@Composable
+fun CustomTextField(
+    painterResource: Painter,
+    lableValue: String,
+) {
+    val text =
+        remember {
+            mutableStateOf("")
+        }
+
+    TextField(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clip(RoundedCornerShape(1.dp)),
+        label = { Text(text = lableValue) },
+        value = text.value,
+        shape = RoundedCornerShape(8.dp),
+        colors =
+            TextFieldDefaults.colors(
+                cursorColor = ButtonBgOne,
+                focusedTextColor = MaterialTheme.colorScheme.primary,
+                unfocusedTextColor = Color.Transparent,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = inputBg,
             ),
@@ -481,6 +524,8 @@ fun ComponentsPreview() {
         CustomOutlinedPasswordTextField("sample label")
         Spacer(modifier = Modifier.height(6.dp))
         CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "saghsadg")
+
+        CustomTextField(painterResource(id = R.drawable.profile_image), "text field")
         Spacer(modifier = Modifier.height(6.dp))
         ButtonTextComponent(value = "button with text", clickAction = {}, 150.dp)
         Spacer(modifier = Modifier.height(6.dp))

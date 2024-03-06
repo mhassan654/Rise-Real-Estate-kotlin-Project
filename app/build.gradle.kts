@@ -119,6 +119,9 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-pager:0.35.0-alpha")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.35.0-alpha")
+
+    //    coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }
 
 // Allow references to generated code
