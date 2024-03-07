@@ -65,7 +65,9 @@ import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.CategoryButtonTextComponent
 import com.saavatech.riserealestate.common.CustomOutlinedTextField
+import com.saavatech.riserealestate.common.CustomTextField
 import com.saavatech.riserealestate.common.FeatureCardItem
+import com.saavatech.riserealestate.common.NearbyCardItem
 import com.saavatech.riserealestate.common.PromotionCard
 import com.saavatech.riserealestate.common.sectionTitles
 import com.saavatech.riserealestate.navigation.BottomNavigation
@@ -159,12 +161,15 @@ fun Home(navController: DestinationsNavigator) {
                         color = TextColorOne,
                     )
 
-                    CustomOutlinedTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
+                    CustomTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
+//                    CustomOutlinedTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
 
                     Spacer(modifier = Modifier.height(16.dp))
                     LazyRow {
                         items(6) {
-                            CategoryButtonTextComponent("All") {}
+                            CategoryButtonTextComponent("All") {
+                                navController.navigateTo(Destinations.EstateByCategory.route)
+                            }
                             Spacer(modifier = Modifier.width(6.dp))
                         }
                     }
@@ -197,7 +202,11 @@ fun Home(navController: DestinationsNavigator) {
 
                         LazyRow {
                             items(4) {
-                                FeatureCardItem(modifier = null)
+                                FeatureCardItem(
+                                    modifier = Modifier.width(300.dp),
+                                    title = "Sky Dandelions Apartment",
+                                    imageTitle = "Old kampala"
+                                )
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
                         }
@@ -212,13 +221,18 @@ fun Home(navController: DestinationsNavigator) {
 
                     sectionTitles(title = "Explore Nearby Estates", null) {}
 
-//                    LazyVerticalGrid(
-//                        columns = GridCells.Adaptive(minSize = 128.dp)
-//                    ) {
-//                        items(4) {
-                    NearbyCardItem()
-//                        }
-//                    }
+                    // Explore nearby estates
+
+                    repeat(4) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            repeat(2) {
+                                NearbyCardItem()
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
                 }
             }
         }
@@ -544,128 +558,6 @@ fun TopAgents() {
     }
 }
 
-@Composable
-fun NearbyCardItem() {
-    Box(
-        modifier =
-            Modifier
-                .clickable { }
-                .width(190.dp)
-                .height(300.dp)
-                .background(color = inputBg, shape = RoundedCornerShape(22.dp)),
-    ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-        ) {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop,
-                painter = painterResource(id = R.drawable.estates_card),
-                contentDescription = null,
-            )
-
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.End,
-                modifier =
-                    Modifier
-                        .fillMaxHeight()
-                        .padding(10.dp),
-            ) {
-                IconButton(
-                    onClick = {},
-                    modifier =
-                        Modifier
-                            .background(color = GreenOne, shape = CircleShape)
-                            .padding(horizontal = 2.dp)
-                            .padding(vertical = 2.dp)
-                            .size(25.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.favorite),
-                        tint = Color.White,
-                        contentDescription = null,
-                        modifier = Modifier.size(12.dp),
-                    )
-                }
-
-                Text(
-                    text =
-                        buildAnnotatedString {
-                            withStyle(
-                                style =
-                                    SpanStyle(
-                                        color = Color.White,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight(400),
-                                    ),
-                            ) {
-                                append("$ 290")
-                            }
-                            append("")
-                            withStyle(
-                                style =
-                                    SpanStyle(
-                                        color = Color.White,
-                                        fontWeight = FontWeight(300),
-                                        fontSize = 10.sp,
-                                    ),
-                            ) {
-                                append("/month")
-                            }
-                        },
-                    modifier =
-                        Modifier
-                            .widthIn(max = 150.dp)
-                            .background(color = primaryBackground1, shape = RoundedCornerShape(11.dp))
-                            .padding(4.dp),
-                    fontFamily = FontFamily.SansSerif,
-                    textAlign = TextAlign.End,
-                    color = Color.White,
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-        }
-
-        Column(
-            modifier =
-                Modifier
-                    .padding(10.dp)
-                    .align(Alignment.BottomStart),
-            // Align to the bottom
-            verticalArrangement = Arrangement.Bottom,
-        ) {
-            Text(
-                text = "Sky Dandelions Apartment",
-                style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                fontSize = 14.sp,
-                fontWeight = FontWeight(500),
-                textAlign = TextAlign.Left,
-            )
-
-            Row(modifier = Modifier.padding(6.dp)) {
-                Icon(
-                    tint = primaryBackground1,
-                    modifier = Modifier.size(12.dp),
-                    imageVector = Icons.Rounded.Room,
-                    contentDescription = null,
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    text = "Old Kampala",
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight(400),
-                    color = TextColorOne,
-                )
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

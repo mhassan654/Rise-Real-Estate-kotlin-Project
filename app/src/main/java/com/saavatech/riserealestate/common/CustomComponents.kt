@@ -1,6 +1,7 @@
 package com.saavatech.riserealestate.common
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,8 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Room
+import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
@@ -54,6 +57,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -171,12 +175,14 @@ fun CustomTextField(
                 .clip(RoundedCornerShape(1.dp)),
         label = { Text(text = lableValue) },
         value = text.value,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(18.dp),
         colors =
             TextFieldDefaults.colors(
-                cursorColor = ButtonBgOne,
+                cursorColor = MaterialTheme.colorScheme.primary,
                 focusedTextColor = MaterialTheme.colorScheme.primary,
                 unfocusedTextColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent, // removes unfocused bottom bordr colore
+                focusedIndicatorColor = Color.Transparent, // removes focused bottom bordr colore
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = inputBg,
             ),
@@ -330,9 +336,10 @@ fun AppBar(
     iconClickAction: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(horizontal = 10.dp),
         colors =
             TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
                 titleContentColor = MaterialTheme.colorScheme.primaryContainer,
             ),
         navigationIcon = {
@@ -524,7 +531,7 @@ fun ComponentsPreview() {
         CustomOutlinedPasswordTextField("sample label")
         Spacer(modifier = Modifier.height(6.dp))
         CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "saghsadg")
-
+        Spacer(modifier = Modifier.height(6.dp))
         CustomTextField(painterResource(id = R.drawable.profile_image), "text field")
         Spacer(modifier = Modifier.height(6.dp))
         ButtonTextComponent(value = "button with text", clickAction = {}, 150.dp)
@@ -596,4 +603,113 @@ fun sectionTitles(
         }
     }
     Spacer(modifier = Modifier.height(25.dp))
+}
+
+// location widget
+@Composable
+fun IconWithLocation(location: String) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            tint = MaterialTheme.colorScheme.primary,
+            imageVector = Icons.Rounded.Room,
+            contentDescription = null,
+            modifier = Modifier.size(13.dp),
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Text(
+            style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+            fontSize = 15.sp,
+            text = location,
+        )
+    }
+}
+
+// rating widget
+@Composable
+fun StarRating(rate: String) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            tint = Color.Yellow,
+            imageVector = Icons.Rounded.StarRate,
+            contentDescription = null,
+            modifier = Modifier.size(15.dp),
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Text(
+            style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+            fontSize = 15.sp,
+            fontWeight = FontWeight(500),
+            text = rate,
+        )
+    }
+}
+
+@Composable
+fun CollageImage(
+    modifier: Modifier = Modifier,
+    image1: Painter,
+    image2: Painter,
+    image3: Painter,
+) {
+    Box(modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth(),
+        ) {
+            Image(
+                contentScale = ContentScale.Fit,
+                modifier =
+                    Modifier
+                        .height(224.dp)
+                        .width(220.dp).clip(RoundedCornerShape(10.dp)),
+                contentDescription = "Image 3",
+                painter = image3,
+            )
+            Column(
+                verticalArrangement = Arrangement.Top,
+                modifier =
+                Modifier,
+            ) {
+                Image(
+                    contentScale = ContentScale.Fit,
+                    modifier =
+                        Modifier.width(133.dp).height(137.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                    contentDescription = "Image 1",
+                    painter = image1,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Image(
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.width(133.dp).height(137.dp).clip(RoundedCornerShape(10.dp)),
+                    contentDescription = "Image 2",
+                    painter = image2,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview
+fun PreviewImageCollage() {
+    CollageImage(
+        modifier = Modifier,
+        image1 = painterResource(id = R.drawable.image_27),
+        image2 = painterResource(id = R.drawable.image_28),
+        image3 = painterResource(id = R.drawable.image_29),
+    )
 }
