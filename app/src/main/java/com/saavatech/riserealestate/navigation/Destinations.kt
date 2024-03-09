@@ -18,5 +18,7 @@ sealed class Destinations(val route: String) {
     data object FeaturedEstate : Destinations("FeaturedEstate")
 
     data object EstateByCategory : Destinations("EstateByCategory")
+
+    data object TopLocations : Destinations("TopLocations")
     // Define other destinations here
 }

@@ -41,29 +41,27 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.AppBar
 import com.saavatech.riserealestate.common.CollageImage
 import com.saavatech.riserealestate.common.CustomTextField
 import com.saavatech.riserealestate.common.FeatureCardItem
-import com.saavatech.riserealestate.common.NearbyCardItem
+import com.saavatech.riserealestate.common.VerticalPropertyCard
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
-
-// @Preview
 @Composable
-@Preview
-fun FeaturedEstate() {
-// fun FeaturedEstate(navController: DestinationsNavigator) {
+//fun FeaturedEstate() {
+ fun FeaturedEstate(navController: DestinationsNavigator) {
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar =
             {
                 AppBar(
                     iconClickAction = {
-//                        navController?.navigateUp()
+                        navController.navigateUp()
                     },
                     title = null,
                     icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
@@ -236,7 +234,7 @@ fun GridView() {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             repeat(2) {
-                NearbyCardItem()
+                VerticalPropertyCard()
             }
         }
         Spacer(modifier = Modifier.height(10.dp))

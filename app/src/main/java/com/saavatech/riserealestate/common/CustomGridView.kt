@@ -15,7 +15,7 @@ fun GridView() {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             repeat(2) {
-                NearbyCardItem()
+                VerticalPropertyCard()
             }
         }
         Spacer(modifier = Modifier.height(10.dp))

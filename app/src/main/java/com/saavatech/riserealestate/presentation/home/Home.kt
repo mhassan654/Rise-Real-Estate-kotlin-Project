@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -64,16 +62,14 @@ import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
 import com.saavatech.riserealestate.common.CategoryButtonTextComponent
-import com.saavatech.riserealestate.common.CustomOutlinedTextField
 import com.saavatech.riserealestate.common.CustomTextField
 import com.saavatech.riserealestate.common.FeatureCardItem
-import com.saavatech.riserealestate.common.NearbyCardItem
 import com.saavatech.riserealestate.common.PromotionCard
+import com.saavatech.riserealestate.common.VerticalPropertyCard
 import com.saavatech.riserealestate.common.sectionTitles
 import com.saavatech.riserealestate.navigation.BottomNavigation
 import com.saavatech.riserealestate.navigation.BottomScreens
 import com.saavatech.riserealestate.navigation.Destinations
-import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
@@ -205,14 +201,16 @@ fun Home(navController: DestinationsNavigator) {
                                 FeatureCardItem(
                                     modifier = Modifier.width(300.dp),
                                     title = "Sky Dandelions Apartment",
-                                    imageTitle = "Old kampala"
+                                    imageTitle = "Old kampala",
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
                         }
                     }
 
-                    sectionTitles(title = "Top Locations", title2 = "explore") {}
+                    sectionTitles(title = "Top Locations", title2 = "explore") {
+                        navController.navigateTo(Destinations.TopLocations.route)
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     TopLocations()
 
@@ -228,7 +226,7 @@ fun Home(navController: DestinationsNavigator) {
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             repeat(2) {
-                                NearbyCardItem()
+                                VerticalPropertyCard()
                             }
                         }
                         Spacer(modifier = Modifier.height(10.dp))
@@ -557,7 +555,6 @@ fun TopAgents() {
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

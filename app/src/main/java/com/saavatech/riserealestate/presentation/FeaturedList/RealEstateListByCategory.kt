@@ -18,6 +18,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.CompareArrows
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,10 +42,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
+import com.saavatech.riserealestate.common.AppBar
 import com.saavatech.riserealestate.common.CustomTextField
 import com.saavatech.riserealestate.common.FeatureCardItem
 import com.saavatech.riserealestate.ui.theme.Purple80
@@ -51,21 +55,19 @@ import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
 @Composable
-@Preview
-fun RealEstateListByCategory() {
-// fun FeaturedEstate(navController: DestinationsNavigator) {
+fun RealEstateListByCategory(navController: DestinationsNavigator) {
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar =
             {
-//                AppBar(
-//                    iconClickAction = {
-// //                        navController?.navigateUp()
-//                    },
-//                    title = null,
-//                    icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-//                    actionIcon = Icons.AutoMirrored.Filled.CompareArrows,
-//                )
+                AppBar(
+                    iconClickAction = {
+                        navController.navigateUp()
+                    },
+                    title = null,
+                    icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                    actionIcon = Icons.AutoMirrored.Filled.CompareArrows,
+                )
             },
     ) { contentPadding ->
         Box(
@@ -93,9 +95,7 @@ fun RealEstateListByCategory() {
                 item { Spacer(modifier = Modifier.height(15.dp)) }
 
                 item {
-
-                    Column(modifier = Modifier.padding(10.dp))
-                    {
+                    Column(modifier = Modifier.padding(10.dp)) {
                         // header
                         Text(
                             text = "Top Villa",
@@ -105,13 +105,12 @@ fun RealEstateListByCategory() {
                         )
                         Spacer(modifier = Modifier.height(13.dp))
 
-                        Spacer(modifier = Modifier.height(15.dp))
                         LazyRow {
                             items(4) {
                                 FeatureCardItem(
                                     modifier = Modifier.width(350.dp),
                                     title = "Sky Dandelions Apartment",
-                                    imageTitle= "Villa"
+                                    imageTitle = "Villa",
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
@@ -128,29 +127,29 @@ fun RealEstateListByCategory() {
                         ) {
                             Text(
                                 text =
-                                buildAnnotatedString {
-                                    withStyle(
-                                        style =
-                                        SpanStyle(
-                                            color = TextColorOne,
-                                            fontSize = 25.sp,
-                                            fontWeight = FontWeight(700),
-                                        ),
-                                    ) {
-                                        append("120")
-                                    }
-                                    append(" ")
-                                    withStyle(
-                                        style =
-                                        SpanStyle(
-                                            color = TextColorBold,
-                                            fontWeight = FontWeight(400),
-                                            fontSize = 22.sp,
-                                        ),
-                                    ) {
-                                        append("Villa")
-                                    }
-                                },
+                                    buildAnnotatedString {
+                                        withStyle(
+                                            style =
+                                                SpanStyle(
+                                                    color = TextColorOne,
+                                                    fontSize = 25.sp,
+                                                    fontWeight = FontWeight(700),
+                                                ),
+                                        ) {
+                                            append("120")
+                                        }
+                                        append(" ")
+                                        withStyle(
+                                            style =
+                                                SpanStyle(
+                                                    color = TextColorBold,
+                                                    fontWeight = FontWeight(400),
+                                                    fontSize = 22.sp,
+                                                ),
+                                        ) {
+                                            append("Villa")
+                                        }
+                                    },
                                 fontFamily = FontFamily.SansSerif,
                                 textAlign = TextAlign.Start,
                                 color = TextColorBold,
@@ -158,21 +157,21 @@ fun RealEstateListByCategory() {
 
                             Box(
                                 modifier =
-                                Modifier
-                                    .background(color = inputBg, shape = RoundedCornerShape(23.dp)),
+                                    Modifier
+                                        .background(color = inputBg, shape = RoundedCornerShape(23.dp)),
                             ) {
                                 Row(
                                     modifier =
-                                    Modifier
-                                        .padding(8.dp),
+                                        Modifier
+                                            .padding(8.dp),
                                     horizontalArrangement = Arrangement.End,
                                 ) {
                                     Box(
                                         modifier =
-                                        Modifier.background(
-                                            color = if (switchViewStyle) Color.White else Color.Transparent,
-                                            shape = RoundedCornerShape(10.dp),
-                                        ).padding(horizontal = 5.dp, vertical = 2.dp),
+                                            Modifier.background(
+                                                color = if (switchViewStyle) Color.White else Color.Transparent,
+                                                shape = RoundedCornerShape(10.dp),
+                                            ).padding(horizontal = 5.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
                                             onClick = { switchViewStyle = true },
@@ -190,10 +189,10 @@ fun RealEstateListByCategory() {
 
                                     Box(
                                         modifier =
-                                        Modifier.background(
-                                            color = if (!switchViewStyle) Color.White else Color.Transparent,
-                                            shape = RoundedCornerShape(15.dp),
-                                        ).padding(horizontal = 4.dp, vertical = 2.dp),
+                                            Modifier.background(
+                                                color = if (!switchViewStyle) Color.White else Color.Transparent,
+                                                shape = RoundedCornerShape(15.dp),
+                                            ).padding(horizontal = 4.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
                                             onClick = { switchViewStyle = false },
@@ -220,12 +219,8 @@ fun RealEstateListByCategory() {
                         } else {
                             ListView()
                         }
-
                     }
-                    }
-
-
-
+                }
             }
         }
     }

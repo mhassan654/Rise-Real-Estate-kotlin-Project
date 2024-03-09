@@ -48,7 +48,7 @@ import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
 @Preview(showBackground = true)
 @Composable
-fun NearbyCardItem() {
+fun VerticalPropertyCard() {
     Box(
         modifier =
             Modifier

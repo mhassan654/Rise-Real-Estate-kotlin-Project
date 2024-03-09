@@ -704,12 +704,18 @@ fun CollageImage(
 }
 
 @Composable
-@Preview
-fun PreviewImageCollage() {
-    CollageImage(
-        modifier = Modifier,
-        image1 = painterResource(id = R.drawable.image_27),
-        image2 = painterResource(id = R.drawable.image_28),
-        image3 = painterResource(id = R.drawable.image_29),
-    )
+fun CustomGridView(
+    content: @Composable () -> Unit,
+    repeat: Int,
+) {
+    repeat(repeat) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            repeat(2) {
+                content()
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+    }
 }

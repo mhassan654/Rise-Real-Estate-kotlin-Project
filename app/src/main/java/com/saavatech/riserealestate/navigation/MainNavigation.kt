@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.presentation.FeaturedList.FeaturedEstate
 import com.saavatech.riserealestate.presentation.FeaturedList.RealEstateListByCategory
+import com.saavatech.riserealestate.presentation.FeaturedList.TopLocationsScreen
 import com.saavatech.riserealestate.presentation.PromotionScreen
 import com.saavatech.riserealestate.presentation.Register.RegisterScreen
 import com.saavatech.riserealestate.presentation.home.Home
@@ -55,13 +56,15 @@ fun MainNavigation(
         }
 
         composable(Destinations.FeaturedEstate.route) {
-            FeaturedEstate()
-//            FeaturedEstate(destinationsNavigator)
+            FeaturedEstate(destinationsNavigator)
         }
 
         composable(Destinations.EstateByCategory.route) {
-            RealEstateListByCategory()
-//            FeaturedEstate(destinationsNavigator)
+            RealEstateListByCategory(destinationsNavigator)
+        }
+
+        composable(Destinations.TopLocations.route) {
+            TopLocationsScreen(destinationsNavigator)
         }
         // Add other destinations here if needed
     }
