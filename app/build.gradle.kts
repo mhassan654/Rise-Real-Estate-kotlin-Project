@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 
-    kotlin("kapt") //version "1.9.0"
+    kotlin("kapt") // version "1.9.0"
 
     id("com.google.dagger.hilt.android")
 }
@@ -29,7 +29,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -54,26 +54,31 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material3:material3:1.2.0")
+    val navVersion = "2.7.7"
+
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.airbnb.android:lottie:6.3.0")
     implementation("com.google.accompanist:accompanist-pager:0.35.0-alpha")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-
+    implementation("androidx.compose.material:material:1.6.2")
     // extra project dependencies
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -81,8 +86,8 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
 
-    implementation("androidx.compose.material:material-icons-extended:1.6.1")
-    implementation("androidx.hilt:hilt-navigation:1.1.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.hilt:hilt-navigation:1.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC2")
@@ -109,12 +114,15 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation("com.google.accompanist:accompanist-pager:0.35.0-alpha")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.35.0-alpha")
+
+    //    coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }
 
 // Allow references to generated code

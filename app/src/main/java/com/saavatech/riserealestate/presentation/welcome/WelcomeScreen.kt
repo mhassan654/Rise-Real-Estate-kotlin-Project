@@ -25,63 +25,69 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.saavatech.riserealestate.Destinations
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.ButtonTextComponent
+import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
-import com.saavatech.riserealestate.ui.theme.WelcomeBgOne
 import com.saavatech.riserealestate.ui.theme.WelcomeBgTwo
+import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
 @Composable
 fun WelcomeScreen(
     navController: DestinationsNavigator,
-    modifier: Modifier = Modifier
-){
-
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = modifier.fillMaxSize()
-    ){
+        modifier = modifier.fillMaxSize(),
+    ) {
         Image(
             painter = painterResource(id = R.drawable.welcome_image),
             contentScale = ContentScale.FillBounds,
-            colorFilter = ColorFilter.lighting(WelcomeBgOne, WelcomeBgTwo),
-            modifier= Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        listOf(WelcomeBgTwo, WelcomeBgOne)
-                    )
-                ),
-            contentDescription = null)
+            colorFilter = ColorFilter.lighting(primaryBackground1, WelcomeBgTwo),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush =
+                            Brush.linearGradient(
+                                listOf(WelcomeBgTwo, primaryBackground1),
+                            ),
+                    ),
+            contentDescription = null,
+        )
 
-        //content
+        // content
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = null,
-                modifier= Modifier
-                    .width(320.dp)
-                    .height(240.dp),
-                contentScale = ContentScale.Fit
+                modifier =
+                    Modifier
+                        .width(320.dp)
+                        .height(240.dp),
+                contentScale = ContentScale.Fit,
             )
-            
-            Text(text = "Rise",
-                fontSize=32.sp,
+
+            Text(
+                text = "Rise",
+                fontSize = 32.sp,
                 fontWeight = FontWeight(700),
-                color = Color.White
+                color = Color.White,
 //                fontFamily = Ale
             )
-            Text(text = "RealEstate",
-                fontSize=32.sp,
+            Text(
+                text = "RealEstate",
+                fontSize = 32.sp,
                 fontWeight = FontWeight(700),
-                color = Color.White
+                color = Color.White,
 //                fontFamily = Ale
             )
         }
@@ -89,36 +95,39 @@ fun WelcomeScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 20.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp, vertical = 20.dp),
         ) {
             ButtonTextComponent(
                 value = "let's Start",
                 clickAction = {
                     navController.navigateTo(Destinations.LoginOption.route)
-                              }
-                ,150.dp
+                },
+                150.dp,
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Made with love",
+            Text(
+                text = "Made with love",
                 fontSize = 10.sp,
                 fontWeight = FontWeight(200),
-                color = ButtonBgOne)
+                color = ButtonBgOne,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "v.1.0",
+            Text(
+                text = "v.1.0",
                 fontSize = 12.sp,
                 fontWeight = FontWeight(700),
-                color = Color.White)
-
+                color = Color.White,
+            )
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
-fun WelcomePreview(){
+fun WelcomePreview() {
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
     WelcomeScreen(destinationsNavigator)
