@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,10 +41,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,6 +76,7 @@ import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.GreenOne
+import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
@@ -111,9 +114,43 @@ fun HeadingTextComponent(value: String) {
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal,
             ),
-        color = colorResource(id = R.color.colorText),
-        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Start,
     )
+}
+
+@Composable
+fun TextDescription(value: String) {
+    Spacer(modifier = Modifier.height(10.dp))
+    Text(
+        text = value,
+        fontSize = 15.sp,
+        fontWeight = FontWeight(300),
+        color = MaterialTheme.colorScheme.primary,
+    )
+}
+
+@Composable
+fun IconWithTextLocation(location: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.padding(6.dp)) {
+            Icon(
+                tint = primaryBackground1,
+                modifier = Modifier.size(12.dp),
+                imageVector = Icons.Rounded.Room,
+                contentDescription = null,
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = location,
+                fontSize = 14.sp,
+                fontWeight = FontWeight(400),
+                color = TextColorOne,
+            )
+        }
+    }
 }
 
 @Composable
@@ -292,6 +329,28 @@ fun ButtonTextComponent(
 }
 
 @Composable
+fun GreyButtonTextComponent(
+    value: String,
+    clickAction: () -> Unit,
+    width: Dp,
+    color: Color,
+    textColor: Color,
+) {
+    TextButton(
+        modifier =
+            Modifier
+                .width(width)
+                .heightIn(48.dp),
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(color),
+        shape = RoundedCornerShape(20.dp),
+        onClick = { clickAction.invoke() },
+    ) {
+        Text(text = value, color = textColor)
+    }
+}
+
+@Composable
 fun CategoryButtonTextComponent(
     value: String,
     clickAction: () -> Unit,
@@ -335,12 +394,12 @@ fun AppBar(
     actionIcon: ImageVector?,
     iconClickAction: () -> Unit,
 ) {
-    CenterAlignedTopAppBar(
-        modifier = Modifier.padding(horizontal = 10.dp),
+    TopAppBar(
+        modifier = Modifier.padding(horizontal = 10.dp).background(color = Color.Transparent),
         colors =
             TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
-                titleContentColor = MaterialTheme.colorScheme.primaryContainer,
+//                titleContentColor = MaterialTheme.colorScheme.primaryContainer,
             ),
         navigationIcon = {
             RoundedIconButton(
@@ -631,7 +690,10 @@ fun IconWithLocation(location: String) {
 
 // rating widget
 @Composable
-fun StarRating(rate: String) {
+fun StarRating(
+    rate: String,
+    textColor: Color?,
+) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
@@ -645,12 +707,15 @@ fun StarRating(rate: String) {
 
         Spacer(modifier = Modifier.width(5.dp))
 
-        Text(
-            style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-            fontSize = 15.sp,
-            fontWeight = FontWeight(500),
-            text = rate,
-        )
+        textColor?.let {
+            Text(
+                style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+                fontSize = 15.sp,
+                color = it,
+                fontWeight = FontWeight(500),
+                text = rate,
+            )
+        }
     }
 }
 
@@ -718,4 +783,148 @@ fun CustomGridView(
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
+}
+
+@Composable
+fun ListSwitch(defaultSwitchViewStyle: Boolean) {
+    var switchViewStyle by remember { mutableStateOf(defaultSwitchViewStyle) }
+    Box(
+        modifier =
+            Modifier
+                .background(color = inputBg, shape = RoundedCornerShape(23.dp)),
+    ) {
+        Row(
+            modifier =
+                Modifier
+                    .padding(8.dp),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            Box(
+                modifier =
+                    Modifier.background(
+                        color = if (switchViewStyle) Color.White else Color.Transparent,
+                        shape = RoundedCornerShape(10.dp),
+                    ).padding(horizontal = 5.dp, vertical = 2.dp),
+            ) {
+                IconButton(
+                    onClick = {
+                        switchViewStyle = true
+                    },
+                    modifier = Modifier.size(15.dp),
+                    content = {
+                        Icon(
+                            tint = if (switchViewStyle) MaterialTheme.colorScheme.primary else Purple80,
+                            painter = painterResource(id = R.drawable.grid_view),
+                            contentDescription = null,
+                        )
+                    },
+                )
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Box(
+                modifier =
+                    Modifier.background(
+                        color = if (!switchViewStyle) Color.White else Color.Transparent,
+                        shape = RoundedCornerShape(15.dp),
+                    ).padding(horizontal = 4.dp, vertical = 2.dp),
+            ) {
+                IconButton(
+                    onClick = { !switchViewStyle },
+                    modifier = Modifier.size(16.dp),
+                    content = {
+                        Icon(
+                            tint = if (!switchViewStyle) MaterialTheme.colorScheme.primary else Purple80,
+                            painter = painterResource(id = R.drawable.baseline_view),
+                            contentDescription = null,
+                        )
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RoundedCollageImage(
+    modifier: Modifier = Modifier,
+    image1: Painter,
+    image2: Painter,
+    image3: Painter,
+) {
+    Box(modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth(),
+        ) {
+            Image(
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier
+                        .height(375.dp)
+                        .width(250.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 35.dp,
+                                topEnd = 10.dp,
+                                bottomStart = 35.dp,
+                                bottomEnd = 10.dp,
+                            ),
+                        ),
+                contentDescription = "Image 3",
+                painter = image3,
+            )
+            Column(
+                verticalArrangement = Arrangement.Top,
+                modifier =
+                    Modifier.height(375.dp),
+            ) {
+                Image(
+                    contentScale = ContentScale.Crop,
+                    modifier =
+                        Modifier.width(130.dp).height(270.dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    topEnd = 35.dp,
+                                    topStart = 12.dp,
+                                    bottomStart = 12.dp,
+                                    bottomEnd = 12.dp,
+                                ),
+                            ),
+                    contentDescription = "Image 1",
+                    painter = image1,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Image(
+                    contentScale = ContentScale.Crop,
+                    modifier =
+                        Modifier.width(130.dp).height(105.dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    topEnd = 12.dp,
+                                    topStart = 12.dp,
+                                    bottomStart = 12.dp,
+                                    bottomEnd = 35.dp,
+                                ),
+                            ),
+                    contentDescription = "Image 2",
+                    painter = image2,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewCollegeRounded() {
+    RoundedCollageImage(
+        modifier = Modifier,
+        image1 = painterResource(id = R.drawable.image_28),
+        image2 = painterResource(id = R.drawable.image_29),
+        image3 = painterResource(id = R.drawable.image_27),
+    )
 }

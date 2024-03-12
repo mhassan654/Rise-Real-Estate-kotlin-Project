@@ -1,4 +1,4 @@
-package com.saavatech.riserealestate.presentation.FeaturedList
+package com.saavatech.riserealestate.presentation.FeaturedList.TopLocations
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
@@ -27,7 +26,10 @@ import com.saavatech.riserealestate.common.CustomGridView
 import com.saavatech.riserealestate.common.TopLocationCard
 
 @Composable
-fun TopLocationsScreen(navController: DestinationsNavigator) {
+fun TopLocationsScreen(
+    navController: DestinationsNavigator,
+    navigationCallback: (Int) -> Unit,
+) {
     Scaffold(
         topBar =
             {
@@ -54,22 +56,22 @@ fun TopLocationsScreen(navController: DestinationsNavigator) {
                         .padding(15.dp),
             ) {
                 item {
-                Column {
-                    Text(
-                        text = "Top Villa",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight(600),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.height(13.dp))
+                    Column {
+                        Text(
+                            text = "Top Villa",
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight(600),
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                        Spacer(modifier = Modifier.height(13.dp))
 
-                    Text(
-                        text = "Find the best recommendations place to live",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(400),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                        Text(
+                            text = "Find the best recommendations place to live",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(400),
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
 
                 item { Spacer(modifier = Modifier.height(15.dp)) }
@@ -77,13 +79,14 @@ fun TopLocationsScreen(navController: DestinationsNavigator) {
                 item {
                     CustomGridView(
                         content = {
-                            TopLocationCard()
+                            TopLocationCard(
+//                                location = "123",
+                                navigationCallback,
+                            )
                         },
                         repeat = 10,
                     )
                 }
-
-
             }
         }
     }

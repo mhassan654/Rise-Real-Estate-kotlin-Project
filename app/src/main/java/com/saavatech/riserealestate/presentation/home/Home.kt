@@ -78,7 +78,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navController: DestinationsNavigator) {
+fun Home(
+    navController: DestinationsNavigator,
+    navigationCallback: (Int) -> Unit,
+) {
 //    val navController = rememberNavController()
 
     val sheetState = rememberModalBottomSheetState()
@@ -202,6 +205,7 @@ fun Home(navController: DestinationsNavigator) {
                                     modifier = Modifier.width(300.dp),
                                     title = "Sky Dandelions Apartment",
                                     imageTitle = "Old kampala",
+                                    navigationCallback,
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
@@ -226,7 +230,7 @@ fun Home(navController: DestinationsNavigator) {
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             repeat(2) {
-                                VerticalPropertyCard()
+                                VerticalPropertyCard(navigationCallback)
                             }
                         }
                         Spacer(modifier = Modifier.height(10.dp))

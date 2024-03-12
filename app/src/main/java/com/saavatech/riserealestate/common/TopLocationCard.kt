@@ -24,26 +24,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
-@Preview(showBackground = false)
 @Composable
-fun TopLocationCard() {
+fun TopLocationCard(navigationCallback: (Int) -> Unit) {
     Box(
         modifier =
             Modifier
+                .clickable { navigationCallback(1) }
                 .width(190.dp)
                 .height(280.dp)
                 .background(color = inputBg, shape = RoundedCornerShape(22.dp)),
     ) {
         Box(
             Modifier
-                .clickable { }
                 .fillMaxSize()
                 .padding(8.dp),
         ) {

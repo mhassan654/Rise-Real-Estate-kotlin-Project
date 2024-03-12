@@ -1,9 +1,8 @@
-package com.saavatech.riserealestate.presentation.FeaturedList
+package com.saavatech.riserealestate.presentation.FeaturedList.TopLocations
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
@@ -24,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,117 +30,72 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.saavatech.riserealestate.DestinationsNavigator
+import androidx.lifecycle.ViewModel
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.CustomTextField
-import com.saavatech.riserealestate.common.FeatureCardItem
+import com.saavatech.riserealestate.common.HeadingTextComponent
+import com.saavatech.riserealestate.common.RoundedCollageImage
+import com.saavatech.riserealestate.common.TextDescription
+import com.saavatech.riserealestate.common.TitleAndListStyleSwitch
 import com.saavatech.riserealestate.common.TransparentTopAppBar
+import com.saavatech.riserealestate.presentation.FeaturedList.GridView
+import com.saavatech.riserealestate.presentation.FeaturedList.ListView
 import com.saavatech.riserealestate.ui.theme.Purple80
-import com.saavatech.riserealestate.ui.theme.TextColorBold
-import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
-// fun RealEstateListByCategory() {
-// @Preview
+class LocationDetailsViewModel : ViewModel() {
+    var switchViewStyle by mutableStateOf(true)
+}
+
 @Composable
-fun RealEstateListByCategory(
-    navController: DestinationsNavigator,
-    navigationCallback: (Int) -> Unit,
-) {
+//@Preview
+fun LocationDetails(  navigationCallback: (Int) -> Unit,) {
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
-        topBar =
-            {
-                TransparentTopAppBar(
-                    iconClickAction = {
-                        navController.navigateUp()
-                    },
-                    icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                    actionIcon = Icons.AutoMirrored.Filled.CompareArrows,
-                )
-            },
+        topBar = {
+            TransparentTopAppBar(
+                iconClickAction = {
+//                    navController.navigateUp()
+                },
+                icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                actionIcon = Icons.AutoMirrored.Filled.CompareArrows,
+            )
+
+        },
     ) { contentPadding ->
         Box(
             modifier =
                 Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize().padding(contentPadding),
         ) {
+
             LazyColumn(
                 modifier =
                     Modifier
                         .fillMaxHeight()
-                        .padding(contentPadding),
+                        .padding(20.dp),
             ) {
                 item {
-                    Column(modifier = Modifier.padding(10.dp)) {
-                        // header
-                        Text(
-                            text = "Top Villa",
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(600),
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(modifier = Modifier.height(13.dp))
+                    RoundedCollageImage(
+                        modifier = Modifier.padding(2.dp).fillMaxWidth(),
+                        image1 = painterResource(id = R.drawable.image_28),
+                        image2 = painterResource(id = R.drawable.image_29),
+                        image3 = painterResource(id = R.drawable.image_27),
+                    )
+                    HeadingTextComponent("Bali")
 
-                        LazyRow {
-                            items(4) {
-                                FeatureCardItem(
-                                    modifier = Modifier.width(350.dp),
-                                    title = "Sky Dandelions Apartment",
-                                    imageTitle = "Villa",
-                                    navigationCallback,
-                                )
-                                Spacer(modifier = Modifier.width(10.dp))
-                            }
-//
-                        }
-                        Spacer(modifier = Modifier.height(25.dp))
+                    TextDescription("Our recommended real estates in Kampala")
+                    Spacer(modifier = Modifier.height(25.dp))
+                    CustomTextField(painterResource(id = R.drawable.search1), "Modern House")
 
-                        CustomTextField(painterResource(id = R.drawable.search1), "Search in villa's category")
-                        Spacer(modifier = Modifier.height(25.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-                            verticalAlignment = Alignment.Bottom,
-                        ) {
-                            Text(
-                                text =
-                                    buildAnnotatedString {
-                                        withStyle(
-                                            style =
-                                                SpanStyle(
-                                                    color = TextColorOne,
-                                                    fontSize = 25.sp,
-                                                    fontWeight = FontWeight(700),
-                                                ),
-                                        ) {
-                                            append("120")
-                                        }
-                                        append(" ")
-                                        withStyle(
-                                            style =
-                                                SpanStyle(
-                                                    color = TextColorBold,
-                                                    fontWeight = FontWeight(400),
-                                                    fontSize = 22.sp,
-                                                ),
-                                        ) {
-                                            append("Villa")
-                                        }
-                                    },
-                                fontFamily = FontFamily.SansSerif,
-                                textAlign = TextAlign.Start,
-                                color = TextColorBold,
-                            )
-
+                    Spacer(modifier = Modifier.height(25.dp))
+                    TitleAndListStyleSwitch(
+                        titleCategory = "estates",
+                        counter = 128,
+                        content = {
                             Box(
                                 modifier =
                                     Modifier
@@ -185,7 +136,7 @@ fun RealEstateListByCategory(
                                             ).padding(horizontal = 4.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
-                                            onClick = { switchViewStyle = false },
+                                            onClick = { switchViewStyle =false},
                                             modifier = Modifier.size(16.dp),
                                             content = {
                                                 Icon(
@@ -198,17 +149,14 @@ fun RealEstateListByCategory(
                                     }
                                 }
                             }
-                        }
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(25.dp))
 
-                        Spacer(modifier = Modifier.height(25.dp))
-
-                        // Featured cards
-
-                        if (switchViewStyle) {
-                            GridView(navigationCallback)
-                        } else {
-                            ListView(navigationCallback)
-                        }
+                    if (switchViewStyle) {
+                        GridView(navigationCallback)
+                    } else {
+                        ListView(navigationCallback)
                     }
                 }
             }

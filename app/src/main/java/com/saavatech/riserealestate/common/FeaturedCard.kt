@@ -43,11 +43,12 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 fun FeatureCardItem(
     modifier: Modifier,
     title: String,
-    imageTitle:String
+    imageTitle: String,
+    navigationCallback: (Int) -> Unit,
 ) {
     Box(
         modifier
-            .clickable { }
+            .clickable { navigationCallback(12) }
 //                .width(300.dp)
             .height(190.dp)
             .background(color = inputBg, shape = RoundedCornerShape(20.dp)),
@@ -120,7 +121,7 @@ fun FeatureCardItem(
                         textAlign = TextAlign.Left,
                     )
 
-                    StarRating(4.9.toString())
+                    StarRating(4.9.toString(), textColor = null)
                     IconWithLocation("Jarkat Indonesia")
                 }
 

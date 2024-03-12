@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
@@ -52,9 +51,13 @@ import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
+
+// fun FeaturedEstate() {
 @Composable
-//fun FeaturedEstate() {
- fun FeaturedEstate(navController: DestinationsNavigator) {
+fun FeaturedEstate(
+    navController: DestinationsNavigator,
+    navigationCallback: (Int) -> Unit,
+) {
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar =
@@ -217,9 +220,9 @@ import com.saavatech.riserealestate.ui.theme.inputBg
                 // Featured cards
                 item {
                     if (switchViewStyle) {
-                        GridView()
+                        GridView(navigationCallback)
                     } else {
-                        ListView()
+                        ListView(navigationCallback)
                     }
                 }
             }
@@ -228,13 +231,13 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 }
 
 @Composable
-fun GridView() {
+fun GridView(navigationCallback: (Int) -> Unit) {
     repeat(4) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             repeat(2) {
-                VerticalPropertyCard()
+                VerticalPropertyCard(navigationCallback)
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -242,12 +245,13 @@ fun GridView() {
 }
 
 @Composable
-fun ListView() {
+fun ListView(navigationCallback: (Int) -> Unit) {
     repeat(4) {
         FeatureCardItem(
             modifier = Modifier.fillMaxWidth(),
             title = "Sky Dandelions Apartment",
             imageTitle = "Old kampala",
+            navigationCallback,
         )
         Spacer(modifier = Modifier.height(10.dp))
     }

@@ -46,9 +46,9 @@ import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun VerticalPropertyCard() {
+fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
     Box(
         modifier =
             Modifier
@@ -58,7 +58,7 @@ fun VerticalPropertyCard() {
     ) {
         Box(
             Modifier
-                .clickable { }
+                .clickable { navigationCallback(1) }
                 .fillMaxSize()
                 .padding(8.dp),
         ) {
@@ -158,7 +158,7 @@ fun VerticalPropertyCard() {
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                StarRating(4.9.toString())
+                StarRating(4.9.toString(),textColor=null)
                 Row(modifier = Modifier.padding(6.dp)) {
                     Icon(
                         tint = primaryBackground1,
