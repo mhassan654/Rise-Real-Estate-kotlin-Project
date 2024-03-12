@@ -8,7 +8,11 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.saavatech.riserealestate.data.local.AppPreferences
 import com.saavatech.riserealestate.data.models.ApiService
 import com.saavatech.riserealestate.data.repository.AuthRepositoryImpl
+import com.saavatech.riserealestate.data.repository.CategoryRepositoryImpl
 import com.saavatech.riserealestate.domain.repository.AuthRepository
+import com.saavatech.riserealestate.domain.repository.CategoryRepository
+import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
+import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.util.Constants.AUTH_PREFERENCES
 import com.saavatech.riserealestate.util.Constants.BASE_URL
 import dagger.Module
@@ -64,5 +68,23 @@ object AppModule {
         preferences: AppPreferences,
     ): AuthRepository {
         return AuthRepositoryImpl(apiService = apiService, preferences = preferences)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSignUpUseCase(repository: AuthRepository): SignUpUseCase {
+        return SignUpUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesCategoryUseCase(repository: CategoryRepository): CategoriesUseCase {
+        return CategoriesUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesCategoryRepository(apiService: ApiService): CategoryRepository {
+        return CategoryRepositoryImpl(apiService = apiService)
     }
 }

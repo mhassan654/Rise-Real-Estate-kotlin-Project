@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,21 +58,23 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
-import com.saavatech.riserealestate.components.CategoryButtonTextComponent
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.PromotionCard
 import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.components.sectionTitles
+import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.navigation.BottomNavigation
 import com.saavatech.riserealestate.navigation.BottomScreens
 import com.saavatech.riserealestate.navigation.Destinations
+import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
@@ -82,11 +87,18 @@ fun Home(
     navController: DestinationsNavigator,
     navigationCallback: (Int) -> Unit,
 ) {
-//    val navController = rememberNavController()
+    val viewModel: HomeViewModel = hiltViewModel()
+
+    val categoryState = viewModel.categoriesState.value
+    val categoryListState = viewModel.categoriesListState.value
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getCategories()
+    }
 
     val items =
         listOf(
@@ -161,13 +173,15 @@ fun Home(
                     )
 
                     CustomTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
-//                    CustomOutlinedTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
 
                     Spacer(modifier = Modifier.height(16.dp))
+                    if (categoryState.isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    }
                     LazyRow {
-                        items(6) {
-                            CategoryButtonTextComponent("All") {
-                                navController.navigateTo(Destinations.EstateByCategory.route)
+                        items(categoryListState) { category ->
+                            PropertCategory(category = category) {
+                                navController.navigateTo("PropertyDetails/${category.id}")
                             }
                             Spacer(modifier = Modifier.width(6.dp))
                         }
@@ -310,8 +324,45 @@ fun Home(
     }
 }
 
+// @Preview
 @Composable
-@Preview(showBackground = true)
+fun PropertCategory(
+    category: CategoryResponse,
+    clickAction: () -> Unit?,
+) {
+    Box(
+        modifier =
+            Modifier.background(
+                shape = RoundedCornerShape(20.dp),
+                color = inputBg,
+            )
+                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
+                .clickable {
+                    clickAction.invoke()
+                },
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Image(
+                modifier =
+                    Modifier
+                        .size(35.dp),
+                painter =
+                    rememberAsyncImagePainter(
+                        contentScale = ContentScale.Crop,
+                        model = category.image,
+                    ),
+                contentDescription = null,
+            )
+            Text(text = category.category, color = MaterialTheme.colorScheme.primary)
+        }
+    }
+}
+
+@Composable
 fun bottomSheet() {
     Column(
         modifier =
