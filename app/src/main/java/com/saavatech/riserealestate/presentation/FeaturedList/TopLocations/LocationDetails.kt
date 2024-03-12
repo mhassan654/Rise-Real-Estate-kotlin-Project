@@ -26,21 +26,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.CustomTextField
-import com.saavatech.riserealestate.common.HeadingTextComponent
-import com.saavatech.riserealestate.common.RoundedCollageImage
-import com.saavatech.riserealestate.common.TextDescription
-import com.saavatech.riserealestate.common.TitleAndListStyleSwitch
-import com.saavatech.riserealestate.common.TransparentTopAppBar
+import com.saavatech.riserealestate.components.CustomTextField
+import com.saavatech.riserealestate.components.HeadingTextComponent
+import com.saavatech.riserealestate.components.RoundedCollageImage
+import com.saavatech.riserealestate.components.TextDescription
+import com.saavatech.riserealestate.components.TitleAndListStyleSwitch
+import com.saavatech.riserealestate.components.TransparentTopAppBar
 import com.saavatech.riserealestate.presentation.FeaturedList.GridView
 import com.saavatech.riserealestate.presentation.FeaturedList.ListView
 import com.saavatech.riserealestate.ui.theme.Purple80
@@ -50,9 +47,9 @@ class LocationDetailsViewModel : ViewModel() {
     var switchViewStyle by mutableStateOf(true)
 }
 
+// @Preview
 @Composable
-//@Preview
-fun LocationDetails(  navigationCallback: (Int) -> Unit,) {
+fun LocationDetails(navigationCallback: (Int) -> Unit) {
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -63,7 +60,6 @@ fun LocationDetails(  navigationCallback: (Int) -> Unit,) {
                 icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 actionIcon = Icons.AutoMirrored.Filled.CompareArrows,
             )
-
         },
     ) { contentPadding ->
         Box(
@@ -71,7 +67,6 @@ fun LocationDetails(  navigationCallback: (Int) -> Unit,) {
                 Modifier
                     .fillMaxSize().padding(contentPadding),
         ) {
-
             LazyColumn(
                 modifier =
                     Modifier
@@ -136,7 +131,7 @@ fun LocationDetails(  navigationCallback: (Int) -> Unit,) {
                                             ).padding(horizontal = 4.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
-                                            onClick = { switchViewStyle =false},
+                                            onClick = { switchViewStyle = false },
                                             modifier = Modifier.size(16.dp),
                                             content = {
                                                 Icon(

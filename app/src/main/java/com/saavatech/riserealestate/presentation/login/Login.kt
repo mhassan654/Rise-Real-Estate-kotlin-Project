@@ -12,12 +12,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -27,28 +32,41 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.AppBar
-import com.saavatech.riserealestate.common.ButtonTextComponent
-import com.saavatech.riserealestate.common.CustomOutlinedPasswordTextField
-import com.saavatech.riserealestate.common.CustomOutlinedTextField
-import com.saavatech.riserealestate.common.DividerTextComponent
-import com.saavatech.riserealestate.common.SocialButton
+import com.saavatech.riserealestate.components.AppBar
+import com.saavatech.riserealestate.components.ButtonTextComponent
+import com.saavatech.riserealestate.components.CustomOutlinedPasswordTextField
+import com.saavatech.riserealestate.components.CustomOutlinedTextField
+import com.saavatech.riserealestate.components.DividerTextComponent
+import com.saavatech.riserealestate.components.SocialButton
 import com.saavatech.riserealestate.navigation.Destinations
+import com.saavatech.riserealestate.presentation.viewModel.AuthViewModel
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: DestinationsNavigator)  {
+fun LoginScreen(
+    navController: DestinationsNavigator,
+    viewModel: AuthViewModel = hiltViewModel(),
+) {
+    val emailState = viewModel.emailState.value
+    val passwordState = viewModel.passwordState.value
+    val loginState = viewModel.loginState.value
+
+    var passwordVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     Scaffold(
         topBar = {
             AppBar(
@@ -115,12 +133,30 @@ fun LoginScreen(navController: DestinationsNavigator)  {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
+                    CustomOutlinedTextField(
+                        painterResource = painterResource(id = R.drawable.email),
+                        lableValue = "Email",
+                        placeholder = { Text(text = "email") },
+                        keyboardOptions =
+                            KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                            ),
+                        onValueChange = { viewModel.setEmail(it) },
+                        textValue = emailState.text,
+                        isError = emailState.error != null,
+                    )
 
                     Spacer(modifier = Modifier.height(6.dp))
 
                     // password field
-                    CustomOutlinedPasswordTextField("Password")
+                    CustomOutlinedPasswordTextField(
+                        passwordVisible = passwordVisible,
+                        onValueChange = { viewModel.setPassword(it) },
+                        onPasswordVisibilityChange = { isVisible ->
+                            passwordVisible = isVisible
+                        },
+                        passwordState = passwordState.text,
+                    )
 
                     Row(horizontalArrangement = Arrangement.Start) {
                         TextButton(
@@ -235,7 +271,7 @@ fun LoginScreen(navController: DestinationsNavigator)  {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginPreview()  {
+fun LoginPreview() {
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
     LoginScreen(destinationsNavigator)

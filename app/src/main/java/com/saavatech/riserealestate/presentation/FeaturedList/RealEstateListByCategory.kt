@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
@@ -44,9 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.CustomTextField
-import com.saavatech.riserealestate.common.FeatureCardItem
-import com.saavatech.riserealestate.common.TransparentTopAppBar
+import com.saavatech.riserealestate.components.CustomTextField
+import com.saavatech.riserealestate.components.FeatureCardItem
+import com.saavatech.riserealestate.components.TransparentTopAppBar
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne

@@ -27,7 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.ButtonTextComponent
+import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.WelcomeBgTwo

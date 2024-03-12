@@ -1,4 +1,4 @@
-package com.saavatech.riserealestate.common
+package com.saavatech.riserealestate.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.saavatech.riserealestate.common
+package com.saavatech.riserealestate.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,7 +37,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
@@ -46,9 +45,9 @@ import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
-//@Preview(showBackground = true)
+// @Preview(showBackground = true)
 @Composable
-fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
+fun VerticalPropertyCard(navigationCallback: (Int) -> Unit) {
     Box(
         modifier =
             Modifier
@@ -63,9 +62,10 @@ fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
                 .padding(8.dp),
         ) {
             Image(
-                modifier = Modifier
-                .height(180.dp)
-                    .width(180.dp).clip(RoundedCornerShape(14.dp)),
+                modifier =
+                    Modifier
+                        .height(180.dp)
+                        .width(180.dp).clip(RoundedCornerShape(14.dp)),
                 contentScale = ContentScale.Crop,
                 painter = painterResource(id = R.drawable.image_27),
                 contentDescription = null,
@@ -96,46 +96,44 @@ fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
                     )
                 }
 
-
                 TextWithBlurBg(
                     content =
-                    {
-                        Text(
-                            text =
-                            buildAnnotatedString {
-                                withStyle(
-                                    style =
-                                    SpanStyle(
-                                        color = Color.White,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight(400),
-                                    ),
-                                ) {
-                                    append("$ 290")
-                                }
-                                append("")
-                                withStyle(
-                                    style =
-                                    SpanStyle(
-                                        color = Color.White,
-                                        fontWeight = FontWeight(300),
-                                        fontSize = 10.sp,
-                                    ),
-                                ) {
-                                    append("/month")
-                                }
-                            },
-                            modifier =
-                            Modifier
-                                .widthIn(max = 150.dp)
-                                .padding(4.dp),
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.End,
-                            color = Color.White,
-                        )
-                    })
-
-
+                        {
+                            Text(
+                                text =
+                                    buildAnnotatedString {
+                                        withStyle(
+                                            style =
+                                                SpanStyle(
+                                                    color = Color.White,
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight(400),
+                                                ),
+                                        ) {
+                                            append("$ 290")
+                                        }
+                                        append("")
+                                        withStyle(
+                                            style =
+                                                SpanStyle(
+                                                    color = Color.White,
+                                                    fontWeight = FontWeight(300),
+                                                    fontSize = 10.sp,
+                                                ),
+                                        ) {
+                                            append("/month")
+                                        }
+                                    },
+                                modifier =
+                                    Modifier
+                                        .widthIn(max = 150.dp)
+                                        .padding(4.dp),
+                                fontFamily = FontFamily.SansSerif,
+                                textAlign = TextAlign.End,
+                                color = Color.White,
+                            )
+                        },
+                )
 
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -158,7 +156,7 @@ fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                StarRating(4.9.toString(),textColor=null)
+                StarRating(4.9.toString(), textColor = null)
                 Row(modifier = Modifier.padding(6.dp)) {
                     Icon(
                         tint = primaryBackground1,
@@ -177,7 +175,6 @@ fun VerticalPropertyCard(navigationCallback: (Int) -> Unit,) {
                     )
                 }
             }
-
         }
     }
 }

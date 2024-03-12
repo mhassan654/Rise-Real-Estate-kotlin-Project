@@ -42,11 +42,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.AppBar
-import com.saavatech.riserealestate.common.CollageImage
-import com.saavatech.riserealestate.common.CustomTextField
-import com.saavatech.riserealestate.common.FeatureCardItem
-import com.saavatech.riserealestate.common.VerticalPropertyCard
+import com.saavatech.riserealestate.components.AppBar
+import com.saavatech.riserealestate.components.CollageImage
+import com.saavatech.riserealestate.components.CustomTextField
+import com.saavatech.riserealestate.components.FeatureCardItem
+import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne

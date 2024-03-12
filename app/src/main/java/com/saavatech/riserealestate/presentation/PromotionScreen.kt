@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.AppBar
-import com.saavatech.riserealestate.common.PromotionCard
+import com.saavatech.riserealestate.components.AppBar
+import com.saavatech.riserealestate.components.PromotionCard
 import com.saavatech.riserealestate.ui.theme.GreenTwo
 import com.saavatech.riserealestate.ui.theme.lightGreen
 
@@ -54,7 +54,7 @@ fun PromotionScreen(navController: DestinationsNavigator?) {
                     },
                     title = null,
                     icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                    actionIcon = Icons.AutoMirrored.Rounded.ForwardToInbox
+                    actionIcon = Icons.AutoMirrored.Rounded.ForwardToInbox,
                 )
             },
     ) { contentPadding ->

@@ -14,16 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.DestinationsNavigator
-import com.saavatech.riserealestate.common.AppBar
-import com.saavatech.riserealestate.common.CustomGridView
-import com.saavatech.riserealestate.common.TopLocationCard
+import com.saavatech.riserealestate.components.AppBar
+import com.saavatech.riserealestate.components.CustomGridView
+import com.saavatech.riserealestate.components.TopLocationCard
 
 @Composable
 fun TopLocationsScreen(
