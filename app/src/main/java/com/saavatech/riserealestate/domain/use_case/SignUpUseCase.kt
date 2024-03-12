@@ -30,21 +30,19 @@ class SignUpUseCase
             val emailError = if (email.isBlank()) "Email field cannot be blank" else null
             val mobileError = if (mobile.isBlank()) "Mobile number cannot be blank" else null
 
+            if (passwordError != null) {
+                return SignUpResult(passwordError = passwordError)
+            }
+            if (emailError != null) {
+                return SignUpResult(emailError = emailError)
+            }
+
             if (nameError != null) {
                 return SignUpResult(nameError = nameError)
             }
 
             if (addressError != null) {
                 return SignUpResult(addressError = addressError)
-            }
-
-            if (passwordError != null) {
-                return SignUpResult(passwordError = passwordError)
-            }
-
-            if (emailError != null) {
-                Timber.tag("can return email errors").d(emailError)
-                return SignUpResult(emailError = emailError)
             }
 
             if (mobileError != null) {

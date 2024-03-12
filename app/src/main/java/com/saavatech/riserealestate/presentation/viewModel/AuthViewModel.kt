@@ -5,9 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saavatech.riserealestate.common.TextFieldState
+import com.saavatech.riserealestate.common.UiEvents
 import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.presentation.AuthState
+import com.saavatech.riserealestate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +22,9 @@ class AuthViewModel
     constructor(
         private val signUpUseCase: SignUpUseCase,
     ) : ViewModel() {
+        private val _eventFlow = MutableSharedFlow<UiEvents>()
+        val eventFlow = _eventFlow.asSharedFlow()
+
         private var _loginState = mutableStateOf(AuthState())
         val loginState: State<AuthState> = _loginState
 
@@ -79,21 +86,39 @@ class AuthViewModel
 
                 _loginState.value = loginState.value.copy(isLoading = false)
 
-                Timber.tag("errors inputs").d(signUpResult.emailError)
+                if (signUpResult.emailError != null || signUpResult.nameError != null || signUpResult.passwordError != null) {
+                    if (signUpResult.emailError != null) {
+                        _emailState.value = emailState.value.copy(error = signUpResult.emailError)
+                        Timber.d("Email error: ${signUpResult.emailError}")
+                    }
 
-                // set email error in state
-                if (signUpResult.emailError != null) {
-                    _emailState.value = emailState.value.copy(error = signUpResult.emailError)
+                    if (signUpResult.nameError != null) {
+                        _nameState.value = nameState.value.copy(error = signUpResult.nameError)
+                        Timber.d("Name error: ${signUpResult.nameError}")
+                    }
+
+                    if (signUpResult.passwordError != null) {
+                        _passwordState.value = passwordState.value.copy(error = signUpResult.passwordError)
+                        Timber.d("Password error: ${signUpResult.passwordError}")
+                    }
                 }
 
-                // set email error in state
-                if (signUpResult.nameError != null) {
-                    _nameState.value = nameState.value.copy(error = signUpResult.nameError)
-                }
-
-                // set password error in state
-                if (signUpResult.passwordError != null) {
-                    _passwordState.value = passwordState.value.copy(error = signUpResult.passwordError)
+                when (signUpResult.result) {
+                    is Resource.Success -> {
+                        _eventFlow.emit(
+                            UiEvents.NavigationEvent("Home"), // HomeScreenDestination.route
+                        )
+                    }
+                    is Resource.Error -> {
+                        UiEvents.SnackbarEvent(
+                            signUpResult.result.message ?: "Error!",
+                        )
+                    }
+                    else -> {
+                        UiEvents.SnackbarEvent(
+                            signUpResult.result?.message ?: "Error!",
+                        )
+                    }
                 }
             }
         }

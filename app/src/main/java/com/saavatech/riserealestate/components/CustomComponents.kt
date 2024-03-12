@@ -180,7 +180,7 @@ fun CustomOutlinedTextField(
                 unfocusedBorderColor = Color.Transparent,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = inputBg,
-                errorTextColor = MaterialTheme.colorScheme.error,
+//                errorTextColor = MaterialTheme.colorScheme.error,
             ),
         keyboardOptions = keyboardOptions,
         onValueChange = onValueChange,

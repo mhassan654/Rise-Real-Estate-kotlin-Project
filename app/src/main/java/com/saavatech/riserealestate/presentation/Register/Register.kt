@@ -131,9 +131,8 @@ fun RegisterScreen(
                 }
 
                 Spacer(modifier = Modifier.height(35.dp))
-                Text(text = name.text)
                 CustomOutlinedTextField(
-                    painterResource = painterResource(id = R.drawable.profile_image),
+                    painterResource = painterResource(id = R.drawable.profile_round),
                     lableValue = "Full name",
                     placeholder = { Text(text = "Enter name") },
                     keyboardOptions =
@@ -156,7 +155,6 @@ fun RegisterScreen(
                 }
                 Spacer(modifier = Modifier.height(6.dp))
 
-                Text(text = email.text)
                 CustomOutlinedTextField(
                     painterResource = painterResource(id = R.drawable.email),
                     lableValue = "Email",
