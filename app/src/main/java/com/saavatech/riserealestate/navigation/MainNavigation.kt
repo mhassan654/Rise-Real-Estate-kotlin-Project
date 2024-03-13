@@ -1,6 +1,7 @@
 package com.saavatech.riserealestate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,6 +20,7 @@ import com.saavatech.riserealestate.presentation.home.Home
 import com.saavatech.riserealestate.presentation.login.LoginScreen
 import com.saavatech.riserealestate.presentation.login.LoginScreenOption
 import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingScreen
+import com.saavatech.riserealestate.presentation.viewModel.PropertyViewModel
 import com.saavatech.riserealestate.presentation.welcome.WelcomeScreen
 import timber.log.Timber
 
@@ -102,6 +104,7 @@ fun MainNavigation(
             Destinations.PropertyDetails.route,
             arguments = listOf(navArgument("propertyId") { type = NavType.IntType }),
         ) {
+            val viewModel: PropertyViewModel = viewModel()
             PropertyDetails()
         }
         // Add other destinations here if needed

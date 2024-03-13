@@ -9,9 +9,12 @@ import com.saavatech.riserealestate.data.local.AppPreferences
 import com.saavatech.riserealestate.data.models.ApiService
 import com.saavatech.riserealestate.data.repository.AuthRepositoryImpl
 import com.saavatech.riserealestate.data.repository.CategoryRepositoryImpl
+import com.saavatech.riserealestate.data.repository.PropertyRepositoryImpl
 import com.saavatech.riserealestate.domain.repository.AuthRepository
 import com.saavatech.riserealestate.domain.repository.CategoryRepository
+import com.saavatech.riserealestate.domain.repository.PropertyRepository
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
+import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.util.Constants.AUTH_PREFERENCES
 import com.saavatech.riserealestate.util.Constants.BASE_URL
@@ -86,5 +89,17 @@ object AppModule {
     @Singleton
     fun providesCategoryRepository(apiService: ApiService): CategoryRepository {
         return CategoryRepositoryImpl(apiService = apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPropertyUseCase(repository: PropertyRepository): PropertyUseCase {
+        return PropertyUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPropertyRepository(apiService: ApiService): PropertyRepository {
+        return PropertyRepositoryImpl(apiService = apiService)
     }
 }

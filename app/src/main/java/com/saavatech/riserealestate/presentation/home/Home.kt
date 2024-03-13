@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,12 +18,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Room
@@ -70,8 +74,8 @@ import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
+import com.saavatech.riserealestate.components.NearByPropertyCard
 import com.saavatech.riserealestate.components.PromotionCard
-import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.components.sectionTitles
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.navigation.BottomNavigation
@@ -93,7 +97,11 @@ fun Home(
     val viewModel: HomeViewModel = hiltViewModel()
 
     val categoryState = viewModel.categoriesState.value
+    val nearbyState = viewModel.nearbyPropertiesState.value
     val categoryListState = viewModel.categoriesListState.value
+    val nearbyListState = viewModel.nearbyPropertiesListState.value
+
+    val lazyState = rememberLazyListState()
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -101,6 +109,7 @@ fun Home(
 
     LaunchedEffect(key1 = true) {
         viewModel.getCategories()
+        viewModel.getNearByProperties()
     }
 
     val items =
@@ -108,6 +117,8 @@ fun Home(
             BottomScreens.Home,
             BottomScreens.FriendsList,
         )
+
+    // ui satrts
     Scaffold(
         topBar = {
             TobBar { showBottomSheet = true }
@@ -120,137 +131,152 @@ fun Home(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 8.dp),
+                    .padding(10.dp),
         ) {
-            Column(
+            LazyColumn(
+                state = lazyState,
                 modifier =
                     Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
+                        .fillMaxHeight().padding(innerPadding),
             ) {
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                ) {
-                    Text(
-                        text =
-                            buildAnnotatedString {
-                                withStyle(
-                                    style =
-                                        SpanStyle(
-                                            color = TextColorOne,
-                                            fontSize = 20.sp,
-                                            fontWeight = FontWeight(400),
-                                        ),
-                                ) {
-                                    append("Hey,")
-                                }
-                                append(" ")
-                                withStyle(
-                                    style =
-                                        SpanStyle(
-                                            color = TextColorBold,
-                                            fontWeight = FontWeight(700),
-                                            fontSize = 20.sp,
-                                        ),
-                                ) {
-                                    append("Hassan Saava!")
-                                }
-                            },
-                        fontFamily = FontFamily.SansSerif,
-                        textAlign = TextAlign.Center,
-                        color = TextColorBold,
-                    )
-
-                    Text(
+                item {
+                    Column(
                         modifier =
                             Modifier
-                                .padding(top = 20.dp),
-                        text = "Let's start exploring",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight(600),
-                        textAlign = TextAlign.Center,
-                        color = TextColorOne,
-                    )
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                    ) {
+                        Text(
+                            text =
+                                buildAnnotatedString {
+                                    withStyle(
+                                        style =
+                                            SpanStyle(
+                                                color = TextColorOne,
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight(400),
+                                            ),
+                                    ) {
+                                        append("Hey,")
+                                    }
+                                    append(" ")
+                                    withStyle(
+                                        style =
+                                            SpanStyle(
+                                                color = TextColorBold,
+                                                fontWeight = FontWeight(700),
+                                                fontSize = 20.sp,
+                                            ),
+                                    ) {
+                                        append("Hassan Saava!")
+                                    }
+                                },
+                            fontFamily = FontFamily.SansSerif,
+                            textAlign = TextAlign.Center,
+                            color = TextColorBold,
+                        )
 
-                    CustomTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
+                        Text(
+                            modifier =
+                                Modifier
+                                    .padding(top = 20.dp),
+                            text = "Let's start exploring",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight(600),
+                            textAlign = TextAlign.Center,
+                            color = TextColorOne,
+                        )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    if (categoryState.isLoading) {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                    }
-                    LazyRow {
-                        items(categoryListState) { category ->
-                            PropertCategory(category = category) {
-                                navController.navigateTo("PropertyDetails/${category.id}")
+                        CustomTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        if (categoryState.isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        }
+                        LazyRow {
+                            items(categoryListState) { category ->
+                                PropertCategory(category = category) {
+                                    navController.navigateTo("PropertyDetails/${category.id}")
+                                }
+                                Spacer(modifier = Modifier.width(6.dp))
                             }
-                            Spacer(modifier = Modifier.width(6.dp))
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(28.dp))
-                Column(
-                    modifier =
-                        Modifier
-                            .verticalScroll(rememberScrollState()),
-                ) {
-                    LazyRow {
-                        items(4) {
-                            PromotionCard(
-                                title = "sample",
-                                subTitle = "All discount up to 60%",
-                                backgroundResId = painterResource(id = R.drawable.image_25),
-                                width = 260.dp,
-                                onClickAction = { navController.navigateTo(Destinations.PromotionScreen.route) },
-                            )
+                item { Spacer(modifier = Modifier.height(28.dp)) }
 
-                            Spacer(modifier = Modifier.width(10.dp))
-                        }
-                    }
-
-                    Column(modifier = Modifier.padding(horizontal = 15.dp)) {
-                        sectionTitles(title = "Featured Estates", title2 = "view all") {
-                            navController.navigateTo(Destinations.FeaturedEstate.route)
-                        }
-
+                item {
+                    Column(
+                        modifier =
+                        Modifier,
+                    ) {
                         LazyRow {
                             items(4) {
-                                FeatureCardItem(
-                                    modifier = Modifier.width(300.dp),
-                                    title = "Sky Dandelions Apartment",
-                                    imageTitle = "Old kampala",
-                                    navigationCallback,
+                                PromotionCard(
+                                    title = "sample",
+                                    subTitle = "All discount up to 60%",
+                                    backgroundResId = painterResource(id = R.drawable.image_25),
+                                    width = 260.dp,
+                                    onClickAction = { navController.navigateTo(Destinations.PromotionScreen.route) },
                                 )
+
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
                         }
-                    }
 
-                    sectionTitles(title = "Top Locations", title2 = "explore") {
-                        navController.navigateTo(Destinations.TopLocations.route)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TopLocations()
+                        Column(modifier = Modifier.padding(horizontal = 15.dp)) {
+                            sectionTitles(title = "Featured Estates", title2 = "view all") {
+                                navController.navigateTo(Destinations.FeaturedEstate.route)
+                            }
 
-                    sectionTitles(title = "Top Estate Agent", title2 = "explore") {}
-                    TopAgents()
-
-                    sectionTitles(title = "Explore Nearby Estates", null) {}
-
-                    // Explore nearby estates
-
-                    repeat(4) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        ) {
-                            repeat(2) {
-                                VerticalPropertyCard(navigationCallback)
+                            LazyRow {
+                                items(4) {
+                                    FeatureCardItem(
+                                        modifier = Modifier.width(300.dp),
+                                        title = "Sky Dandelions Apartment",
+                                        imageTitle = "Old kampala",
+                                        navigationCallback,
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                }
                             }
                         }
-                        Spacer(modifier = Modifier.height(10.dp))
+
+                        sectionTitles(title = "Top Locations", title2 = "explore") {
+                            navController.navigateTo(Destinations.TopLocations.route)
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        TopLocations()
+
+                        sectionTitles(title = "Top Estate Agent", title2 = "explore") {}
+                        TopAgents()
+
+                        sectionTitles(title = "Explore Nearby Estates", null) {}
+
+                        // Explore nearby estates
+
+//                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
+                item {
+                    Column {
+                        if (nearbyState.isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        }
+                        LazyVerticalGrid(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.height(500.dp),
+                            columns = GridCells.Fixed(2),
+                        ) {
+                            items(nearbyListState) { property ->
+                                NearByPropertyCard(property = property) {
+                                    navController.navigateTo("PropertyDetails/${property.id}")
+                                }
+                            }
+                        }
                     }
                 }
             }

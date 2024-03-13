@@ -18,7 +18,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel
+class SharedViewModel
     @Inject
     constructor(
         private val categoriesUseCase: CategoriesUseCase,
@@ -36,17 +36,6 @@ class HomeViewModel
         val categoriesListState: MutableState<List<CategoryResponse>> = mutableStateOf(emptyList())
         val nearbyPropertiesListState: MutableState<List<NearbyPost>> = mutableStateOf(emptyList())
 
-        fun getProperty(id: Int): NearbyPost? {
-            // Access the current list from the state
-            val nearbyProperties = nearbyPropertiesListState.value
-
-            return nearbyProperties.firstOrNull { it.id == id }
-        }
-
-        fun getProperty2(id: Int): NearbyPost? {
-            return nearbyPropertiesListState.value.filter { it.id == id }.firstOrNull()
-        }
-
         suspend fun getCategories(): Any {
             return try {
                 _categoriesState.value = categoriesState.value.copy(isLoading = true)
@@ -56,20 +45,15 @@ class HomeViewModel
                 _categoriesState.value = categoriesState.value.copy(isLoading = false)
 
                 when (fetchCategoryResults.result) {
-                    is Resource.Success -> {
+                    is Resource.Success ->
                         categoriesListState.value = fetchCategoryResults.result.data?.data ?: emptyList()
-                    }
 
                     is Resource.Error -> {
                         Timber.tag("response has an error").d(fetchCategoryResults.result.message)
                         UiEvents.SnackbarEvent(fetchCategoryResults.result.message ?: "Error!")
                     }
-                    is Resource.Loading -> {
-                        TODO()
-                    }
-                    null -> {
-                        TODO()
-                    }
+                    is Resource.Loading -> TODO()
+                    null -> TODO()
                 }
             } catch (e: Exception) {
                 Timber.tag("error").d(e)

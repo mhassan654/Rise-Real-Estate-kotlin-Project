@@ -15,7 +15,7 @@ fun GridView(navigationCallback: (Int) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             repeat(2) {
-                VerticalPropertyCard(navigationCallback)
+                VerticalPropertyCard(property = null) {}
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
