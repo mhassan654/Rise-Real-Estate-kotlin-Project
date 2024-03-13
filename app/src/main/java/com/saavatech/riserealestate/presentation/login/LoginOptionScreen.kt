@@ -34,15 +34,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.DividerTextComponent
-import com.saavatech.riserealestate.common.RoundedIconTextButton
-import com.saavatech.riserealestate.common.SocialButton
+import com.saavatech.riserealestate.components.DividerTextComponent
+import com.saavatech.riserealestate.components.RoundedIconTextButton
+import com.saavatech.riserealestate.components.SocialButton
 import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 
 @Composable
-fun LoginScreenOption(navController: DestinationsNavigator)  {
+fun LoginScreenOption(navController: DestinationsNavigator) {
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -202,7 +202,7 @@ private fun DefaultImage(painterResource: Painter) {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginOptionPreview()  {
+fun LoginOptionPreview() {
     val navController: NavHostController = rememberNavController()
     val destinationsNavigator = DestinationsNavigator(navController)
     LoginScreenOption(destinationsNavigator)

@@ -45,12 +45,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.ButtonTextComponent
-import com.saavatech.riserealestate.common.CustomBlurBg
-import com.saavatech.riserealestate.common.GreyButtonTextComponent
-import com.saavatech.riserealestate.common.IconWithTextLocation
-import com.saavatech.riserealestate.common.RoundedIconButton
-import com.saavatech.riserealestate.common.StarRating
+import com.saavatech.riserealestate.components.ButtonTextComponent
+import com.saavatech.riserealestate.components.CustomBlurBg
+import com.saavatech.riserealestate.components.GreyButtonTextComponent
+import com.saavatech.riserealestate.components.IconWithTextLocation
+import com.saavatech.riserealestate.components.RoundedIconButton
+import com.saavatech.riserealestate.components.StarRating
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
@@ -168,7 +168,7 @@ fun PropertyDetails() {
                     Divider(modifier = Modifier.padding(vertical = 20.dp))
 
                     Box(
-                        modifier =Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
+                        modifier = Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(20.dp),
@@ -188,7 +188,8 @@ fun PropertyDetails() {
 
                                 Column {
                                     Text(
-                                        text = "Hassan Saava")
+                                        text = "Hassan Saava",
+                                    )
                                     Text(text = "Real Estate agent")
                                 }
                             }
@@ -202,7 +203,7 @@ fun PropertyDetails() {
                     }
 
                     Box(
-                        modifier =Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
+                        modifier = Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(20.dp),
@@ -212,9 +213,9 @@ fun PropertyDetails() {
                             Row(horizontalArrangement = Arrangement.spacedBy(30.dp)) {
                                 Image(
                                     modifier =
-                                    Modifier
-                                        .size(40.dp)
-                                        .clip(CircleShape),
+                                        Modifier
+                                            .size(40.dp)
+                                            .clip(CircleShape),
                                     contentScale = ContentScale.Crop,
                                     painter = painterResource(id = R.drawable.profile_image),
                                     contentDescription = null,
@@ -222,7 +223,8 @@ fun PropertyDetails() {
 
                                 Column {
                                     Text(
-                                        text = "Hassan Saava")
+                                        text = "Hassan Saava",
+                                    )
                                     Text(text = "Real Estate agent")
                                 }
                             }

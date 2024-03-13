@@ -1,4 +1,4 @@
-package com.saavatech.riserealestate.common
+package com.saavatech.riserealestate.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -30,8 +30,8 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -157,12 +157,12 @@ fun IconWithTextLocation(location: String) {
 fun CustomOutlinedTextField(
     painterResource: Painter,
     lableValue: String,
+    textValue: String,
+    isError: Boolean = false,
+    onValueChange: (String) -> Unit,
+    placeholder: @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    val text =
-        remember {
-            mutableStateOf("")
-        }
-
     OutlinedTextField(
         modifier =
             Modifier
@@ -170,8 +170,9 @@ fun CustomOutlinedTextField(
                 .height(70.dp)
                 .clip(RoundedCornerShape(1.dp)),
         label = { Text(text = lableValue) },
-        value = text.value,
+        value = textValue,
         shape = RoundedCornerShape(8.dp),
+        placeholder = placeholder,
         colors =
             OutlinedTextFieldDefaults.colors(
                 cursorColor = ButtonBgOne,
@@ -179,11 +180,11 @@ fun CustomOutlinedTextField(
                 unfocusedBorderColor = Color.Transparent,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = inputBg,
+//                errorTextColor = MaterialTheme.colorScheme.error,
             ),
-        keyboardOptions = KeyboardOptions.Default,
-        onValueChange = {
-            text.value = it
-        },
+        keyboardOptions = keyboardOptions,
+        onValueChange = onValueChange,
+        isError = isError,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -238,12 +239,14 @@ fun CustomTextField(
 }
 
 @Composable
-fun CustomOutlinedPasswordTextField(lableValue: String) {
-    val password =
-        remember {
-            mutableStateOf("")
-        }
-
+fun CustomOutlinedPasswordTextField(
+    passwordState: String,
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false,
+    passwordVisible: Boolean,
+    onPasswordVisibilityChange: (Boolean) -> Unit,
+) {
     val passwordVisibility =
         remember {
             mutableStateOf(false)
@@ -255,12 +258,11 @@ fun CustomOutlinedPasswordTextField(lableValue: String) {
                 .fillMaxWidth()
                 .height(70.dp)
                 .clip(RoundedCornerShape(1.dp)),
-        label = { Text(text = lableValue) },
-        value = password.value,
+        label = { Text(text = "Password") },
+        value = passwordState,
         shape = RoundedCornerShape(8.dp),
         colors =
             OutlinedTextFieldDefaults.colors(
-                //        colors = OutlinedTextFieldDefaults.colors(
                 cursorColor = ButtonBgOne,
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = Color.Transparent,
@@ -268,9 +270,8 @@ fun CustomOutlinedPasswordTextField(lableValue: String) {
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
             ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        onValueChange = {
-            password.value = it
-        },
+        onValueChange = onValueChange,
+        isError = isError,
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -280,27 +281,27 @@ fun CustomOutlinedPasswordTextField(lableValue: String) {
         },
         trailingIcon = {
             val iconImage =
-                if (passwordVisibility.value) {
+                if (passwordVisible) {
                     Icons.Filled.Visibility
                 } else {
                     Icons.Filled.VisibilityOff
                 }
 
             val description =
-                if (passwordVisibility.value) {
+                if (passwordVisible) {
                     "Hide Password"
                 } else {
                     "Show password"
                 }
 
             IconButton(onClick = {
-                passwordVisibility.value = !passwordVisibility.value
+                onPasswordVisibilityChange(!passwordVisible)
             }) {
                 Icon(imageVector = iconImage, contentDescription = description)
             }
         },
         visualTransformation =
-            if (passwordVisibility.value) {
+            if (passwordVisible) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
@@ -528,13 +529,13 @@ fun DividerTextComponent() {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Divider(
+        HorizontalDivider(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-            color = colorResource(id = R.color.strokeColor),
             thickness = 1.dp,
+            color = colorResource(id = R.color.strokeColor),
         )
 
         Text(
@@ -545,13 +546,13 @@ fun DividerTextComponent() {
             color = colorResource(id = R.color.strokeTextColor),
         )
 
-        Divider(
+        HorizontalDivider(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-            color = colorResource(id = R.color.strokeColor),
             thickness = 1.dp,
+            color = colorResource(id = R.color.strokeColor),
         )
     }
 }
@@ -587,9 +588,6 @@ fun SocialButton(
 @Composable
 fun ComponentsPreview() {
     Column(modifier = Modifier.padding(10.dp)) {
-        CustomOutlinedPasswordTextField("sample label")
-        Spacer(modifier = Modifier.height(6.dp))
-        CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "saghsadg")
         Spacer(modifier = Modifier.height(6.dp))
         CustomTextField(painterResource(id = R.drawable.profile_image), "text field")
         Spacer(modifier = Modifier.height(6.dp))

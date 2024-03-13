@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    MainNavigation(navController = navController, startScreen = Destinations.Welcome.route)
+                    MainNavigation(navController = navController, startScreen = Destinations.Home.route)
                 }
             }
         }

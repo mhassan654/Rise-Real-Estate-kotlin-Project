@@ -1,11 +1,9 @@
-package com.saavatech.riserealestate.common
+package com.saavatech.riserealestate.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,17 +15,15 @@ import androidx.compose.ui.unit.dp
 fun TransparentTopAppBar(
     icon: ImageVector,
     actionIcon: ImageVector?,
-    iconClickAction: () -> Unit
+    iconClickAction: () -> Unit,
 ) {
     Box {
-
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
             backgroundColor = Color.Transparent, // Set background color to transparent
             elevation = 0.dp, // Remove elevation to make it appear on top
             contentColor = MaterialTheme.colors.primary, // Set content color
             title = {
-
             },
             navigationIcon = {
                 RoundedIconButton(

@@ -55,6 +55,7 @@ android {
 
 dependencies {
     implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("io.coil-kt:coil-svg:2.6.0")
     val navVersion = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$navVersion")
@@ -78,7 +79,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("androidx.compose.material:material:1.6.2")
+    implementation("androidx.compose.material:material:1.6.3")
     // extra project dependencies
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -86,7 +87,7 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
 
-    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.compose.material:material-icons-extended:1.6.3")
     implementation("androidx.hilt:hilt-navigation:1.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")

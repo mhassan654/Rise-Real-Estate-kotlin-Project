@@ -11,12 +11,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,27 +32,41 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.common.AppBar
-import com.saavatech.riserealestate.common.ButtonTextComponent
-import com.saavatech.riserealestate.common.CustomOutlinedPasswordTextField
-import com.saavatech.riserealestate.common.CustomOutlinedTextField
-import com.saavatech.riserealestate.navigation.BottomScreens
+import com.saavatech.riserealestate.components.AppBar
+import com.saavatech.riserealestate.components.ButtonTextComponent
+import com.saavatech.riserealestate.components.CustomOutlinedPasswordTextField
+import com.saavatech.riserealestate.components.CustomOutlinedTextField
 import com.saavatech.riserealestate.navigation.Destinations
+import com.saavatech.riserealestate.presentation.viewModel.AuthViewModel
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegisterScreen(navController: DestinationsNavigator) {
+fun RegisterScreen(
+    navController: DestinationsNavigator,
+    viewModel: AuthViewModel = hiltViewModel(),
+) {
+    val email = viewModel.emailState.value
+    val name = viewModel.nameState.value
+    val passwordState = viewModel.passwordState.value
+    val address = viewModel.address.value
+    val state = viewModel.loginState.value
+
+    var passwordVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     Scaffold(
         topBar = {
             AppBar(
@@ -69,6 +90,9 @@ fun RegisterScreen(navController: DestinationsNavigator) {
                         .fillMaxSize()
                         .padding(horizontal = 16.dp, vertical = 20.dp),
             ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
                 Column(
                     modifier =
                         Modifier
@@ -107,12 +131,73 @@ fun RegisterScreen(navController: DestinationsNavigator) {
                 }
 
                 Spacer(modifier = Modifier.height(35.dp))
-                CustomOutlinedTextField(painterResource(id = R.drawable.profile_image), "Full name")
+                CustomOutlinedTextField(
+                    painterResource = painterResource(id = R.drawable.profile_round),
+                    lableValue = "Full name",
+                    placeholder = { Text(text = "Enter name") },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                        ),
+                    onValueChange = { viewModel.setName(it) },
+                    textValue = name.text,
+                    isError = name.error != null,
+                )
+                // set last name error validation
+                if (name.error != "") {
+                    Text(
+                        text = name.error ?: "",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
                 Spacer(modifier = Modifier.height(6.dp))
-                CustomOutlinedTextField(painterResource(id = R.drawable.email), "Email")
+
+                CustomOutlinedTextField(
+                    painterResource = painterResource(id = R.drawable.email),
+                    lableValue = "Email",
+                    placeholder = { Text(text = "Enter email") },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                        ),
+                    onValueChange = { viewModel.setEmail(it) },
+                    textValue = email.text,
+                    isError = email.error != null,
+                )
+                // set email error validation
+                if (email.error != "") {
+                    Text(
+                        text = email.error ?: "",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
                 Spacer(modifier = Modifier.height(6.dp))
                 // password field
-                CustomOutlinedPasswordTextField("Password")
+                CustomOutlinedPasswordTextField(
+                    passwordVisible = passwordVisible,
+                    onValueChange = { viewModel.setPassword(it) },
+                    onPasswordVisibilityChange = { isVisible ->
+                        passwordVisible = isVisible
+                    },
+                    passwordState = passwordState.text,
+                    isError = passwordState.error != null,
+                )
+
+                if (passwordState.error != "") {
+                    Text(
+                        text = passwordState.error ?: "",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -151,7 +236,11 @@ fun RegisterScreen(navController: DestinationsNavigator) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    ButtonTextComponent(value = "Register", clickAction = { navController.navigateTo(BottomScreens.Home.route) }, 280.dp)
+                    ButtonTextComponent(
+                        value = "Register",
+                        clickAction = { viewModel.signUpUser() },
+                        280.dp,
+                    )
                 }
             }
         }
