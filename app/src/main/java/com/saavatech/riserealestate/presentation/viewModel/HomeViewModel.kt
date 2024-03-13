@@ -10,7 +10,6 @@ import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.presentation.CategoriesState
 import com.saavatech.riserealestate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
@@ -32,8 +31,6 @@ class HomeViewModel
             return try {
                 _categoriesState.value = categoriesState.value.copy(isLoading = true)
 
-                delay(3000)
-
                 val fetchCategoryResults = categoriesUseCase()
 
                 _categoriesState.value = categoriesState.value.copy(isLoading = false)
@@ -43,6 +40,7 @@ class HomeViewModel
                         categoriesListState.value = fetchCategoryResults.result.data?.data ?: emptyList()
 
                     is Resource.Error -> {
+                        Timber.tag("response has an error").d(fetchCategoryResults.result.message)
                         UiEvents.SnackbarEvent(fetchCategoryResults.result.message ?: "Error!")
                     }
                     is Resource.Loading -> TODO()

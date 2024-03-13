@@ -40,5 +40,5 @@ data class Parameter(
     @SerializedName("type_of_parameter")
     val typeOfParameter: String,
     @SerializedName("type_values")
-    val typeValues: String,
+    val typeValues: Any?,
 )

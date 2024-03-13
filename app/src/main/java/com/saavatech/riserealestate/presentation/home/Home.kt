@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -62,6 +63,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
@@ -346,18 +349,28 @@ fun PropertCategory(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            val painter =
+                rememberAsyncImagePainter(
+                    model =
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(category.image)
+                            .decoderFactory(SvgDecoder.Factory()) // Configure SVG decoder
+//                            .placeholder(R.drawable.placeholder_image) // Optional placeholder
+//                            .error(R.drawable.error_image) // Optional error drawable
+                            .build(),
+                )
             Image(
                 modifier =
                     Modifier
                         .size(35.dp),
-                painter =
-                    rememberAsyncImagePainter(
-                        contentScale = ContentScale.Crop,
-                        model = category.image,
-                    ),
+                painter = painter,
                 contentDescription = null,
             )
-            Text(text = category.category, color = MaterialTheme.colorScheme.primary)
+            Text(
+                text = category.category,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }
