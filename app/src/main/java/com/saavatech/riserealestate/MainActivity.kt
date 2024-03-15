@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.domain.use_case.AppEntryUseCases
-import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.navigation.MainNavigation
 import com.saavatech.riserealestate.presentation.SplashViewModel
 import com.saavatech.riserealestate.presentation.viewModel.OnBoardingViewModel
@@ -55,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    MainNavigation(navController = navController, startScreen = Destinations.Home.route)
+                    MainNavigation(navController = navController, startScreen = screen)
                 }
 //                OnBoardingScreen(event = onboardingViewModel::onEvent)
             }

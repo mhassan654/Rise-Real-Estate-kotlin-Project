@@ -50,8 +50,7 @@ fun MainNavigation(
         }
 
         composable(route = Destinations.OnBoarding.route) {
-            OnBoardingScreen {
-            }
+            OnBoardingScreen(destinationsNavigator)
         }
 
         composable(route = Destinations.PromotionScreen.route) {

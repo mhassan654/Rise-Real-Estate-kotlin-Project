@@ -238,7 +238,9 @@ fun RegisterScreen(
                 ) {
                     ButtonTextComponent(
                         value = "Register",
-                        clickAction = { viewModel.signUpUser() },
+                        clickAction = {
+                            viewModel.signUpUser()
+                                      },
                         280.dp,
                     )
                 }
