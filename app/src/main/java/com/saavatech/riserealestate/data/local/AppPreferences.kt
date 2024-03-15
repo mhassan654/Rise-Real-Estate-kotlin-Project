@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import com.saavatech.riserealestate.util.Constants
+import com.saavatech.riserealestate.util.Constants.APP_ENTRY
 import com.saavatech.riserealestate.util.Constants.AUTH_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,6 +17,7 @@ import java.io.IOException
 class AppPreferences(private val dataStore: DataStore<Preferences>) {
     private object PreferencesKey {
         val onBoardingKey = booleanPreferencesKey(name = "on_boarding_completed")
+        val APP_ENTRY = booleanPreferencesKey(name = Constants.APP_ENTRY)
     }
 
     suspend fun saveOnBoardingState(completed: Boolean) {
@@ -29,7 +32,7 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun getAuthToken(): String?  {
+    suspend fun getAuthToken(): String? {
         return dataStore.data.first()[AUTH_KEY]?.firstOrNull()
     }
 

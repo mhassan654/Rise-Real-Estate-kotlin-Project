@@ -48,24 +48,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
+import com.saavatech.riserealestate.common.OnBoardingEvent
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.RoundedIconButton
-import com.saavatech.riserealestate.navigation.Destinations
-import com.saavatech.riserealestate.presentation.WelcomeViewModel
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import kotlinx.coroutines.launch
 
-@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun OnBoardingScreen(
-    navController: DestinationsNavigator,
-    welcomeViewModel: WelcomeViewModel = hiltViewModel(),
+//    navController: DestinationsNavigator,
+    event: (OnBoardingEvent) -> Unit,
 ) {
     val pages =
         listOf(
@@ -131,9 +128,13 @@ fun OnBoardingScreen(
             modifier = Modifier.weight(1f),
             pagerState = pageState,
         ) {
-            welcomeViewModel.saveOnBoardingState(completed = true)
-            navController.navigateUp()
-            navController.navigateTo(Destinations.Home.route)
+           scope.launch {
+               if (pageState.currentPage == 2){
+                   event(OnBoardingEvent.SaveAppEntry)
+               }else{
+                   pageState.animateScrollToPage(page = pageState.currentPage + 1)
+               }
+           }
         }
 
 //        ButtomSection(
@@ -360,7 +361,7 @@ fun FinishButton(
             visible = pagerState.currentPage == 2,
         ) {
             Button(
-                onClick = onClick,
+                onClick = { onClick.invoke() },
                 colors =
                     ButtonDefaults.buttonColors(
                         contentColor = Color.White,
