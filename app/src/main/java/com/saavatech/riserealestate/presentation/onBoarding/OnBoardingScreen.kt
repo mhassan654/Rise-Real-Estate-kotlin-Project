@@ -125,7 +125,7 @@ fun OnBoardingScreen(
         }
 
         FinishButton(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.height(50.dp),
             pagerState = pageState,
         ) {
            scope.launch {
