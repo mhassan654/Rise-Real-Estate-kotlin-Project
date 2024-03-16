@@ -196,7 +196,9 @@ fun LoginScreen(
                                 .fillMaxSize()
                                 .padding(8.dp),
                     ) {
-                        ButtonTextComponent(value = "Login", clickAction = { }, 280.dp)
+                        ButtonTextComponent(value = "Login", clickAction = {
+                            navController.navigateTo(Destinations.Home.route)
+                        }, 280.dp)
 
                         Spacer(modifier = Modifier.height(30.dp))
                         DividerTextComponent()

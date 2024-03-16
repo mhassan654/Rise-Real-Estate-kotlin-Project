@@ -1,6 +1,7 @@
 package com.saavatech.riserealestate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
@@ -20,6 +21,7 @@ import com.saavatech.riserealestate.presentation.home.Home
 import com.saavatech.riserealestate.presentation.login.LoginScreen
 import com.saavatech.riserealestate.presentation.login.LoginScreenOption
 import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingScreen
+import com.saavatech.riserealestate.presentation.viewModel.OnBoardingViewModel
 import com.saavatech.riserealestate.presentation.viewModel.PropertyViewModel
 import com.saavatech.riserealestate.presentation.welcome.WelcomeScreen
 import timber.log.Timber
@@ -50,8 +52,8 @@ fun MainNavigation(
         }
 
         composable(route = Destinations.OnBoarding.route) {
-            OnBoardingScreen {
-            }
+            val viewModel: OnBoardingViewModel = hiltViewModel()
+            OnBoardingScreen(event = viewModel::onEvent)
         }
 
         composable(route = Destinations.PromotionScreen.route) {
