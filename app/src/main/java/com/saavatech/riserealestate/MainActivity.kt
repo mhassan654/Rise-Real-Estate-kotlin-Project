@@ -16,10 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.domain.use_case.AppEntryUseCases
-import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.navigation.MainNavigation
-import com.saavatech.riserealestate.presentation.SplashViewModel
-import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingScreen
 import com.saavatech.riserealestate.presentation.viewModel.MainViewModel
 import com.saavatech.riserealestate.presentation.viewModel.OnBoardingViewModel
 import com.saavatech.riserealestate.ui.theme.RiseRealEstateTheme
@@ -40,12 +37,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window,false)
-        installSplashScreen().apply{
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        installSplashScreen().apply {
             setKeepOnScreenCondition {
                 viewModel.splashCondition
 //            !splashViewModel.isLoading.value
-        }
+            }
         }
 //
         lifecycleScope.launch {

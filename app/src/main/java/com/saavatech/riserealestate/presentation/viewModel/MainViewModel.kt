@@ -1,6 +1,5 @@
 package com.saavatech.riserealestate.presentation.viewModel
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,14 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saavatech.riserealestate.domain.use_case.AppEntryUseCases
 import com.saavatech.riserealestate.navigation.Destinations
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
-
 
 @HiltViewModel
 class MainViewModel
@@ -28,21 +25,20 @@ class MainViewModel
 //        var splashCondition: State<Boolean> = _splashCondition
 
         var startDestination by mutableStateOf(Destinations.OnBoarding.route)
-            private set/////////////////////////////////////////////
+            private set // ///////////////////////////////////////////
 
         init {
             appEntryUseCases.readAppEntryUseCase().onEach {
-                shouldStartFromHomeScreen ->
+                    shouldStartFromHomeScreen ->
                 Timber.tag("should start from home screen").d(shouldStartFromHomeScreen.toString())
-                startDestination = if (shouldStartFromHomeScreen){
-                    Timber.tag("should start from onboarding screen").d(shouldStartFromHomeScreen.toString())
-                    Destinations.OnBoarding.route
-                }else{
-                    Timber.tag("don't should start from onboarding screen").d(shouldStartFromHomeScreen.toString())
-                    Destinations.Welcome.route
-                }
+                startDestination =
+                    if (shouldStartFromHomeScreen) {
+                        Destinations.Welcome.route
+                    } else {
+                        Destinations.OnBoarding.route
+                    }
                 delay(3000)
-                splashCondition=false
+                splashCondition = false
             }.launchIn(viewModelScope)
         }
     }
