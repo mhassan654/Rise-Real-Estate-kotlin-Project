@@ -60,6 +60,9 @@ import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import kotlinx.coroutines.launch
 
+
+
+
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -128,7 +131,7 @@ fun OnBoardingScreen(
         }
 
         FinishButton(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.height(50.dp),
             pagerState = pageState,
         ) {
             welcomeViewModel.saveOnBoardingState(completed = true)
@@ -352,12 +355,12 @@ fun FinishButton(
 ) {
     Row(
         modifier = modifier.padding(horizontal = 40.dp),
-        verticalAlignment = Alignment.Top,
+        verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.Center,
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2,
+            visible = true ,// pagerState.currentPage == 2,
         ) {
             Button(
                 onClick = onClick,
