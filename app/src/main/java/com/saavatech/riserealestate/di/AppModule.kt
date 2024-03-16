@@ -1,17 +1,26 @@
 package com.saavatech.riserealestate.di
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.saavatech.riserealestate.data.local.AppPreferences
+import com.saavatech.riserealestate.data.local.LocalUsermanagerImpl
 import com.saavatech.riserealestate.data.models.ApiService
 import com.saavatech.riserealestate.data.repository.AuthRepositoryImpl
 import com.saavatech.riserealestate.data.repository.CategoryRepositoryImpl
+import com.saavatech.riserealestate.data.repository.PropertyRepositoryImpl
+import com.saavatech.riserealestate.domain.manager.LocalUserManager
 import com.saavatech.riserealestate.domain.repository.AuthRepository
 import com.saavatech.riserealestate.domain.repository.CategoryRepository
+import com.saavatech.riserealestate.domain.repository.PropertyRepository
+import com.saavatech.riserealestate.domain.use_case.AppEntryUseCases
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
+import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
+import com.saavatech.riserealestate.domain.use_case.ReadAppEntryUseCase
+import com.saavatech.riserealestate.domain.use_case.SaveAppEntryUseCase
 import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.util.Constants.AUTH_PREFERENCES
 import com.saavatech.riserealestate.util.Constants.BASE_URL
@@ -41,6 +50,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppPreferences(dataStore: DataStore<Preferences>) = AppPreferences(dataStore)
+
+    @Provides
+    @Singleton
+    fun provideLocalUserManager(application: Application): LocalUserManager = LocalUsermanagerImpl(application)
 
     @Provides
     @Singleton
@@ -87,4 +100,24 @@ object AppModule {
     fun providesCategoryRepository(apiService: ApiService): CategoryRepository {
         return CategoryRepositoryImpl(apiService = apiService)
     }
+
+    @Provides
+    @Singleton
+    fun providesPropertyUseCase(repository: PropertyRepository): PropertyUseCase {
+        return PropertyUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPropertyRepository(apiService: ApiService): PropertyRepository {
+        return PropertyRepositoryImpl(apiService = apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAppEntryUseCases(localUserManager: LocalUserManager) =
+        AppEntryUseCases(
+            readAppEntryUseCase = ReadAppEntryUseCase(localUserManager),
+            saveAppEntryUseCase = SaveAppEntryUseCase(localUserManager),
+        )
 }

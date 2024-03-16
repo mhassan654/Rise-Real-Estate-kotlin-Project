@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -39,14 +42,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
 // @Preview(showBackground = true)
 @Composable
-fun VerticalPropertyCard(
+fun NearByPropertyCard(
     property: NearbyPost?,
     navigationCallback: () -> Unit,
 ) {
@@ -74,7 +79,8 @@ fun VerticalPropertyCard(
                 modifier =
                     Modifier
                         .height(180.dp)
-                        .width(180.dp).clip(RoundedCornerShape(14.dp)),
+                        .width(180.dp)
+                        .clip(RoundedCornerShape(14.dp)),
                 contentScale = ContentScale.Crop,
                 painter = painter,
                 contentDescription = null,
@@ -85,11 +91,47 @@ fun VerticalPropertyCard(
                 horizontalAlignment = Alignment.End,
                 modifier =
                     Modifier
-                        .fillMaxHeight().fillMaxWidth()
+                        .fillMaxHeight()
+                        .fillMaxWidth()
                         .padding(10.dp),
             ) {
-                Row {
-//
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Box(
+                        modifier =
+                            Modifier.background(
+                                shape = RoundedCornerShape(8.dp),
+                                color = if (property?.propertyType == "sold") Color.Red else GreenOne,
+                            ).width(50.dp),
+                    ) {
+                        property?.propertyType?.let {
+                            Text(
+                                modifier = Modifier.padding(4.dp),
+                                text = it,
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
+                    IconButton(
+                        onClick = {},
+                        modifier =
+                            Modifier
+                                .background(color = GreenOne, shape = CircleShape)
+                                .padding(horizontal = 2.dp)
+                                .padding(vertical = 2.dp)
+                                .size(25.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.favorite),
+                            tint = Color.White,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                        )
+                    }
                 }
 
                 TextWithBlurBg(
@@ -147,8 +189,8 @@ fun VerticalPropertyCard(
                 Text(
                     text = property.title,
                     style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(500),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(700),
                     textAlign = TextAlign.Left,
                 )
             }

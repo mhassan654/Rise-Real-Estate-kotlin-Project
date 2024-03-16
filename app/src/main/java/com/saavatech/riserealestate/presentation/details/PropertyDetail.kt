@@ -41,9 +41,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomBlurBg
@@ -51,12 +51,14 @@ import com.saavatech.riserealestate.components.GreyButtonTextComponent
 import com.saavatech.riserealestate.components.IconWithTextLocation
 import com.saavatech.riserealestate.components.RoundedIconButton
 import com.saavatech.riserealestate.components.StarRating
+import com.saavatech.riserealestate.presentation.viewModel.PropertyViewModel
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
 @Composable
-@Preview
 fun PropertyDetails() {
+    val viewModel: PropertyViewModel = hiltViewModel()
+//    val propertyState = viewModel.propertyState.value
     Scaffold(
         floatingActionButton = {
             ButtonTextComponent(value = "Buy Now", clickAction = { /*TODO*/ }, width = 300.dp)
