@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,7 +39,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,15 +69,14 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
-import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.NearByPropertyCard
 import com.saavatech.riserealestate.components.PromotionCard
 import com.saavatech.riserealestate.components.sectionTitles
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
+import com.saavatech.riserealestate.navigation.AppBottomSheet
 import com.saavatech.riserealestate.navigation.BottomNavigation
-import com.saavatech.riserealestate.navigation.BottomScreens
 import com.saavatech.riserealestate.navigation.Destinations
 import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.TextColorBold
@@ -103,20 +100,14 @@ fun Home(
 
     val lazyState = rememberLazyListState()
 
-    val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.getCategories()
         viewModel.getNearByProperties()
     }
-
-    val items =
-        listOf(
-            BottomScreens.Home,
-            BottomScreens.FriendsList,
-        )
 
     // ui satrts
     Scaffold(
@@ -272,9 +263,10 @@ fun Home(
                             columns = GridCells.Fixed(2),
                         ) {
                             items(nearbyListState) { property ->
-                                NearByPropertyCard(property = property) {
-                                    navController.navigateTo("PropertyDetails/${property.id}")
-                                }
+                                NearByPropertyCard(property = property, onClick = {})
+//                                {
+//                                    navController.navigateTo("PropertyDetails/${property.id}")
+//                                }
                             }
                         }
                     }
@@ -282,74 +274,13 @@ fun Home(
             }
         }
 
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
-//                scrimColor = MaterialTheme.colorScheme.primary,
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState,
-            ) {
-                Column(
-                    modifier =
-                        Modifier
-                            .padding(12.dp)
-                            .clickable {
-                                scope
-                                    .launch { sheetState.hide() }
-                                    .invokeOnCompletion {
-                                        if (!sheetState.isVisible) {
-                                            showBottomSheet = false
-                                        }
-                                    }
-                            },
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            color = TextColorOne,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(500),
-                            text = "Select Location",
-                        )
-
-                        TextButton(
-                            colors =
-                                ButtonDefaults.buttonColors(
-                                    MaterialTheme.colorScheme.primary,
-                                ),
-                            onClick = { /*TODO*/ },
-                        ) {
-                            Text(
-                                text = "Edit",
-                            )
-//
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        rowButton(
-                            location = "Old Kampala primary school , sir appolo road",
-                            bgColor = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        rowButton(
-                            location = "Old Kampala primary school , sir appolo road",
-                            bgColor = Color.White,
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        ButtonTextComponent(value = "Choose Location", width = 300.dp, clickAction = {})
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-            }
-        }
+        // Call BottomSheet passing required parameters
+        AppBottomSheet(
+            sheetState = sheetState,
+            showBottomSheet = showBottomSheet,
+            onDismissRequest = { showBottomSheet = false },
+            scope = scope,
+        )
     }
 }
 
@@ -398,72 +329,6 @@ fun PropertCategory(
                 fontWeight = FontWeight.Bold,
             )
         }
-    }
-}
-
-@Composable
-fun bottomSheet() {
-    Column(
-        modifier =
-            Modifier
-                .padding(12.dp)
-                .clickable {
-//                                scope
-//                                    .launch { sheetState.hide() }
-//                                    .invokeOnCompletion {
-//                                        if (!sheetState.isVisible) {
-//                                            showBottomSheet = false
-//                                        }
-//                                    }
-                },
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                color = Color.Black,
-                fontSize = 12.sp,
-                fontWeight = FontWeight(500),
-                text = "Select Location",
-                modifier = Modifier.weight(1f),
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            TextButton(
-                onClick = { /* TODO */ },
-                colors =
-                    ButtonDefaults.textButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White,
-                    ),
-            ) {
-                Text(
-                    text = "Edit",
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            rowButton(
-                location = "Old Kampala primay school , sir appolo road",
-                bgColor = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            rowButton(
-                location = "Old Kampala primay school , sir appolo road",
-                bgColor = Color.White,
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            ButtonTextComponent(value = "Choose Location", width = 300.dp, clickAction = {})
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-
-//
     }
 }
 
