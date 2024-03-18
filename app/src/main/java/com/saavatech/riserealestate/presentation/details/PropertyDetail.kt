@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,12 +27,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined._360
+import androidx.compose.material.icons.outlined.Room
+import androidx.compose.material.icons.rounded.Room
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,9 +49,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomBlurBg
@@ -51,18 +59,33 @@ import com.saavatech.riserealestate.components.GreyButtonTextComponent
 import com.saavatech.riserealestate.components.IconWithTextLocation
 import com.saavatech.riserealestate.components.RoundedIconButton
 import com.saavatech.riserealestate.components.StarRating
-import com.saavatech.riserealestate.presentation.viewModel.PropertyViewModel
+import com.saavatech.riserealestate.data.remote.response.NearbyPost
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
+import com.saavatech.riserealestate.util.fntSize
+import com.saavatech.riserealestate.util.rounded25
+
+//@Composable
+//@Preview
+//fun previewDetailsScreen() {
+//    PropertyDetails()
+//}
 
 @Composable
-fun PropertyDetails() {
-    val viewModel: PropertyViewModel = hiltViewModel()
+fun PropertyDetails(nearByPost: NearbyPost?) {
+//    val viewModel: PropertyViewModel = hiltViewModel()
 //    val propertyState = viewModel.propertyState.value
+    var isFabVisible by remember {
+        mutableStateOf(true)
+    }
+
     Scaffold(
         floatingActionButton = {
-            ButtonTextComponent(value = "Buy Now", clickAction = { /*TODO*/ }, width = 300.dp)
+            if (isFabVisible) {
+                ButtonTextComponent(value = "Buy Now", clickAction = { /*TODO*/ }, width = 300.dp)
+            }
         },
+        floatingActionButtonPosition = FabPosition.Center,
     ) { contentPadding ->
 
         Box(
@@ -164,16 +187,21 @@ fun PropertyDetails() {
                             onClick = { },
                             contentDescription = "Add to favorites",
                         )
-//
                     }
 
                     Divider(modifier = Modifier.padding(vertical = 20.dp))
 
                     Box(
-                        modifier = Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .background(color = inputBg, shape = RoundedCornerShape(25.dp)),
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(20.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(20.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
@@ -203,41 +231,27 @@ fun PropertyDetails() {
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth().background(color = inputBg, shape = RoundedCornerShape(25.dp)),
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(20.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Row(horizontalArrangement = Arrangement.spacedBy(30.dp)) {
-                                Image(
-                                    modifier =
-                                        Modifier
-                                            .size(40.dp)
-                                            .clip(CircleShape),
-                                    contentScale = ContentScale.Crop,
-                                    painter = painterResource(id = R.drawable.profile_image),
-                                    contentDescription = null,
-                                )
-
-                                Column {
-                                    Text(
-                                        text = "Hassan Saava",
-                                    )
-                                    Text(text = "Real Estate agent")
-                                }
-                            }
-
-                            Icon(
-                                tint = MaterialTheme.colorScheme.primary,
-                                imageVector = Icons.AutoMirrored.Outlined.Chat,
-                                contentDescription = null,
-                            )
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        items(6) {
+                            FacilityButton()
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(30.dp))
+
+                    // location header
+                    Text(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight(700),
+                        text = "Location & Public Facilities",
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    userLocation()
                 }
             }
         }
@@ -377,5 +391,68 @@ fun BoxContent() {
         }
 
 //        Spacer(modifier = Modifier.height(4.dp))
+    }
+}
+
+@Composable
+fun FacilityButton() {
+    Box(
+        modifier =
+            Modifier.background(
+                color = inputBg,
+                shape = RoundedCornerShape(rounded25),
+            ),
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                modifier = Modifier.size(30.dp),
+                painter = painterResource(id = R.drawable.condo),
+                contentDescription = null,
+                tint = GreenOne,
+            )
+
+            Text(
+                text = "2 Bedroom",
+                fontSize = fntSize,
+                fontWeight = FontWeight(400),
+            )
+        }
+    }
+}
+
+@Composable
+fun userLocation() {
+    Box(
+        modifier = Modifier.padding(18.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+        ) {
+            Box(
+                modifier =
+                    Modifier.background(
+                        color = inputBg,
+                        shape = CircleShape,
+                    ),
+            ) {
+                Icon(
+                    modifier = Modifier.padding(14.dp),
+                    imageVector = Icons.Outlined.Room,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+
+            Text(
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = fntSize,
+                text = "St. cikoko Timur key, pancorn, jarkata",
+            )
+        }
     }
 }

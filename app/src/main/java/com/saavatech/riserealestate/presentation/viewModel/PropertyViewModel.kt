@@ -8,6 +8,7 @@ import com.saavatech.riserealestate.data.remote.response.NearbyPost
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +23,9 @@ class PropertyViewModel
         init {
             viewModelScope.launch {
                 val propertyId = savedStateHandle.get<Int>("propertyId") ?: ""
-                propertyState.value = propertyUseCase.getProperty(217)
+                Timber.tag("on click property id").d(propertyId.toString())
+                propertyState.value = propertyUseCase.getProperty(propertyId)
+                Timber.tag("property details").d(propertyState.value.toString())
             }
         }
     }
