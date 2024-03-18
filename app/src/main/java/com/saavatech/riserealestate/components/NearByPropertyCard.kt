@@ -53,7 +53,7 @@ import com.saavatech.riserealestate.ui.theme.primaryBackground1
 @Composable
 fun NearByPropertyCard(
     property: NearbyPost?,
-    navigationCallback: () -> Unit,
+    onClick: () -> Unit,
 ) {
     Box(
         modifier =
@@ -64,7 +64,7 @@ fun NearByPropertyCard(
     ) {
         Box(
             Modifier
-                .clickable { navigationCallback.invoke() }
+                .clickable { onClick.invoke() }
                 .fillMaxSize()
                 .padding(8.dp),
         ) {

@@ -54,7 +54,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.material3:material3:1.2.1")
     implementation("io.coil-kt:coil-svg:2.6.0")
     val navVersion = "2.7.7"
 
