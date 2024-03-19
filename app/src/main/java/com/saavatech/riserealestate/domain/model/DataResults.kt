@@ -16,3 +16,9 @@ data class PropertyResults(
 data class NearByPropertyResults(
     val result: Resource<NearByDataPropertyResponse>? = null,
 )
+
+data class FeaturedPropertyResults(
+    val result: Resource<PropertyDataResponse>? = null,
+)
+
+data class PropertyQueryParam(val key: String, val value: Any)

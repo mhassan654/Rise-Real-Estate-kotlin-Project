@@ -97,6 +97,7 @@ fun Home(
     val nearbyState = viewModel.nearbyPropertiesState.value
     val categoryListState = viewModel.categoriesListState.value
     val nearbyListState = viewModel.nearbyPropertiesListState.value
+    val featuredList = viewModel.featuredPropertiesListState.value
 
     val lazyState = rememberLazyListState()
 
@@ -107,6 +108,7 @@ fun Home(
     LaunchedEffect(key1 = true) {
         viewModel.getCategories()
         viewModel.getNearByProperties()
+        viewModel.getFeaturedProperties()
     }
 
     // ui satrts
@@ -221,6 +223,7 @@ fun Home(
                                 navController.navigateTo(Destinations.FeaturedEstate.route)
                             }
 
+//                            featured properties  list
                             LazyRow {
                                 items(4) {
                                     FeatureCardItem(

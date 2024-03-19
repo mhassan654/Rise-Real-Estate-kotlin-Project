@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.saavatech.riserealestate.common.UiEvents
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import com.saavatech.riserealestate.presentation.CategoriesState
@@ -26,15 +27,20 @@ class HomeViewModel
     ) : ViewModel() {
         private var _categoriesState = mutableStateOf(CategoriesState())
         val categoriesState: State<CategoriesState> = _categoriesState
+        val categoriesListState: MutableState<List<CategoryResponse>> = mutableStateOf(emptyList())
 
+        // nearby properties
         private var _nearbyPropertiesState = mutableStateOf(CategoriesState())
         val nearbyPropertiesState: State<CategoriesState> = _nearbyPropertiesState
+        val nearbyPropertiesListState: MutableState<List<NearbyPost>> = mutableStateOf(emptyList())
+
+        // featured properties
+        private var _featuredPropertiesState = mutableStateOf(CategoriesState())
+        val featuredPropertiesState: State<CategoriesState> = _featuredPropertiesState
+        val featuredPropertiesListState: MutableState<List<Property>> = mutableStateOf(emptyList())
 
         private val _eventFlow = MutableSharedFlow<UiEvents>()
         val eventFlow = _eventFlow.asSharedFlow()
-
-        val categoriesListState: MutableState<List<CategoryResponse>> = mutableStateOf(emptyList())
-        val nearbyPropertiesListState: MutableState<List<NearbyPost>> = mutableStateOf(emptyList())
 
         fun getProperty(id: Int): NearbyPost? {
             // Access the current list from the state
@@ -91,6 +97,31 @@ class HomeViewModel
                     is Resource.Error -> {
                         Timber.tag("response has an error").d(fetchNearByPropertiesResults.result.message)
                         UiEvents.SnackbarEvent(fetchNearByPropertiesResults.result.message ?: "Error!")
+                    }
+                    is Resource.Loading -> TODO()
+                    null -> TODO()
+                }
+            } catch (e: Exception) {
+                Timber.tag("error").d(e)
+            }
+        }
+
+        suspend fun getFeaturedProperties(): Any {
+            return try {
+                _featuredPropertiesState.value = featuredPropertiesState.value.copy(isLoading = true)
+
+                val fetchFeaturedPropertiesResults = propertyUseCase.featuredProperties()
+
+                _nearbyPropertiesState.value = nearbyPropertiesState.value.copy(isLoading = false)
+                Timber.tag("featured properties").d(featuredPropertiesListState.value.toString())
+                when (fetchFeaturedPropertiesResults.result) {
+                    is Resource.Success ->
+                        featuredPropertiesListState.value = fetchFeaturedPropertiesResults.result.data?.data ?: emptyList()
+
+                    is Resource.Error,
+                    -> {
+                        Timber.tag("response has an error").d(fetchFeaturedPropertiesResults.result.message)
+                        UiEvents.SnackbarEvent(fetchFeaturedPropertiesResults.result.message ?: "Error!")
                     }
                     is Resource.Loading -> TODO()
                     null -> TODO()
