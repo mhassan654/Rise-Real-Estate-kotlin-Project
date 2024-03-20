@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
@@ -41,11 +42,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.TransparentTopAppBar
+import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -54,10 +57,9 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 // fun RealEstateListByCategory() {
 // @Preview
 @Composable
-fun RealEstateListByCategory(
-    navController: DestinationsNavigator,
-    navigationCallback: (Int) -> Unit,
-) {
+fun RealEstateListByCategory(navController: DestinationsNavigator) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val featuredList = viewModel.featuredPropertiesListState.value
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar =
@@ -94,13 +96,13 @@ fun RealEstateListByCategory(
                         Spacer(modifier = Modifier.height(13.dp))
 
                         LazyRow {
-                            items(4) {
+                            items(featuredList) { featuredProperty ->
                                 FeatureCardItem(
-                                    modifier = Modifier.width(350.dp),
-                                    title = "Sky Dandelions Apartment",
-                                    imageTitle = "Villa",
-                                    navigationCallback,
-                                )
+                                    modifier = Modifier.width(300.dp),
+                                    property = featuredProperty,
+                                ) {
+                                    navController.navigateTo("PropertyDetails/${featuredProperty.id}")
+                                }
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
 //
@@ -204,9 +206,9 @@ fun RealEstateListByCategory(
                         // Featured cards
 
                         if (switchViewStyle) {
-                            GridView(navigationCallback)
+//                            GridView(navigationCallback)
                         } else {
-                            ListView(navigationCallback)
+                            ListView(featuredList, navController)
                         }
                     }
                 }

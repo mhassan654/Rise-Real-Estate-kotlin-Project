@@ -69,6 +69,7 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+//            .addConverterFactory(PropertyQueryParamConverterFactory())
             .client(client)
             .build()
             .create(ApiService::class.java)

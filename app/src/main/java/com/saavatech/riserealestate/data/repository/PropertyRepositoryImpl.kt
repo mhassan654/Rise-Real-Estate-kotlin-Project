@@ -3,7 +3,6 @@ package com.saavatech.riserealestate.data.repository
 import com.saavatech.riserealestate.data.models.ApiService
 import com.saavatech.riserealestate.data.remote.response.NearByDataPropertyResponse
 import com.saavatech.riserealestate.data.remote.response.PropertyDataResponse
-import com.saavatech.riserealestate.domain.model.PropertyQueryParam
 import com.saavatech.riserealestate.domain.repository.PropertyRepository
 import com.saavatech.riserealestate.util.Resource
 import retrofit2.HttpException
@@ -34,31 +33,20 @@ class PropertyRepositoryImpl(
         promoted: Boolean,
     ): Resource<PropertyDataResponse> {
         val parameters =
-            mapOf(
-                "promoted" to promoted,
-                "offset" to offset,
-                "limit" to limit,
-                "currentUser" to 1,
-            )
+            HashMap<String, Any>()
+        parameters["promoted"] = promoted
+        parameters["offset"] = offset
+        parameters["limit"] = limit
+        parameters["currentUser"] = 1
 
         // Assuming you know the types of your parameters
-        val promoted: Boolean = true
-        val offset = 10
-        val limit = 20
-        val userId: String? = "1234"
 
-        val queryParams = mutableMapOf<String, PropertyQueryParam>()
-
-        queryParams["promoted"] = PropertyQueryParam("promoted", promoted)
-        queryParams["offset"] = PropertyQueryParam("offset", offset)
-        queryParams["limit"] = PropertyQueryParam("limit", limit)
-
-        if (userId != null) {
-            queryParams["current_user"] = PropertyQueryParam("current_user", userId)
-        }
+//        if (userId != null) {
+//            queryParams["current_user"] = PropertyQueryParam(userId)
+//        }
         return try {
             val res =
-                apiService.getProperties(queryParams)
+                apiService.getProperties(parameters)
             Resource.Success(res)
         } catch (e: IOException) {
             Resource.Error("${e.message}")

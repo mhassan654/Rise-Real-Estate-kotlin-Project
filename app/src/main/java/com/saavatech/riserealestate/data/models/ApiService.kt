@@ -34,7 +34,7 @@ interface ApiService {
     @Headers("Accept:application/json")
     @GET(API_GET_PROPERTY)
     suspend fun getProperties(
-        @QueryMap parameters: Map<String, Any?>,
+        @QueryMap parameters: HashMap<String, Any>,
     ): PropertyDataResponse
 
     @Headers("Accept:application/json")

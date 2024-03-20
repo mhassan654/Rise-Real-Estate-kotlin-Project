@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,7 +34,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.saavatech.riserealestate.R
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -42,13 +46,12 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 @Composable
 fun FeatureCardItem(
     modifier: Modifier,
-    title: String,
-    imageTitle: String,
-    navigationCallback: (Int) -> Unit,
+    property: Property,
+    navigationCallback: () -> Unit,
 ) {
     Box(
         modifier
-            .clickable { navigationCallback(12) }
+            .clickable { navigationCallback.invoke() }
 //                .width(300.dp)
             .height(190.dp)
             .background(color = inputBg, shape = RoundedCornerShape(20.dp)),
@@ -59,13 +62,21 @@ fun FeatureCardItem(
         ) {
             Column {
                 Box {
+                    val painter =
+                        rememberAsyncImagePainter(
+                            model =
+                                ImageRequest.Builder(LocalContext.current)
+                                    .data(property.titleImage)
+                                    .build(),
+                        )
+
                     Image(
                         modifier =
                             Modifier
                                 .height(180.dp)
                                 .width(180.dp).clip(RoundedCornerShape(14.dp)),
                         contentScale = ContentScale.Crop,
-                        painter = painterResource(id = R.drawable.image_27),
+                        painter = painter,
                         contentDescription = null,
                     )
 
@@ -96,7 +107,7 @@ fun FeatureCardItem(
 
                         TextWithBlurBg(
                             content =
-                                { Text(text = imageTitle, color = Color.White, fontWeight = FontWeight(300)) },
+                                { Text(text = property.title, color = Color.White, fontWeight = FontWeight(300)) },
                         )
                     }
                 }
@@ -114,7 +125,7 @@ fun FeatureCardItem(
                 ) {
                     Text(
 //                    modifier = Modifier.height(40.dp),
-                        text = title,
+                        text = property.title,
                         style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
                         fontSize = 19.sp,
                         fontWeight = FontWeight(500),
@@ -122,7 +133,7 @@ fun FeatureCardItem(
                     )
 
                     StarRating(4.9.toString(), textColor = null)
-                    IconWithLocation("Jarkat Indonesia")
+                    IconWithLocation(property.address)
                 }
 
                 Text(

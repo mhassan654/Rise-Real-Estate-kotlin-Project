@@ -38,8 +38,6 @@ import com.saavatech.riserealestate.components.RoundedCollageImage
 import com.saavatech.riserealestate.components.TextDescription
 import com.saavatech.riserealestate.components.TitleAndListStyleSwitch
 import com.saavatech.riserealestate.components.TransparentTopAppBar
-import com.saavatech.riserealestate.presentation.FeaturedList.GridView
-import com.saavatech.riserealestate.presentation.FeaturedList.ListView
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.inputBg
 
@@ -148,11 +146,11 @@ fun LocationDetails(navigationCallback: (Int) -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(25.dp))
 
-                    if (switchViewStyle) {
-                        GridView(navigationCallback)
-                    } else {
-                        ListView(navigationCallback)
-                    }
+//                    if (switchViewStyle) {
+//                        GridView(navigationCallback)
+//                    } else {
+//                        ListView(navigationCallback)
+//                    }
                 }
             }
         }

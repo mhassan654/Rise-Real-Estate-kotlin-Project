@@ -71,18 +71,11 @@ fun MainNavigation(
 
         composable(Destinations.FeaturedEstate.route) { backStackEntry ->
             val location = backStackEntry.arguments?.getInt("propertyId")
-            FeaturedEstate(destinationsNavigator) {
-                    propertyDetailsId ->
-                destinationsNavigator.navigateTo("PropertyDetails/$location")
-            }
+            FeaturedEstate(destinationsNavigator)
         }
 
-        composable(Destinations.EstateByCategory.route) { backStackEntry ->
-            val location = backStackEntry.arguments?.getInt("propertyId")
-            RealEstateListByCategory(destinationsNavigator) {
-                    propertyDetailsId ->
-                destinationsNavigator.navigateTo("PropertyDetails/$location")
-            }
+        composable(Destinations.EstateByCategory.route) {
+            RealEstateListByCategory(destinationsNavigator)
         }
 
         composable(Destinations.TopLocations.route) { backStackEntry ->
@@ -107,7 +100,7 @@ fun MainNavigation(
             Destinations.PropertyDetails.route,
             arguments = listOf(navArgument("propertyId") { type = NavType.IntType }),
         ) {
-            val propertyViewModel: PropertyViewModel = hiltViewModel();
+            val propertyViewModel: PropertyViewModel = hiltViewModel()
             PropertyDetails(propertyViewModel.propertyState.value)
         }
         // Add other destinations here if needed

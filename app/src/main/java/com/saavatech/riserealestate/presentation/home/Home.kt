@@ -225,13 +225,13 @@ fun Home(
 
 //                            featured properties  list
                             LazyRow {
-                                items(4) {
+                                items(featuredList) { featuredProperty ->
                                     FeatureCardItem(
                                         modifier = Modifier.width(300.dp),
-                                        title = "Sky Dandelions Apartment",
-                                        imageTitle = "Old kampala",
-                                        navigationCallback,
-                                    )
+                                        property = featuredProperty,
+                                    ) {
+                                        navController.navigateTo("PropertyDetails/${featuredProperty.id}")
+                                    }
                                     Spacer(modifier = Modifier.width(10.dp))
                                 }
                             }

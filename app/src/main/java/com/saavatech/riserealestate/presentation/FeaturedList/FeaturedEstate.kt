@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.AppBar
@@ -47,6 +49,8 @@ import com.saavatech.riserealestate.components.CollageImage
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.VerticalPropertyCard
+import com.saavatech.riserealestate.data.remote.response.Property
+import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -54,10 +58,9 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 
 // fun FeaturedEstate() {
 @Composable
-fun FeaturedEstate(
-    navController: DestinationsNavigator,
-    navigationCallback: (Int) -> Unit,
-) {
+fun FeaturedEstate(navController: DestinationsNavigator) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val featuredList = viewModel.featuredPropertiesListState.value
     var switchViewStyle by remember { mutableStateOf(false) }
     Scaffold(
         topBar =
@@ -220,9 +223,9 @@ fun FeaturedEstate(
                 // Featured cards
                 item {
                     if (switchViewStyle) {
-                        GridView(navigationCallback)
+//                        GridView(navigationCallback)
                     } else {
-                        ListView(navigationCallback)
+                        ListView(featuredList, navController)
                     }
                 }
             }
@@ -245,14 +248,20 @@ fun GridView(navigationCallback: (Int) -> Unit) {
 }
 
 @Composable
-fun ListView(navigationCallback: (Int) -> Unit) {
-    repeat(4) {
-        FeatureCardItem(
-            modifier = Modifier.fillMaxWidth(),
-            title = "Sky Dandelions Apartment",
-            imageTitle = "Old kampala",
-            navigationCallback,
-        )
-        Spacer(modifier = Modifier.height(10.dp))
+fun ListView(
+    featuredItems: List<Property>,
+    navController: DestinationsNavigator,
+) {
+    LazyColumn {
+        items(featuredItems) { item ->
+            FeatureCardItem(
+                modifier = Modifier.fillMaxWidth(),
+                property = item,
+            ) {
+                navController.navigateTo("PropertyDetails/${item.id}")
+            }
+        }
+
+//        Spacer(modifier = Modifier.height(10.dp))
     }
 }

@@ -21,4 +21,4 @@ data class FeaturedPropertyResults(
     val result: Resource<PropertyDataResponse>? = null,
 )
 
-data class PropertyQueryParam(val key: String, val value: Any)
+data class PropertyQueryParam(val value: Any)
