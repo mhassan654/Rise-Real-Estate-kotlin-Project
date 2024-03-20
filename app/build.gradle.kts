@@ -56,6 +56,8 @@ android {
 dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("io.coil-kt:coil-svg:2.6.0")
+    implementation("com.google.maps.android:maps-compose:4.3.3")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     val navVersion = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$navVersion")

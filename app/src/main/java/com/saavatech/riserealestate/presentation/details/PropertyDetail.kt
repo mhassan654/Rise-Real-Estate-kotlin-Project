@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +29,6 @@ import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined._360
 import androidx.compose.material.icons.outlined.Room
-import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +39,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,7 +52,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomBlurBg
@@ -61,7 +67,9 @@ import com.saavatech.riserealestate.components.GreyButtonTextComponent
 import com.saavatech.riserealestate.components.IconWithTextLocation
 import com.saavatech.riserealestate.components.RoundedIconButton
 import com.saavatech.riserealestate.components.StarRating
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.data.remote.response.AssignFacility
+import com.saavatech.riserealestate.data.remote.response.Parameter
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.util.fntSize
@@ -74,11 +82,11 @@ import com.saavatech.riserealestate.util.rounded25
 // }
 
 @Composable
-fun PropertyDetails(nearByPost: NearbyPost?) {
+fun PropertyDetails(property: Property?) {
 //    val viewModel: PropertyViewModel = hiltViewModel()
 //    val propertyState = viewModel.propertyState.value
-    var isFabVisible by remember {
-        mutableStateOf(true)
+    val isFabVisible by remember {
+        mutableStateOf(false)
     }
 
     Scaffold(
@@ -111,7 +119,7 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         rememberAsyncImagePainter(
                             model =
                                 ImageRequest.Builder(LocalContext.current)
-                                    .data(nearByPost?.titleImage)
+                                    .data(property?.titleImage)
                                     .build(),
                         )
                     Image(
@@ -135,7 +143,7 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        nearByPost?.title?.let {
+                        property?.title?.let {
                             Text(
                                 color = MaterialTheme.colorScheme.primary,
                                 fontSize = 25.sp,
@@ -147,7 +155,7 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 22.sp,
                             fontWeight = FontWeight(600),
-                            text = "$ 220",
+                            text = "$ ${property?.price}",
                         )
                     }
 
@@ -157,13 +165,15 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        nearByPost?.state?.let { IconWithTextLocation(it) }
-                        Text(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(300),
-                            text = "per month",
-                        )
+                        property?.address?.let { IconWithTextLocation(it) }
+                        (if (property?.propertyType == "Rent") "per month" else property?.rentduration)?.let {
+                            Text(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight(300),
+                                text = it,
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -173,23 +183,27 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row {
-                            GreyButtonTextComponent(
-                                color = MaterialTheme.colorScheme.primary,
-                                textColor = Color.White,
-                                value = "Rent",
-                                width = 100.dp,
-                                clickAction = {},
-                            )
+                            property?.propertyType?.let {
+                                GreyButtonTextComponent(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    textColor = Color.White,
+                                    value = it,
+                                    width = 100.dp,
+                                    clickAction = {},
+                                )
+                            }
 
                             Spacer(modifier = Modifier.width(10.dp))
 
-                            GreyButtonTextComponent(
-                                color = inputBg,
-                                textColor = MaterialTheme.colorScheme.primary,
-                                value = "Buy",
-                                width = 100.dp,
-                                clickAction = {},
-                            )
+                            (if (property?.propertyType == "Sell") "Buy" else null)?.let {
+                                GreyButtonTextComponent(
+                                    color = inputBg,
+                                    textColor = MaterialTheme.colorScheme.primary,
+                                    value = it,
+                                    width = 100.dp,
+                                    clickAction = {},
+                                )
+                            }
                         }
 
                         RoundedIconButton(
@@ -217,20 +231,29 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             Row(horizontalArrangement = Arrangement.spacedBy(30.dp)) {
+                                val painter =
+                                    rememberAsyncImagePainter(
+                                        model =
+                                            ImageRequest.Builder(LocalContext.current)
+                                                .data(property?.profile)
+                                                .build(),
+                                    )
                                 Image(
                                     modifier =
                                         Modifier
                                             .size(40.dp)
                                             .clip(CircleShape),
                                     contentScale = ContentScale.Crop,
-                                    painter = painterResource(id = R.drawable.profile_image),
+                                    painter = painter,
                                     contentDescription = null,
                                 )
 
                                 Column {
-                                    Text(
-                                        text = "Hassan Saava",
-                                    )
+                                    property?.let {
+                                        Text(
+                                            text = it.customerName,
+                                        )
+                                    }
                                     Text(text = "Real Estate agent")
                                 }
                             }
@@ -245,8 +268,10 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                     Spacer(modifier = Modifier.height(20.dp))
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        items(6) {
-                            FacilityButton()
+                        if (property != null) {
+                            items(property.parameters) { parameter ->
+                                FacilityButton(parameter)
+                            }
                         }
                     }
 
@@ -262,7 +287,31 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    userLocation()
+                    property?.address?.let { userLocation(location = it) }
+
+                    // assigned facilities
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        if (property != null) {
+                            items(property.assignFacilities) { facility ->
+                                PublicFacility(facility)
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    val lat = property?.latitude
+                    val long = property?.longitude
+
+                    property?.let {
+                        if (lat != null) {
+                            if (long != null) {
+                                PropertyDetailsMap(lat.toDouble(), long.toDouble())
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -406,7 +455,7 @@ fun BoxContent() {
 }
 
 @Composable
-fun FacilityButton() {
+fun FacilityButton(parameter: Parameter) {
     Box(
         modifier =
             Modifier.background(
@@ -419,15 +468,25 @@ fun FacilityButton() {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            var painter =
+                rememberAsyncImagePainter(
+                    model =
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(parameter.image)
+                            .decoderFactory(SvgDecoder.Factory()) // Configure SVG decoder
+//                            .placeholder(R.drawable.placeholder_image) // Optional placeholder
+//                            .error(R.drawable.error_image) // Optional error drawable
+                            .build(),
+                )
             Icon(
                 modifier = Modifier.size(30.dp),
-                painter = painterResource(id = R.drawable.condo),
+                painter = painter,
                 contentDescription = null,
                 tint = GreenOne,
             )
 
             Text(
-                text = "2 Bedroom",
+                text = parameter.name,
                 fontSize = fntSize,
                 fontWeight = FontWeight(400),
             )
@@ -436,7 +495,47 @@ fun FacilityButton() {
 }
 
 @Composable
-fun userLocation() {
+fun PublicFacility(facility: AssignFacility) {
+    Box(
+        modifier =
+            Modifier.background(
+                color = inputBg,
+                shape = RoundedCornerShape(rounded25),
+            ),
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            var painter =
+                rememberAsyncImagePainter(
+                    model =
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(facility.image)
+                            .decoderFactory(SvgDecoder.Factory()) // Configure SVG decoder
+//                            .placeholder(R.drawable.placeholder_image) // Optional placeholder
+//                            .error(R.drawable.error_image) // Optional error drawable
+                            .build(),
+                )
+            Icon(
+                modifier = Modifier.size(30.dp),
+                painter = painter,
+                contentDescription = null,
+                tint = GreenOne,
+            )
+
+            Text(
+                text = facility.name,
+                fontSize = fntSize,
+                fontWeight = FontWeight(400),
+            )
+        }
+    }
+}
+
+@Composable
+fun userLocation(location: String) {
     Box(
         modifier = Modifier.padding(18.dp),
     ) {
@@ -462,8 +561,36 @@ fun userLocation() {
             Text(
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = fntSize,
-                text = "St. cikoko Timur key, pancorn, jarkata",
+                text = location,
             )
         }
+    }
+}
+
+// @Preview
+@Composable
+fun PropertyDetailsMap(
+    lat: Double,
+    long: Double,
+) {
+    val city = LatLng(lat, long)
+    val cameraPositionState =
+        rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(city, 10f)
+        }
+
+    GoogleMap(
+        modifier =
+            Modifier
+                .height(400.dp)
+                .fillMaxWidth()
+                .background(color = Color.Transparent, shape = RoundedCornerShape(25.dp)),
+        cameraPositionState = cameraPositionState,
+    ) {
+        Marker(
+            state = MarkerState(position = city),
+            title = "city",
+            snippet = "city",
+        )
     }
 }

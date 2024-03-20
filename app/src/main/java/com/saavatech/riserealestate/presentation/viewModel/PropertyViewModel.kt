@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class PropertyViewModel
         private val savedStateHandle: SavedStateHandle,
         private val propertyUseCase: PropertyUseCase,
     ) : ViewModel() {
-        var propertyState = mutableStateOf<NearbyPost?>(null)
+        var propertyState = mutableStateOf<Property?>(null)
 
         init {
             viewModelScope.launch {

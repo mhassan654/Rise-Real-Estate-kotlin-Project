@@ -106,11 +106,15 @@ class HomeViewModel
             }
         }
 
-        suspend fun getFeaturedProperties(): Any {
+        suspend fun getFeaturedProperties(
+            offset: Int,
+            limit: Int,
+            promoted: Boolean,
+        ): Any {
             return try {
                 _featuredPropertiesState.value = featuredPropertiesState.value.copy(isLoading = true)
 
-                val fetchFeaturedPropertiesResults = propertyUseCase.featuredProperties()
+                val fetchFeaturedPropertiesResults = propertyUseCase.featuredProperties(offset, limit, promoted)
 
                 _nearbyPropertiesState.value = nearbyPropertiesState.value.copy(isLoading = false)
                 Timber.tag("featured properties").d(featuredPropertiesListState.value.toString())

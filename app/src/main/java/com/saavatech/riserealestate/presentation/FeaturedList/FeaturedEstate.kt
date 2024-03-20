@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +49,6 @@ import com.saavatech.riserealestate.components.AppBar
 import com.saavatech.riserealestate.components.CollageImage
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
-import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.Purple80
@@ -56,12 +56,19 @@ import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 
+@Suppress("ktlint:standard:function-naming")
 // fun FeaturedEstate() {
 @Composable
 fun FeaturedEstate(navController: DestinationsNavigator) {
     val viewModel: HomeViewModel = hiltViewModel()
     val featuredList = viewModel.featuredPropertiesListState.value
+    val categoryState = viewModel.categoriesState.value
     var switchViewStyle by remember { mutableStateOf(false) }
+    val lazyState = rememberLazyListState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getFeaturedProperties(1, 10, true)
+    }
     Scaffold(
         topBar =
             {
@@ -82,6 +89,7 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
                     .padding(contentPadding),
         ) {
             LazyColumn(
+                state = lazyState,
                 modifier =
                     Modifier
                         .fillMaxHeight()
@@ -143,7 +151,7 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
                                                 fontWeight = FontWeight(700),
                                             ),
                                     ) {
-                                        append("70")
+                                        append(featuredList.size.toString())
                                     }
                                     append(" ")
                                     withStyle(
@@ -223,7 +231,7 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
                 // Featured cards
                 item {
                     if (switchViewStyle) {
-//                        GridView(navigationCallback)
+                        GridView(featuredList, navController)
                     } else {
                         ListView(featuredList, navController)
                     }
@@ -234,16 +242,31 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
 }
 
 @Composable
-fun GridView(navigationCallback: (Int) -> Unit) {
-    repeat(4) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            repeat(2) {
-                VerticalPropertyCard(property = null) {}
+fun GridView(
+    featuredItems: List<Property>,
+    navController: DestinationsNavigator,
+) {
+//    repeat(4) {
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(10.dp),
+//        ) {
+//            repeat(2) {
+//                VerticalPropertyCard(property = null) {}
+//            }
+//        }
+//        Spacer(modifier = Modifier.height(10.dp))
+//    }
+    Row {
+        featuredItems.withIndex().forEach { (index, item) ->
+            val halfIndex = featuredItems.size / 2
+            val columnModifier = if (index < halfIndex) Modifier.fillMaxWidth(0.5f) else Modifier.fillMaxWidth(0.5f)
+            FeatureCardItem(
+                modifier = columnModifier,
+                property = item,
+            ) {
+                navController.navigateTo("PropertyDetails/${item.id}")
             }
         }
-        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
@@ -252,8 +275,11 @@ fun ListView(
     featuredItems: List<Property>,
     navController: DestinationsNavigator,
 ) {
-    LazyColumn {
-        items(featuredItems) { item ->
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        featuredItems.withIndex().forEach { (index, item) ->
             FeatureCardItem(
                 modifier = Modifier.fillMaxWidth(),
                 property = item,

@@ -108,7 +108,7 @@ fun Home(
     LaunchedEffect(key1 = true) {
         viewModel.getCategories()
         viewModel.getNearByProperties()
-        viewModel.getFeaturedProperties()
+        viewModel.getFeaturedProperties(1, 6, true)
     }
 
     // ui satrts

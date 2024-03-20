@@ -34,8 +34,12 @@ class PropertyUseCase
             return fetchNearByPropertiesResults
         }
 
-        suspend fun featuredProperties(): FeaturedPropertyResults {
-            val featuredPropertiesResults = FeaturedPropertyResults(result = repository.fetchFeaturedProperties(1, 6, true))
+        suspend fun featuredProperties(
+            offset: Int,
+            limit: Int,
+            promoted: Boolean,
+        ): FeaturedPropertyResults {
+            val featuredPropertiesResults = FeaturedPropertyResults(result = repository.fetchFeaturedProperties(offset, limit, promoted))
 
             when (featuredPropertiesResults.result) {
                 is Resource.Success ->
@@ -52,8 +56,14 @@ class PropertyUseCase
             return featuredPropertiesResults
         }
 
-        fun getProperty(id: Comparable<*>): NearbyPost? {
+        fun getPropertyNearby(id: Comparable<*>): NearbyPost? {
             return cachedPosts.firstOrNull {
+                it.id == id
+            }
+        }
+
+        fun getProperty(id: Comparable<*>): Property? {
+            return cachedFeatureProperties.firstOrNull {
                 it.id == id
             }
         }

@@ -52,7 +52,6 @@ fun FeatureCardItem(
     Box(
         modifier
             .clickable { navigationCallback.invoke() }
-//                .width(300.dp)
             .height(190.dp)
             .background(color = inputBg, shape = RoundedCornerShape(20.dp)),
     ) {
@@ -107,7 +106,7 @@ fun FeatureCardItem(
 
                         TextWithBlurBg(
                             content =
-                                { Text(text = property.title, color = Color.White, fontWeight = FontWeight(300)) },
+                                { Text(text = property.state, color = Color.White, fontWeight = FontWeight(300)) },
                         )
                     }
                 }
@@ -133,7 +132,7 @@ fun FeatureCardItem(
                     )
 
                     StarRating(4.9.toString(), textColor = null)
-                    IconWithLocation(property.address)
+                    IconWithLocation(property.city)
                 }
 
                 Text(
@@ -147,7 +146,7 @@ fun FeatureCardItem(
                                         fontWeight = FontWeight(500),
                                     ),
                             ) {
-                                append("$ 290")
+                                append("$ ${property.price}")
                             }
                             append("")
                             withStyle(
