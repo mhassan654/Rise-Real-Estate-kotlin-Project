@@ -45,13 +45,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomBlurBg
@@ -65,11 +67,11 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.util.fntSize
 import com.saavatech.riserealestate.util.rounded25
 
-//@Composable
-//@Preview
-//fun previewDetailsScreen() {
+// @Composable
+// @Preview
+// fun previewDetailsScreen() {
 //    PropertyDetails()
-//}
+// }
 
 @Composable
 fun PropertyDetails(nearByPost: NearbyPost?) {
@@ -105,6 +107,13 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         .fillMaxWidth()
                         .background(shape = RoundedCornerShape(30.dp), color = Color.Transparent),
                 ) {
+                    val painter =
+                        rememberAsyncImagePainter(
+                            model =
+                                ImageRequest.Builder(LocalContext.current)
+                                    .data(nearByPost?.titleImage)
+                                    .build(),
+                        )
                     Image(
                         modifier =
                             Modifier
@@ -112,7 +121,7 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
 //                                .fillMaxWidth()
                                 .clip(RoundedCornerShape(30.dp)),
                         contentScale = ContentScale.Crop,
-                        painter = painterResource(id = R.drawable.image_27),
+                        painter = painter, // painterResource(id = R.drawable.image_27),
                         contentDescription = null,
                     )
 
@@ -126,12 +135,14 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Text(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(700),
-                            text = "Hotel Triangle",
-                        )
+                        nearByPost?.title?.let {
+                            Text(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight(700),
+                                text = it,
+                            )
+                        }
                         Text(
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 22.sp,
@@ -146,7 +157,7 @@ fun PropertyDetails(nearByPost: NearbyPost?) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        IconWithTextLocation("Jarkat Kampala")
+                        nearByPost?.state?.let { IconWithTextLocation(it) }
                         Text(
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 16.sp,
