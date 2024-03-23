@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined._360
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Room
 import androidx.compose.material.icons.outlined.Room
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -49,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -60,6 +64,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomBlurBg
@@ -68,12 +73,16 @@ import com.saavatech.riserealestate.components.IconWithTextLocation
 import com.saavatech.riserealestate.components.RoundedIconButton
 import com.saavatech.riserealestate.components.StarRating
 import com.saavatech.riserealestate.data.remote.response.AssignFacility
+import com.saavatech.riserealestate.data.remote.response.Gallery
 import com.saavatech.riserealestate.data.remote.response.Parameter
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.ui.theme.GreenOne
 import com.saavatech.riserealestate.ui.theme.inputBg
+import com.saavatech.riserealestate.util.customAsyncImagePainter
 import com.saavatech.riserealestate.util.fntSize
+import com.saavatech.riserealestate.util.getLocationAndDistances
 import com.saavatech.riserealestate.util.rounded25
+import timber.log.Timber
 
 // @Composable
 // @Preview
@@ -82,12 +91,20 @@ import com.saavatech.riserealestate.util.rounded25
 // }
 
 @Composable
-fun PropertyDetails(property: Property?) {
+fun PropertyDetails(
+    property: Property?,
+    navController: DestinationsNavigator,
+) {
 //    val viewModel: PropertyViewModel = hiltViewModel()
 //    val propertyState = viewModel.propertyState.value
     val isFabVisible by remember {
         mutableStateOf(false)
     }
+
+    val context = LocalContext.current
+
+    val locationData =
+        property?.longitude?.let { getLocationAndDistances(context, it.toDouble(),property.latitude.toDouble()) }
 
     Scaffold(
         floatingActionButton = {
@@ -101,13 +118,15 @@ fun PropertyDetails(property: Property?) {
         Box(
             Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+//                .verticalScroll(rememberScrollState())
                 .padding(contentPadding),
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier.padding(8.dp),
-//                    .fillMaxHeight()
+                modifier =
+                    Modifier.padding(8.dp)
+                        .verticalScroll(rememberScrollState()),
+                //                    .fillMaxHeight()
 //                    .verticalScroll(rememberScrollState())
             ) {
                 Box(
@@ -133,7 +152,9 @@ fun PropertyDetails(property: Property?) {
                         contentDescription = null,
                     )
 
-                    BoxContent()
+                    if (property != null) {
+                        BoxContent(navBackAction = { navController.navigateUp() }, property = property)
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -165,13 +186,17 @@ fun PropertyDetails(property: Property?) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
+//                        location text
                         property?.address?.let { IconWithTextLocation(it) }
+
                         (if (property?.propertyType == "Rent") "per month" else property?.rentduration)?.let {
                             Text(
+                                modifier = Modifier.width(100.dp),
                                 color = MaterialTheme.colorScheme.primary,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight(300),
                                 text = it,
+                                maxLines = 2
                             )
                         }
                     }
@@ -185,11 +210,16 @@ fun PropertyDetails(property: Property?) {
                         Row {
                             property?.propertyType?.let {
                                 GreyButtonTextComponent(
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color =
+                                        if (property.propertyType === "sold") {
+                                            Color.Red
+                                        } else {
+                                            MaterialTheme.colorScheme.primary
+                                        },
                                     textColor = Color.White,
                                     value = it,
                                     width = 100.dp,
-                                    clickAction = {},
+                                    clickAction = { },
                                 )
                             }
 
@@ -265,6 +295,7 @@ fun PropertyDetails(property: Property?) {
                             )
                         }
                     }
+
                     Spacer(modifier = Modifier.height(20.dp))
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -292,6 +323,20 @@ fun PropertyDetails(property: Property?) {
                     // assigned facilities
                     Spacer(modifier = Modifier.height(20.dp))
 
+                    if (locationData != null) {
+                        val currentLatitude = locationData.latitude
+                        val currentLongitude = locationData.longitude
+                        val distanceToParis = locationData.distance
+
+                        // Use the retrieved data in your Jetpack Compose composables or elsewhere
+                        userLocationDistance(distanceToParis)
+                        // ...
+                    } else {
+                        // Handle cases where location data is unavailable (e.g., permission denied, GPS disabled)
+                        Text(text = "Error getting location data.")
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         if (property != null) {
                             items(property.assignFacilities) { facility ->
@@ -312,6 +357,8 @@ fun PropertyDetails(property: Property?) {
                             }
                         }
                     }
+
+//                    val location = getCurrentLocation(context = Appl)
                 }
             }
         }
@@ -319,14 +366,62 @@ fun PropertyDetails(property: Property?) {
 }
 
 @Composable
-fun BoxContent() {
+fun userLocationDistance(distance: Double) {
+    Box(
+        modifier =
+            Modifier.fillMaxWidth()
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(40.dp),
+                )
+                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(40.dp)),
+    ) {
+        Row(
+            modifier = Modifier.padding(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+        ) {
+            Icon(
+                modifier = Modifier.padding(14.dp),
+                imageVector = Icons.Filled.Room,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = fntSize,
+                fontWeight = FontWeight(700),
+                text = "$distance km",
+            )
+
+            Text(
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = fntSize,
+                fontWeight = FontWeight(300),
+                text = "from your location",
+            )
+
+            Icon(
+                modifier = Modifier.padding(14.dp).size(16.dp),
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
+}
+
+@Composable
+fun BoxContent(
+    navBackAction: () -> Unit,
+    property: Property,
+) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally,
+//        horizontalAlignment = Alignment.CenterHorizontally,
         modifier =
             Modifier
                 .fillMaxHeight()
-//                                .fillMaxWidth()
                 .padding(10.dp),
     ) {
         Row(
@@ -335,7 +430,7 @@ fun BoxContent() {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             IconButton(
-                onClick = {},
+                onClick = { navBackAction.invoke() },
                 modifier =
                     Modifier
                         .background(color = Color.White, shape = CircleShape)
@@ -413,7 +508,7 @@ fun BoxContent() {
                     content =
                         {
                             Text(
-                                text = "Apartment",
+                                text = property.category.category,
                                 modifier =
                                     Modifier
                                         .widthIn(max = 150.dp)
@@ -426,31 +521,60 @@ fun BoxContent() {
                 )
             }
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.End,
-            ) {
-                repeat(3) {
-                    Image(
-                        modifier =
-                            Modifier
-                                .height(50.dp)
-                                .width(50.dp)
-                                .border(
-                                    BorderStroke(2.dp, Color.White),
-                                    RoundedCornerShape(14.dp),
-                                )
-                                .clip(RoundedCornerShape(14.dp)),
-                        contentScale = ContentScale.Crop,
-                        painter = painterResource(id = R.drawable.image_29),
-                        contentDescription = null,
-                    )
-                }
-//                                Spacer(modifier = Modifier.height(4.dp))
-            }
+            ImageListWithLimitedDisplay(property.gallery) {}
+        }
+    }
+}
+
+@Composable
+fun ImageListWithLimitedDisplay(
+    imageList: List<Gallery>, // Replace with your image data source
+    onClick: () -> Unit, // Function to handle image gallery opening
+) {
+    val imageCount = imageList.size
+    val displayedImages = imageList.take(3) // Show only the first 3 images
+
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        modifier = Modifier.fillMaxHeight(),
+    ) {
+        displayedImages.forEachIndexed { index, imageUrl ->
+            Image(
+                painter = customAsyncImagePainter(imageUrl = imageUrl.imageUrl), // Replace with placeholder image resource
+                contentDescription = "Image $index",
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier
+                        .height(50.dp)
+                        .width(50.dp)
+                        .border(
+                            BorderStroke(2.dp, Color.White),
+                            RoundedCornerShape(14.dp),
+                        )
+                        .clip(RoundedCornerShape(14.dp)),
+            )
         }
 
-//        Spacer(modifier = Modifier.height(4.dp))
+        if (imageCount > 3) {
+            Box(
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .clickable { onClick() }
+                        .padding(4.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "+${imageCount - 3}",
+                    color = Color.Gray,
+                    fontWeight = FontWeight(200),
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 10.sp,
+                    maxLines = 1,
+                )
+            }
+        }
     }
 }
 
@@ -468,7 +592,7 @@ fun FacilityButton(parameter: Parameter) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            var painter =
+            val painter =
                 rememberAsyncImagePainter(
                     model =
                         ImageRequest.Builder(LocalContext.current)
@@ -579,18 +703,37 @@ fun PropertyDetailsMap(
             position = CameraPosition.fromLatLngZoom(city, 10f)
         }
 
-    GoogleMap(
+    Box(
         modifier =
             Modifier
-                .height(400.dp)
-                .fillMaxWidth()
-                .background(color = Color.Transparent, shape = RoundedCornerShape(25.dp)),
-        cameraPositionState = cameraPositionState,
+                .fillMaxSize()
+                .background(shape = RoundedCornerShape(rounded25), color = Color.Blue),
     ) {
-        Marker(
-            state = MarkerState(position = city),
-            title = "city",
-            snippet = "city",
-        )
+        GoogleMap(
+            modifier =
+                Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
+                    .background(color = inputBg, shape = RoundedCornerShape(25.dp)),
+            cameraPositionState = cameraPositionState,
+        ) {
+            Marker(
+                state = MarkerState(position = city),
+                title = "city",
+                snippet = "city",
+            )
+        }
+
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.LightGray).align(Alignment.BottomCenter),
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.BottomCenter).padding(vertical = 6.dp),
+                text = "View On Full Map",
+            )
+        }
     }
 }

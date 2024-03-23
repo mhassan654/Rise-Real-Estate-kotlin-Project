@@ -1,5 +1,8 @@
 package com.saavatech.riserealestate
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
@@ -19,6 +23,19 @@ import com.saavatech.riserealestate.presentation.viewModel.MainViewModel
 import com.saavatech.riserealestate.ui.theme.RiseRealEstateTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
+fun hasLocationPermission(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    ) == PackageManager.PERMISSION_GRANTED
+}
+
+fun requestLocationPermission(activity: ComponentActivity) {
+    activity.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+}
+
+const val LOCATION_PERMISSION_REQUEST_CODE = 101
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

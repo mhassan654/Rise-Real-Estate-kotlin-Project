@@ -22,3 +22,9 @@ data class FeaturedPropertyResults(
 )
 
 data class PropertyQueryParam(val value: Any)
+
+data class LocationData(
+    val latitude: Double,
+    val longitude: Double,
+    val distance: Double,
+)

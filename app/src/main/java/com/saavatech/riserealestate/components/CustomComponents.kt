@@ -69,6 +69,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -144,10 +145,12 @@ fun IconWithTextLocation(location: String) {
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
+                overflow = TextOverflow.Ellipsis,
                 text = location,
-                fontSize = 14.sp,
+                fontSize = 10.sp,
                 fontWeight = FontWeight(400),
                 color = TextColorOne,
+                maxLines = 3,
             )
         }
     }

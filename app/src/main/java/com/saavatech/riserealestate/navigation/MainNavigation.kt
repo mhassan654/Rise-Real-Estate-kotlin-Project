@@ -34,7 +34,7 @@ fun MainNavigation(
     val destinationsNavigator = DestinationsNavigator(navController)
     Timber.tag("start screen").d(startScreen)
 
-    NavHost(navController = navController, startDestination = Destinations.Home.route) {
+    NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Destinations.LoginOption.route) {
             LoginScreenOption(destinationsNavigator)
         }
@@ -101,7 +101,7 @@ fun MainNavigation(
             arguments = listOf(navArgument("propertyId") { type = NavType.IntType }),
         ) {
             val propertyViewModel: PropertyViewModel = hiltViewModel()
-            PropertyDetails(propertyViewModel.propertyState.value)
+            PropertyDetails(propertyViewModel.propertyState.value, destinationsNavigator)
         }
         // Add other destinations here if needed
     }
