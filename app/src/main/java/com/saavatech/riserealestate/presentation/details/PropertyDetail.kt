@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -82,7 +83,6 @@ import com.saavatech.riserealestate.util.customAsyncImagePainter
 import com.saavatech.riserealestate.util.fntSize
 import com.saavatech.riserealestate.util.getLocationAndDistances
 import com.saavatech.riserealestate.util.rounded25
-import timber.log.Timber
 
 // @Composable
 // @Preview
@@ -104,7 +104,7 @@ fun PropertyDetails(
     val context = LocalContext.current
 
     val locationData =
-        property?.longitude?.let { getLocationAndDistances(context, it.toDouble(),property.latitude.toDouble()) }
+        property?.longitude?.let { getLocationAndDistances(context, it.toDouble(), property.latitude.toDouble()) }
 
     Scaffold(
         floatingActionButton = {
@@ -124,7 +124,8 @@ fun PropertyDetails(
             Column(
                 verticalArrangement = Arrangement.Top,
                 modifier =
-                    Modifier.padding(8.dp)
+                    Modifier
+                        .padding(8.dp)
                         .verticalScroll(rememberScrollState()),
                 //                    .fillMaxHeight()
 //                    .verticalScroll(rememberScrollState())
@@ -196,7 +197,7 @@ fun PropertyDetails(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight(300),
                                 text = it,
-                                maxLines = 2
+                                maxLines = 2,
                             )
                         }
                     }
@@ -358,6 +359,18 @@ fun PropertyDetails(
                         }
                     }
 
+
+                    // reviews bottom section
+                    Text(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight(700),
+                        text = "Reviews",
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                    reviewsSection()
+
 //                    val location = getCurrentLocation(context = Appl)
                 }
             }
@@ -369,7 +382,8 @@ fun PropertyDetails(
 fun userLocationDistance(distance: Double) {
     Box(
         modifier =
-            Modifier.fillMaxWidth()
+            Modifier
+                .fillMaxWidth()
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(40.dp),
@@ -402,7 +416,10 @@ fun userLocationDistance(distance: Double) {
             )
 
             Icon(
-                modifier = Modifier.padding(14.dp).size(16.dp),
+                modifier =
+                    Modifier
+                        .padding(14.dp)
+                        .size(16.dp),
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
@@ -523,6 +540,8 @@ fun BoxContent(
 
             ImageListWithLimitedDisplay(property.gallery) {}
         }
+
+
     }
 }
 
@@ -733,6 +752,108 @@ fun PropertyDetailsMap(
             Text(
                 modifier = Modifier.align(Alignment.BottomCenter).padding(vertical = 6.dp),
                 text = "View On Full Map",
+            )
+        }
+    }
+}
+
+@Composable
+fun ReviewItem() {
+    Box(
+        modifier =
+            Modifier.background(
+                color = inputBg,
+                shape = RoundedCornerShape(20.dp),
+            ),
+    ) {
+        Row(
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(10.dp).fillMaxWidth(),
+        ) {
+            Image(
+                modifier =
+                    Modifier
+                        .size(45.dp)
+                        .border(
+                            BorderStroke(2.8.dp, Color.White),
+                            shape = CircleShape,
+                        )
+                        .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                painter = painterResource(id = R.drawable.profile_image),
+                contentDescription = null,
+            )
+
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(500),
+                        text = "Hassan Saava",
+                    )
+
+                    Text(text = "Saava")
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text =
+                        "lorem ipsum jsdvsjbjsdkjvsdkjvkjsdvkdsvkssdv" +
+                            "skjdjksvjsjkvdsksg,jdfjkkhkdfgjkdfgjkjfkf" +
+                            "sdfgksdjdhfjdsfkgfdkskdfg" +
+                            "sdjskdgjksjdgjkssrugfjdhgsjgfdjksgfd" +
+                            "hsbdcjsdhvbshdbh",
+                    fontSize = 10.sp,
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    fontSize = 7.sp,
+                    text = "12 days ago",
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview
+fun previewReviewComponent() {
+    ReviewItem()
+}
+
+@Composable
+@Preview
+fun reviewsSection() {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            repeat(2) {
+                ReviewItem()
+            }
+        }
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier =
+                Modifier.background(
+                    color = inputBg,
+                    shape = RoundedCornerShape(16.dp),
+                )
+                    .fillMaxWidth(),
+        ) {
+            Text(
+                modifier = Modifier.padding(15.dp),
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                text = "View All reviews",
             )
         }
     }
