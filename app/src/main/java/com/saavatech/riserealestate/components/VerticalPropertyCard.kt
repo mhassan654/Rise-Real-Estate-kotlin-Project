@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
@@ -47,7 +47,7 @@ import com.saavatech.riserealestate.ui.theme.primaryBackground1
 // @Preview(showBackground = true)
 @Composable
 fun VerticalPropertyCard(
-    property: NearbyPost?,
+    property: Property?,
     navigationCallback: () -> Unit,
 ) {
     Box(

@@ -359,7 +359,7 @@ fun PropertyDetails(
                         }
                     }
 
-
+                    Spacer(modifier = Modifier.height(40.dp))
                     // reviews bottom section
                     Text(
                         color = MaterialTheme.colorScheme.primary,
@@ -368,7 +368,7 @@ fun PropertyDetails(
                         text = "Reviews",
                     )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     reviewsSection()
 
 //                    val location = getCurrentLocation(context = Appl)
@@ -540,8 +540,6 @@ fun BoxContent(
 
             ImageListWithLimitedDisplay(property.gallery) {}
         }
-
-
     }
 }
 
@@ -793,7 +791,7 @@ fun ReviewItem() {
                     Text(
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight(500),
+                        fontWeight = FontWeight(600),
                         text = "Hassan Saava",
                     )
 
@@ -807,13 +805,13 @@ fun ReviewItem() {
                             "sdfgksdjdhfjdsfkgfdkskdfg" +
                             "sdjskdgjksjdgjkssrugfjdhgsjgfdjksgfd" +
                             "hsbdcjsdhvbshdbh",
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    fontSize = 7.sp,
+                    fontSize = 9.sp,
                     text = "12 days ago",
                 )
             }

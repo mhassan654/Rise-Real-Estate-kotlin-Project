@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -71,8 +69,8 @@ import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
-import com.saavatech.riserealestate.components.NearByPropertyCard
 import com.saavatech.riserealestate.components.PromotionCard
+import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.components.sectionTitles
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.navigation.AppBottomSheet
@@ -255,21 +253,30 @@ fun Home(
                 }
 
                 item {
-                    Column {
-                        if (nearbyState.isLoading) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                        }
-                        LazyVerticalGrid(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.height(500.dp),
-                            columns = GridCells.Fixed(2),
-                        ) {
-                            items(nearbyListState) { property ->
-                                NearByPropertyCard(property = property, onClick = {})
-//                                {
-//                                    navController.navigateTo("PropertyDetails/${property.id}")
-//                                }
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        nearbyListState.chunked(2).forEach { chunk ->
+                            Row {
+                                chunk.firstOrNull()?.let { item ->
+                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                        VerticalPropertyCard(
+                                            property = item,
+                                        ) {
+                                            navController.navigateTo("PropertyDetails/${item.id}")
+                                        }
+                                    }
+                                }
+                                chunk.getOrNull(1)?.let { secondItem ->
+                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                        VerticalPropertyCard(
+                                            property = secondItem,
+                                        ) {
+                                            navController.navigateTo("PropertyDetails/${secondItem.id}")
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

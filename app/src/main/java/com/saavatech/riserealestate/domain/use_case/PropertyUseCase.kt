@@ -1,7 +1,6 @@
 package com.saavatech.riserealestate.domain.use_case
 
 import com.saavatech.riserealestate.common.UiEvents
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.model.FeaturedPropertyResults
 import com.saavatech.riserealestate.domain.model.NearByPropertyResults
@@ -13,7 +12,7 @@ import javax.inject.Inject
 class PropertyUseCase
     @Inject
     constructor(private val repository: PropertyRepository) {
-        private var cachedPosts = listOf<NearbyPost>()
+        private var cachedPosts = listOf<Property>()
         private var cachedFeatureProperties = listOf<Property>()
 
         suspend fun nearByProperties(): NearByPropertyResults {
@@ -56,7 +55,7 @@ class PropertyUseCase
             return featuredPropertiesResults
         }
 
-        fun getPropertyNearby(id: Comparable<*>): NearbyPost? {
+        fun getPropertyNearby(id: Comparable<*>): Property? {
             return cachedPosts.firstOrNull {
                 it.id == id
             }

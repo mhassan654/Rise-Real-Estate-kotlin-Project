@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 
 data class NearByDataPropertyResponse(
     @SerializedName("data")
-    val `data`: List<NearbyPost>,
+    val `data`: List<Property>,
     @SerializedName("error")
     val error: Boolean,
 )

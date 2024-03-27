@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.saavatech.riserealestate.common.UiEvents
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
+import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import com.saavatech.riserealestate.presentation.CategoriesState
@@ -34,7 +34,7 @@ class SharedViewModel
         val eventFlow = _eventFlow.asSharedFlow()
 
         val categoriesListState: MutableState<List<CategoryResponse>> = mutableStateOf(emptyList())
-        val nearbyPropertiesListState: MutableState<List<NearbyPost>> = mutableStateOf(emptyList())
+        val nearbyPropertiesListState: MutableState<List<Property>> = mutableStateOf(emptyList())
 
         suspend fun getCategories(): Any {
             return try {

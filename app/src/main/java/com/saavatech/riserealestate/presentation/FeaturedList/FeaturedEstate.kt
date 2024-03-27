@@ -49,6 +49,7 @@ import com.saavatech.riserealestate.components.AppBar
 import com.saavatech.riserealestate.components.CollageImage
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
+import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
 import com.saavatech.riserealestate.ui.theme.Purple80
@@ -246,25 +247,32 @@ fun GridView(
     featuredItems: List<Property>,
     navController: DestinationsNavigator,
 ) {
-//    repeat(4) {
-//        Row(
-//            horizontalArrangement = Arrangement.spacedBy(10.dp),
-//        ) {
-//            repeat(2) {
-//                VerticalPropertyCard(property = null) {}
-//            }
-//        }
-//        Spacer(modifier = Modifier.height(10.dp))
-//    }
-    Row {
-        featuredItems.withIndex().forEach { (index, item) ->
-            val halfIndex = featuredItems.size / 2
-            val columnModifier = if (index < halfIndex) Modifier.fillMaxWidth(0.5f) else Modifier.fillMaxWidth(0.5f)
-            FeatureCardItem(
-                modifier = columnModifier,
-                property = item,
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        featuredItems.chunked(2).forEach { chunk ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                navController.navigateTo("PropertyDetails/${item.id}")
+                chunk.firstOrNull()?.let { item ->
+                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                        VerticalPropertyCard(
+                            property = item,
+                        ) {
+                            navController.navigateTo("PropertyDetails/${item.id}")
+                        }
+                    }
+                }
+                chunk.getOrNull(1)?.let { secondItem ->
+                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                        VerticalPropertyCard(
+                            property = secondItem,
+                        ) {
+                            navController.navigateTo("PropertyDetails/${secondItem.id}")
+                        }
+                    }
+                }
             }
         }
     }

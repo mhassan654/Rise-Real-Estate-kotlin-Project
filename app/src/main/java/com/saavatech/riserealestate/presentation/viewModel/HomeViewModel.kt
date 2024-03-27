@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.saavatech.riserealestate.common.UiEvents
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
-import com.saavatech.riserealestate.data.remote.response.NearbyPost
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
@@ -32,7 +31,7 @@ class HomeViewModel
         // nearby properties
         private var _nearbyPropertiesState = mutableStateOf(CategoriesState())
         val nearbyPropertiesState: State<CategoriesState> = _nearbyPropertiesState
-        val nearbyPropertiesListState: MutableState<List<NearbyPost>> = mutableStateOf(emptyList())
+        val nearbyPropertiesListState: MutableState<List<Property>> = mutableStateOf(emptyList())
 
         // featured properties
         private var _featuredPropertiesState = mutableStateOf(CategoriesState())
@@ -42,14 +41,14 @@ class HomeViewModel
         private val _eventFlow = MutableSharedFlow<UiEvents>()
         val eventFlow = _eventFlow.asSharedFlow()
 
-        fun getProperty(id: Int): NearbyPost? {
+        fun getProperty(id: Int): Property? {
             // Access the current list from the state
             val nearbyProperties = nearbyPropertiesListState.value
 
             return nearbyProperties.firstOrNull { it.id == id }
         }
 
-        fun getProperty2(id: Int): NearbyPost? {
+        fun getProperty2(id: Int): Property? {
             return nearbyPropertiesListState.value.filter { it.id == id }.firstOrNull()
         }
 
