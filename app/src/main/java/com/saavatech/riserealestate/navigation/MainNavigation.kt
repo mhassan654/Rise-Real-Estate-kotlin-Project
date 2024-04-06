@@ -74,8 +74,13 @@ fun MainNavigation(
             FeaturedEstate(destinationsNavigator)
         }
 
-        composable(Destinations.EstateByCategory.route) {
-            RealEstateListByCategory(destinationsNavigator)
+        composable(
+            Destinations.EstateByCategory.route,
+            arguments = listOf(navArgument("categoryId") { type = NavType.IntType }),
+        ) {
+            RealEstateListByCategory(
+                destinationsNavigator,
+            )
         }
 
         composable(Destinations.TopLocations.route) { backStackEntry ->

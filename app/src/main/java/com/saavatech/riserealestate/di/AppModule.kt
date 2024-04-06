@@ -9,14 +9,17 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.saavatech.riserealestate.data.local.AppPreferences
 import com.saavatech.riserealestate.data.local.LocalUsermanagerImpl
 import com.saavatech.riserealestate.data.models.ApiService
+import com.saavatech.riserealestate.data.repository.AppSettingsRepositoryImpl
 import com.saavatech.riserealestate.data.repository.AuthRepositoryImpl
 import com.saavatech.riserealestate.data.repository.CategoryRepositoryImpl
 import com.saavatech.riserealestate.data.repository.PropertyRepositoryImpl
 import com.saavatech.riserealestate.domain.manager.LocalUserManager
+import com.saavatech.riserealestate.domain.repository.AppSettingsRepository
 import com.saavatech.riserealestate.domain.repository.AuthRepository
 import com.saavatech.riserealestate.domain.repository.CategoryRepository
 import com.saavatech.riserealestate.domain.repository.PropertyRepository
 import com.saavatech.riserealestate.domain.use_case.AppEntryUseCases
+import com.saavatech.riserealestate.domain.use_case.AppSettingsUseCase
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
 import com.saavatech.riserealestate.domain.use_case.ReadAppEntryUseCase
@@ -112,6 +115,18 @@ object AppModule {
     @Singleton
     fun providesPropertyRepository(apiService: ApiService): PropertyRepository {
         return PropertyRepositoryImpl(apiService = apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAppSettingsRepository(apiService: ApiService): AppSettingsRepository {
+        return AppSettingsRepositoryImpl(apiService = apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAppSettingsUseCase(repository: AppSettingsRepository): AppSettingsUseCase {
+        return AppSettingsUseCase(repository)
     }
 
     @Provides

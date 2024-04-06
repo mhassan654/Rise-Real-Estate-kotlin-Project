@@ -39,11 +39,6 @@ class PropertyRepositoryImpl(
         parameters["limit"] = limit
         parameters["currentUser"] = 1
 
-        // Assuming you know the types of your parameters
-
-//        if (userId != null) {
-//            queryParams["current_user"] = PropertyQueryParam(userId)
-//        }
         return try {
             val res =
                 apiService.getProperties(parameters)
@@ -53,5 +48,21 @@ class PropertyRepositoryImpl(
         } catch (e: HttpException) {
             Resource.Error("${e.message}")
         }
+    }
+
+    override suspend fun fetchCategoryProperties(categoryId: Int): Resource<PropertyDataResponse> {
+        return try {
+            val res =
+                apiService.getCategoryProperties(categoryId)
+            Resource.Success(res)
+        } catch (e: IOException) {
+            Resource.Error("${e.message}")
+        } catch (e: HttpException) {
+            Resource.Error("${e.message}")
+        }
+    }
+
+    override suspend fun getTopVillaCategoryProperties(): Resource<PropertyDataResponse> {
+        TODO("Not yet implemented")
     }
 }

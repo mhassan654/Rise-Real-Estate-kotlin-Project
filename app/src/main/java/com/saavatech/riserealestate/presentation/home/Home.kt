@@ -187,7 +187,9 @@ fun Home(
                         LazyRow {
                             items(categoryListState) { category ->
                                 PropertCategory(category = category) {
-                                    navController.navigateTo("PropertyDetails/${category.id}")
+                                    navController.navigateTo(
+                                        "EstateByCategory/${1}",
+                                    )
                                 }
                                 Spacer(modifier = Modifier.width(6.dp))
                             }

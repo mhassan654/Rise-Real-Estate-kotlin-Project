@@ -1,7 +1,7 @@
 package com.saavatech.riserealestate.data.remote.response
 import com.google.gson.annotations.SerializedName
 
-data class AppSettings(
+data class AppSettingsResponse(
     @SerializedName("data")
     val data: SettingsData,
     @SerializedName("error")

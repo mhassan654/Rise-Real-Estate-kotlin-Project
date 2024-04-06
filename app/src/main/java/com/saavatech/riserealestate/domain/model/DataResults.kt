@@ -1,5 +1,6 @@
 package com.saavatech.riserealestate.domain.model
 
+import com.saavatech.riserealestate.data.remote.response.AppSettingsResponse
 import com.saavatech.riserealestate.data.remote.response.CategoriesResponse
 import com.saavatech.riserealestate.data.remote.response.NearByDataPropertyResponse
 import com.saavatech.riserealestate.data.remote.response.PropertyDataResponse
@@ -19,6 +20,10 @@ data class NearByPropertyResults(
 
 data class FeaturedPropertyResults(
     val result: Resource<PropertyDataResponse>? = null,
+)
+
+data class FetchAppSettingsResults(
+    val result: Resource<AppSettingsResponse>? = null,
 )
 
 data class PropertyQueryParam(val value: Any)

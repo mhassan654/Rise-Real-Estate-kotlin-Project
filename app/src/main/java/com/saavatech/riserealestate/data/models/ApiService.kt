@@ -1,6 +1,7 @@
 package com.saavatech.riserealestate.data.models
 
 import com.saavatech.riserealestate.data.remote.request.SignUpRequest
+import com.saavatech.riserealestate.data.remote.response.AppSettingsResponse
 import com.saavatech.riserealestate.data.remote.response.CategoriesResponse
 import com.saavatech.riserealestate.data.remote.response.NearByDataPropertyResponse
 import com.saavatech.riserealestate.data.remote.response.PropertyDataResponse
@@ -14,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface ApiService {
@@ -38,8 +40,14 @@ interface ApiService {
     ): PropertyDataResponse
 
     @Headers("Accept:application/json")
+    @GET(API_GET_PROPERTY)
+    suspend fun getCategoryProperties(
+        @Query("category_id") caregoryId: Int,
+    ): PropertyDataResponse
+
+    @Headers("Accept:application/json")
     @GET(API_GET_SYSTEM_SETTINGS)
-    suspend fun getAppSettings(): NearByDataPropertyResponse
+    suspend fun getAppSettings(): AppSettingsResponse
 }
 
 // 2. Function to build URL with query parameters

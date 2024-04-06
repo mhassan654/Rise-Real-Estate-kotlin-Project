@@ -85,19 +85,40 @@ fun OnBoardingScreen(
             },
         )
 
-//        Text(text = (pageState.currentPage).toString())
-
-        HorizontalPager(
-            state = pageState,
-            modifier =
-                Modifier
-                    .fillMaxSize()
+        Box {
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally ){
+                HorizontalPager(
+                    state = pageState,
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
                     .weight(0.8f),
-        ) { page ->
-            OnBoardingPagerScreen(
-                pages[page],
-            )
+                ) { page ->
+                    OnBoardingPagerScreen(
+                        pages[page],
+                    )
+                }
+
+                Indicators(pages.size, pageState.currentPage)
+                FinishButton(
+                    modifier = Modifier.height(50.dp),
+                    pagerState = pageState,
+                ) {
+                    scope.launch {
+                        if (pageState.currentPage == 2) {
+                            event(OnBoardingEvent.SaveAppEntry)
+                        } else {
+                            pageState.animateScrollToPage(page = pageState.currentPage + 1)
+                        }
+                    }
+                }
+            }
+
         }
+
+
 
         // Define your click handlers outside the composable function
         var onPreviousClicked: () -> Unit = {
@@ -124,18 +145,9 @@ fun OnBoardingScreen(
             }
         }
 
-        FinishButton(
-            modifier = Modifier.height(50.dp),
-            pagerState = pageState,
-        ) {
-           scope.launch {
-               if (pageState.currentPage == 2){
-                   event(OnBoardingEvent.SaveAppEntry)
-               }else{
-                   pageState.animateScrollToPage(page = pageState.currentPage + 1)
-               }
-           }
-        }
+
+
+
 
 //        ButtomSection(
 //            size = pages.size,
@@ -165,7 +177,7 @@ fun TopSection(onSkipClick: () -> Unit = {}) {
             modifier =
                 Modifier
                     .align(Alignment.CenterEnd)
-                    .background(ButtonBgOne, shape = RoundedCornerShape(25.dp)),
+                    .background(ButtonBgOne, shape = RoundedCornerShape(20.dp)),
             onClick = onSkipClick,
         ) {
             Text(
@@ -226,7 +238,7 @@ fun OnBoardingPagerScreen(onBoardingPage: OnBoardingPage) {
                             }
                         },
                     fontFamily = FontFamily.SansSerif,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     color = TextColorBold,
                 )
 

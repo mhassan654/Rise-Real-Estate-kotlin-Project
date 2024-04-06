@@ -17,7 +17,7 @@ sealed class Destinations(val route: String) {
 
     data object FeaturedEstate : Destinations("FeaturedEstate")
 
-    data object EstateByCategory : Destinations("EstateByCategory")
+    data object EstateByCategory : Destinations("EstateByCategory/{categoryId}")
 
     data object TopLocations : Destinations("TopLocations")
 
