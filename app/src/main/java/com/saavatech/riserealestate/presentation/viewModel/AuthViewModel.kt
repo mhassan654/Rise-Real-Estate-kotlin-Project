@@ -64,6 +64,7 @@ class AuthViewModel
         }
 
         fun signUpUser() {
+            Timber.tag("register")
             viewModelScope.launch {
                 _loginState.value = loginState.value.copy(isLoading = true)
 
