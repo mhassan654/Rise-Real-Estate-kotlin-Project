@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -91,7 +90,7 @@ fun Home(
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
 
-    val categoryState = viewModel.categoriesState.value
+    val categoryState = viewModel.loadingState.value
     val nearbyState = viewModel.nearbyPropertiesState.value
     val categoryListState = viewModel.categoriesListState.value
     val nearbyListState = viewModel.nearbyPropertiesListState.value
@@ -128,7 +127,8 @@ fun Home(
                 state = lazyState,
                 modifier =
                     Modifier
-                        .fillMaxHeight().padding(innerPadding),
+                        .fillMaxHeight()
+                        .padding(innerPadding),
             ) {
                 item {
                     Column(
@@ -188,7 +188,7 @@ fun Home(
                             items(categoryListState) { category ->
                                 PropertCategory(category = category) {
                                     navController.navigateTo(
-                                        "EstateByCategory/${1}",
+                                        "EstateByCategory/${category.id}",
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -262,7 +262,8 @@ fun Home(
                         nearbyListState.chunked(2).forEach { chunk ->
                             Row {
                                 chunk.firstOrNull()?.let { item ->
-                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        // Adjust weight for desired ratio
                                         VerticalPropertyCard(
                                             property = item,
                                         ) {
@@ -271,7 +272,8 @@ fun Home(
                                     }
                                 }
                                 chunk.getOrNull(1)?.let { secondItem ->
-                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        // Adjust weight for desired ratio
                                         VerticalPropertyCard(
                                             property = secondItem,
                                         ) {
@@ -304,11 +306,11 @@ fun PropertCategory(
 ) {
     Box(
         modifier =
-            Modifier.background(
-                shape = RoundedCornerShape(20.dp),
-                color = inputBg,
-            )
-                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
+            Modifier
+                .background(
+                    shape = RoundedCornerShape(20.dp),
+                    color = inputBg,
+                ).border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                 .clickable {
                     clickAction.invoke()
                 },
@@ -321,7 +323,8 @@ fun PropertCategory(
             val painter =
                 rememberAsyncImagePainter(
                     model =
-                        ImageRequest.Builder(LocalContext.current)
+                        ImageRequest
+                            .Builder(LocalContext.current)
                             .data(category.image)
                             .decoderFactory(SvgDecoder.Factory()) // Configure SVG decoder
 //                            .placeholder(R.drawable.placeholder_image) // Optional placeholder
@@ -352,7 +355,10 @@ fun rowButton(
 ) {
     Box(
         modifier =
-            Modifier.padding(8.dp).fillMaxWidth().heightIn(90.dp)
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .heightIn(90.dp)
                 .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                 .background(
                     color = bgColor,
@@ -453,8 +459,7 @@ fun TobBar(openBottomSheetClick: () -> Unit) {
                             .border(
                                 BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                                 shape = CircleShape,
-                            )
-                            .clip(CircleShape),
+                            ).clip(CircleShape),
                     contentScale = ContentScale.Crop,
                     painter = painterResource(id = R.drawable.profile_image),
                     contentDescription = null,

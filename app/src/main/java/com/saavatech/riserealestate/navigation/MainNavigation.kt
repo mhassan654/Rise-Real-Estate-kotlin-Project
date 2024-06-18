@@ -60,11 +60,9 @@ fun MainNavigation(
             PromotionScreen(destinationsNavigator)
         }
 
-        composable(BottomScreens.Home.route) {
-                backStackEntry ->
+        composable(BottomScreens.Home.route) { backStackEntry ->
             val location = backStackEntry.arguments?.getInt("propertyId")
-            Home(destinationsNavigator) {
-                    propertyDetailsId ->
+            Home(destinationsNavigator) { propertyDetailsId ->
                 destinationsNavigator.navigateTo("PropertyDetails/$location")
             }
         }
@@ -85,8 +83,7 @@ fun MainNavigation(
 
         composable(Destinations.TopLocations.route) { backStackEntry ->
             val location = backStackEntry.arguments?.getInt("location")
-            TopLocationsScreen(destinationsNavigator) {
-                    locationDetailsId ->
+            TopLocationsScreen(destinationsNavigator) { locationDetailsId ->
                 destinationsNavigator.navigateTo("LocationDetails/$locationDetailsId")
             }
         }
@@ -95,8 +92,7 @@ fun MainNavigation(
             Destinations.LocationDetails.route,
             arguments = listOf(navArgument("location") { type = NavType.IntType }),
         ) {
-            LocationDetails {
-                    locationDetailsId ->
+            LocationDetails { locationDetailsId ->
                 destinationsNavigator.navigateTo("PropertyDetails/$locationDetailsId")
             }
         }

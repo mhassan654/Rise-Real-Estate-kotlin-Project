@@ -1,5 +1,5 @@
 package com.saavatech.riserealestate.presentation
 
-data class CategoriesState(
+data class LoadingState(
     val isLoading: Boolean = false,
 )

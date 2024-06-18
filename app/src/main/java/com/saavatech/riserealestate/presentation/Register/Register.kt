@@ -247,10 +247,4 @@ fun RegisterScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun RegisterPreview() {
-    val navController: NavHostController = rememberNavController()
-    val destinationsNavigator = DestinationsNavigator(navController)
-    RegisterScreen(destinationsNavigator)
-}
+

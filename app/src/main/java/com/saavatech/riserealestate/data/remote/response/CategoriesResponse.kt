@@ -19,8 +19,8 @@ data class CategoryResponse(
     val id: Int,
     @SerializedName("image")
     val image: String,
-    @SerializedName("parameter_types")
-    val parameterTypes: ParameterTypes,
+//    @SerializedName("parameter_types")
+//    val parameterTypes: ParameterTypes,
     @SerializedName("properties_count")
     val propertiesCount: Int,
 )
