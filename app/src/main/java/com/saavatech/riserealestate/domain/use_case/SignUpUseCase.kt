@@ -75,20 +75,6 @@ class SignUpUseCase
 //            firebase_id = firebaseId.trim(),
 
             val res = SignUpResult(result = repository.register(signUpRequest))
-
-//            Timber.tag("Sign up usecase response message:").d(response.toString())
-
-//            return response
-
-//            when (res.result) {
-//                is Resource.Error ->
-//                    Timber.tag("test").d(res.result.data.toString())
-//                is Resource.Loading -> TODO()
-//                is Resource.Success ->
-//                    Timber.tag("test").d(res.result.toString())
-//                null -> TODO()
-//            }
-
             return res
         }
     }

@@ -84,6 +84,7 @@ fun RegisterScreen(
                     snackbarHostState.showSnackbar(
                         message = event.message,
                         duration = SnackbarDuration.Indefinite,
+                        withDismissAction = true,
                     )
                 }
                 is UiEvents.NavigationEvent -> {
@@ -153,7 +154,7 @@ fun RegisterScreen(
 
                     Text(
                         text = "Welcome back, please sign up to create your account",
-                        fontSize = 12.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight(500),
                         color = TextColorOne,
                     )

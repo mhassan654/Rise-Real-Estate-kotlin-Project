@@ -2,13 +2,16 @@ package com.saavatech.riserealestate.util
 
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 
+//
 object Constants {
     const val BASE_URL = "http://192.168.0.109:8000/api/" // "https://ebroker.wrteam.me/api/"
     const val AUTH_PREFERENCES = "AUTH_PREF"
     const val USER_SETTINGS = "userSettings"
     const val APP_ENTRY = "appEntry"
+    const val USER = "user"
 
     val AUTH_KEY = stringSetPreferencesKey("auth_key")
+    val USER_KEY = stringSetPreferencesKey("user_key")
     val ONBOARDING_KEY = stringSetPreferencesKey("onboarding_key")
 }
 

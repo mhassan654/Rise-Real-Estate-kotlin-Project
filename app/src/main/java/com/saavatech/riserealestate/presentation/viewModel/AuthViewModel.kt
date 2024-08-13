@@ -11,6 +11,7 @@ import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.presentation.AuthState
 import com.saavatech.riserealestate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -108,15 +109,16 @@ class AuthViewModel
                         )
 
                         Timber.tag("token value").d(preferences.getAuthToken())
-                        _eventFlow.emit(
-                            UiEvents.NavigationEvent("Home"),
-                            // HomeScreenDestination.route
-                        )
 
                         _eventFlow.emit(
                             UiEvents.SnackbarEvent(
                                 signUpResult.result.data?.message ?: "Success!",
                             ),
+                        )
+                        delay(500)
+                        _eventFlow.emit(
+                            UiEvents.NavigationEvent("Home"),
+                            // HomeScreenDestination.route
                         )
                     }
                     is Resource.Error -> {
