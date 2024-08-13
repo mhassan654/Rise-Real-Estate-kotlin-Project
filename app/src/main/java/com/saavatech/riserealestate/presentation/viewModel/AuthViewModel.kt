@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saavatech.riserealestate.common.TextFieldState
 import com.saavatech.riserealestate.common.UiEvents
+import com.saavatech.riserealestate.data.local.AppPreferences
 import com.saavatech.riserealestate.domain.use_case.SignUpUseCase
 import com.saavatech.riserealestate.presentation.AuthState
 import com.saavatech.riserealestate.util.Resource
@@ -21,6 +22,7 @@ class AuthViewModel
     @Inject
     constructor(
         private val signUpUseCase: SignUpUseCase,
+        private val preferences: AppPreferences,
     ) : ViewModel() {
         private val _eventFlow = MutableSharedFlow<UiEvents>()
         val eventFlow = _eventFlow.asSharedFlow()
@@ -49,22 +51,22 @@ class AuthViewModel
             _passwordState.value = passwordState.value.copy(text = value)
         }
 
-        private val _address = mutableStateOf(TextFieldState())
-        val address: State<TextFieldState> = _address
-
-        fun setAddress(value: String) {
-            _address.value = address.value.copy(text = value)
-        }
-
-        private val _mobile = mutableStateOf(TextFieldState())
-        val mobile: State<TextFieldState> = _mobile
+//        private val _address = mutableStateOf(TextFieldState())
+//        val address: State<TextFieldState> = _address
+//
+//        fun setAddress(value: String) {
+//            _address.value = address.value.copy(text = value)
+//        }
+//
+        private val _mobileState = mutableStateOf(TextFieldState())
+        val mobileState: State<TextFieldState> = _mobileState
 
         fun setMobile(value: String) {
-            _mobile.value = mobile.value.copy(text = value)
+            _mobileState.value = mobileState.value.copy(text = value)
         }
 
         fun signUpUser() {
-            Timber.tag("register")
+            Timber.tag("signup check")
             viewModelScope.launch {
                 _loginState.value = loginState.value.copy(isLoading = true)
 
@@ -72,17 +74,10 @@ class AuthViewModel
                     signUpUseCase(
                         name = nameState.value.text,
                         email = emailState.value.text,
-                        address = address.value.text,
-                        mobile = mobile.value.text,
-                        aboutMe = mobile.value.text,
-                        facebookId = mobile.value.text,
-                        twitterId = mobile.value.text,
-                        profile = mobile.value.text,
-                        firebaseId = mobile.value.text,
-                        latitude = mobile.value.text,
-                        longitude = mobile.value.text,
                         password = passwordState.value.text,
-                        type = mobile.value.text,
+                        mobile = mobileState.value.text,
+                        type = "mobile",
+                        firebase_id = "346543ytrytr",
                     )
 
                 _loginState.value = loginState.value.copy(isLoading = false)
@@ -106,18 +101,37 @@ class AuthViewModel
 
                 when (signUpResult.result) {
                     is Resource.Success -> {
+                        Timber.tag("view model message:").d(
+                            signUpResult.result.data
+                                ?.message
+                                .toString(),
+                        )
+
+                        Timber.tag("token value").d(preferences.getAuthToken())
                         _eventFlow.emit(
-                            UiEvents.NavigationEvent("Home"), // HomeScreenDestination.route
+                            UiEvents.NavigationEvent("Home"),
+                            // HomeScreenDestination.route
+                        )
+
+                        _eventFlow.emit(
+                            UiEvents.SnackbarEvent(
+                                signUpResult.result.data?.message ?: "Success!",
+                            ),
                         )
                     }
                     is Resource.Error -> {
-                        UiEvents.SnackbarEvent(
-                            signUpResult.result.message ?: "Error!",
+                        Timber.tag("error model message:").d(
+                            signUpResult.result.message.toString(),
+                        )
+                        _eventFlow.emit(
+                            UiEvents.SnackbarEvent(
+                                signUpResult.result.message ?: "Error!",
+                            ),
                         )
                     }
                     else -> {
                         UiEvents.SnackbarEvent(
-                            signUpResult.result?.message ?: "Error!",
+                            signUpResult.result?.data?.message ?: "Error!",
                         )
                     }
                 }

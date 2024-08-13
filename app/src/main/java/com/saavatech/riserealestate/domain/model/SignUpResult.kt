@@ -1,5 +1,6 @@
 package com.saavatech.riserealestate.domain.model
 
+import com.saavatech.riserealestate.data.remote.response.SignUpResponse
 import com.saavatech.riserealestate.util.Resource
 
 data class SignUpResult(
@@ -8,7 +9,7 @@ data class SignUpResult(
     val passwordError: String? = null,
     val emailError: String? = null,
     val mobileError: String? = null,
-    val result: Resource<Unit>? = null,
+    val result: Resource<SignUpResponse>? = null,
 )
 
 data class Data(

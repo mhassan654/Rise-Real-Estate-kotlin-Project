@@ -12,7 +12,9 @@ import javax.inject.Inject
 
 class PropertyUseCase
     @Inject
-    constructor(private val repository: PropertyRepository) {
+    constructor(
+        private val repository: PropertyRepository,
+    ) {
         private var cachedPosts = listOf<Property>()
         private var cachedFeatureProperties = listOf<Property>()
         private var catProperties = listOf<Property>()
@@ -53,7 +55,6 @@ class PropertyUseCase
                 is Resource.Loading -> TODO()
                 null -> TODO()
             }
-
             return featuredPropertiesResults
         }
 
@@ -75,15 +76,13 @@ class PropertyUseCase
             return categoryPropertiesResults
         }
 
-        fun getPropertyNearby(id: Comparable<*>): Property? {
-            return cachedPosts.firstOrNull {
+        fun getPropertyNearby(id: Comparable<*>): Property? =
+            cachedPosts.firstOrNull {
                 it.id == id
             }
-        }
 
-        fun getProperty(id: Comparable<*>): Property? {
-            return cachedFeatureProperties.firstOrNull {
+        fun getProperty(id: Comparable<*>): Property? =
+            cachedFeatureProperties.firstOrNull {
                 it.id == id
             }
-        }
     }
