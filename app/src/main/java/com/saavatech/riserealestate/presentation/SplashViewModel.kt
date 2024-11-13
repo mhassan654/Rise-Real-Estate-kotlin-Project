@@ -13,7 +13,9 @@ import javax.inject.Inject
 
 class SplashViewModel
     @Inject
-    constructor(private val appPreferences: AppPreferences) : ViewModel() {
+    constructor(
+        private val appPreferences: AppPreferences,
+    ) : ViewModel() {
         private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
         val isLoading: State<Boolean> = _isLoading
 
@@ -22,9 +24,11 @@ class SplashViewModel
 
         init {
             viewModelScope.launch {
+
                 appPreferences.readOnBoardingState().collect { completed ->
                     if (completed) {
-                        _startDestination.value = Destinations.Welcome.route
+
+                        _startDestination.value = Destinations.Home.route
                     } else {
                         _startDestination.value = Destinations.OnBoarding.route
                     }

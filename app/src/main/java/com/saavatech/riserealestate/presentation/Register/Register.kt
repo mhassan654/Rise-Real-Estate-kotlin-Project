@@ -253,37 +253,6 @@ fun RegisterScreen(
                     )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                ) {
-                    TextButton(
-                        onClick = {
-                            navController.navigateTo(Destinations.Register.route)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            text =
-                                buildAnnotatedString {
-                                    withStyle(
-                                        style =
-                                            SpanStyle(
-                                                color = TextColorOne,
-                                                fontSize = 13.sp,
-                                                fontWeight = FontWeight(500),
-                                            ),
-                                    ) {
-                                        append(stringResource(id = R.string.terms_of_service))
-                                    }
-                                },
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.Center,
-                            color = TextColorBold,
-                        )
-                    }
-                }
-
                 Spacer(modifier = Modifier.height(30.dp))
 
                 Row(
@@ -294,6 +263,44 @@ fun RegisterScreen(
                         value = "Register",
                         clickAction = { viewModel.signUpUser() },
                         280.dp,
+                    )
+                }
+
+                TextButton(
+                    onClick = {
+                        navController.navigateUp()
+                        navController.navigateTo(Destinations.Login.route)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text =
+                            buildAnnotatedString {
+                                withStyle(
+                                    style =
+                                        SpanStyle(
+                                            color = TextColorOne,
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight(400),
+                                        ),
+                                ) {
+                                    append(stringResource(id = R.string.ready_have_an_account))
+                                }
+                                append(" ")
+                                withStyle(
+                                    style =
+                                        SpanStyle(
+                                            color = TextColorBold,
+                                            fontWeight = FontWeight(700),
+                                            fontSize = 18.sp,
+                                        ),
+                                ) {
+                                    append(stringResource(id = R.string.login))
+                                }
+                            },
+                        fontFamily = FontFamily.SansSerif,
+                        textAlign = TextAlign.Center,
+                        color = TextColorBold,
                     )
                 }
             }

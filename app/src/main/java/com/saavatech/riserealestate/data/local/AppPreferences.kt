@@ -41,7 +41,7 @@ class AppPreferences(
         val gson = Gson()
         val userJson = gson.toJson(user)
         dataStore.edit { pref ->
-            pref[USER_KEY] = setOf(userJson)
+            pref[USER_KEY] = userJson
         }
     }
 
@@ -53,7 +53,7 @@ class AppPreferences(
                     preferences[USER_KEY]
                 }.firstOrNull()
 
-        return userJson?.let { gson.fromJson(it, User::class.java) } ?: null
+        return userJson?.let { gson.fromJson(it, User::class.java) }
     }
 
     suspend fun getAuthToken(): String? = dataStore.data.first()[AUTH_KEY]?.firstOrNull()

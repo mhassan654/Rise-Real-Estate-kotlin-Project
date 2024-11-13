@@ -1,5 +1,6 @@
 package com.saavatech.riserealestate.presentation.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -71,6 +72,7 @@ import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.PromotionCard
 import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.components.sectionTitles
+import com.saavatech.riserealestate.data.local.User
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.navigation.AppBottomSheet
 import com.saavatech.riserealestate.navigation.BottomNavigation
@@ -82,6 +84,7 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 import kotlinx.coroutines.launch
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
@@ -95,6 +98,7 @@ fun Home(
     val categoryListState = viewModel.categoriesListState.value
     val nearbyListState = viewModel.nearbyPropertiesListState.value
     val featuredList = viewModel.featuredPropertiesListState.value
+    val userData = viewModel.user.value
 
     val lazyState = rememberLazyListState()
 
@@ -111,7 +115,13 @@ fun Home(
     // ui satrts
     Scaffold(
         topBar = {
-            TobBar { showBottomSheet = true }
+            userData?.let { user ->
+                TobBar(
+                    openBottomSheetClick = {},
+                    user = user,
+                    showBottomSheet = {},
+                )
+            }
         },
         bottomBar = {
             BottomNavigation()
@@ -159,7 +169,9 @@ fun Home(
                                                 fontSize = 20.sp,
                                             ),
                                     ) {
-                                        append("Hassan Saava!")
+                                        if (userData != null) {
+                                            append(userData.name)
+                                        }
                                     }
                                 },
                             fontFamily = FontFamily.SansSerif,
@@ -390,7 +402,11 @@ fun rowButton(
 
 // home screen top bar section
 @Composable
-fun TobBar(openBottomSheetClick: () -> Unit) {
+fun TobBar(
+    openBottomSheetClick: () -> Unit,
+    user: User,
+    showBottomSheet: () -> Unit,
+) {
     Box(
         modifier =
             Modifier
@@ -420,7 +436,7 @@ fun TobBar(openBottomSheetClick: () -> Unit) {
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "Old Kampala",
+                        text = user.address,
                         fontSize = 12.sp,
                         fontWeight = FontWeight(500),
                         color = TextColorOne,

@@ -4,7 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.saavatech.riserealestate.common.UiEvents
+import com.saavatech.riserealestate.data.local.AppPreferences
+import com.saavatech.riserealestate.data.local.User
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
@@ -13,7 +16,10 @@ import com.saavatech.riserealestate.presentation.LoadingState
 import com.saavatech.riserealestate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -23,6 +29,7 @@ class HomeViewModel
     constructor(
         private val categoriesUseCase: CategoriesUseCase,
         private val propertyUseCase: PropertyUseCase,
+        private val appPreferences: AppPreferences,
     ) : ViewModel() {
         private var _loadingState = mutableStateOf(LoadingState())
         val loadingState: State<LoadingState> = _loadingState
@@ -40,6 +47,9 @@ class HomeViewModel
 
         private val _eventFlow = MutableSharedFlow<UiEvents>()
         val eventFlow = _eventFlow.asSharedFlow()
+
+        private val _user = MutableStateFlow<User?>(null)
+        val user: StateFlow<User?> get() = _user
 
         fun getProperty(id: Int): Property? {
             // Access the current list from the state
@@ -132,4 +142,12 @@ class HomeViewModel
             } catch (e: Exception) {
                 Timber.tag("error").d(e)
             }
+
+        private suspend fun getUserDetails(): User? = appPreferences.getUserData()
+
+        init {
+            viewModelScope.launch {
+                _user.value = getUserDetails()
+            }
+        }
     }

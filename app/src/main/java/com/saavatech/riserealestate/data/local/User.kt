@@ -1,6 +1,5 @@
 package com.saavatech.riserealestate.data.local
 
-
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -55,5 +54,5 @@ data class User(
     @SerializedName("updated_at")
     val updatedAt: String,
     @SerializedName("youtube_id")
-    val youtubeId: String
+    val youtubeId: String,
 )

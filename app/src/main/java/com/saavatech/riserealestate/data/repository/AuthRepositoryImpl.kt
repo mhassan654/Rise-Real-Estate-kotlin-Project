@@ -22,7 +22,7 @@ class AuthRepositoryImpl(
             }
 
             if (!response.error) {
-                preferences.saveAuthToken(response.token)
+                preferences.saveUserData(response.data)
                 Resource.Success(response)
             }
 

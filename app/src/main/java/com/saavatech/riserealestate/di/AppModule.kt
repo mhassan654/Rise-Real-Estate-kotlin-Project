@@ -64,12 +64,14 @@ object AppModule {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val client =
-            OkHttpClient.Builder()
+            OkHttpClient
+                .Builder()
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(authInterceptor)
                 .build()
 
-        return Retrofit.Builder()
+        return Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
 //            .addConverterFactory(PropertyQueryParamConverterFactory())
@@ -83,51 +85,42 @@ object AppModule {
     fun providesAuthRepository(
         apiService: ApiService,
         preferences: AppPreferences,
-    ): AuthRepository {
-        return AuthRepositoryImpl(apiService = apiService, preferences = preferences)
-    }
+    ): AuthRepository = AuthRepositoryImpl(apiService = apiService, preferences = preferences)
 
     @Provides
     @Singleton
-    fun providesSignUpUseCase(repository: AuthRepository): SignUpUseCase {
-        return SignUpUseCase(repository)
-    }
+    fun providesSignUpUseCase(repository: AuthRepository): SignUpUseCase = SignUpUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesCategoryUseCase(repository: CategoryRepository): CategoriesUseCase {
-        return CategoriesUseCase(repository)
-    }
+    fun providesCategoryUseCase(repository: CategoryRepository): CategoriesUseCase = CategoriesUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesCategoryRepository(apiService: ApiService): CategoryRepository {
-        return CategoryRepositoryImpl(apiService = apiService)
-    }
+    fun providesCategoryRepository(apiService: ApiService): CategoryRepository = CategoryRepositoryImpl(apiService = apiService)
 
     @Provides
     @Singleton
-    fun providesPropertyUseCase(repository: PropertyRepository): PropertyUseCase {
-        return PropertyUseCase(repository)
-    }
+    fun providesPropertyUseCase(repository: PropertyRepository): PropertyUseCase = PropertyUseCase(repository)
 
     @Provides
     @Singleton
-    fun providesPropertyRepository(apiService: ApiService): PropertyRepository {
-        return PropertyRepositoryImpl(apiService = apiService)
-    }
+    fun providesPropertyRepository(
+        apiService: ApiService,
+        preferences: AppPreferences,
+    ): PropertyRepository =
+        PropertyRepositoryImpl(
+            apiService = apiService,
+            appPreferences = preferences,
+        )
 
     @Provides
     @Singleton
-    fun providesAppSettingsRepository(apiService: ApiService): AppSettingsRepository {
-        return AppSettingsRepositoryImpl(apiService = apiService)
-    }
+    fun providesAppSettingsRepository(apiService: ApiService): AppSettingsRepository = AppSettingsRepositoryImpl(apiService = apiService)
 
     @Provides
     @Singleton
-    fun providesAppSettingsUseCase(repository: AppSettingsRepository): AppSettingsUseCase {
-        return AppSettingsUseCase(repository)
-    }
+    fun providesAppSettingsUseCase(repository: AppSettingsRepository): AppSettingsUseCase = AppSettingsUseCase(repository)
 
     @Provides
     @Singleton

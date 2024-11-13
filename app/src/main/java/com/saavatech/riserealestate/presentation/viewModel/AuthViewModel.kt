@@ -107,8 +107,12 @@ class AuthViewModel
                                 ?.message
                                 .toString(),
                         )
-
+                        val result = signUpResult.result
+                        result.data?.let { preferences.saveAuthToken(it.token) }
                         Timber.tag("token value").d(preferences.getAuthToken())
+                        result.data?.let { preferences.saveUserData(it.data) }
+
+                        Timber.tag("user value").d(preferences.getUserData().toString())
 
                         _eventFlow.emit(
                             UiEvents.SnackbarEvent(
