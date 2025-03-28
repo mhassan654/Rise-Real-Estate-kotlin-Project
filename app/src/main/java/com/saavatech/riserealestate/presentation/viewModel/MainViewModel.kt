@@ -30,7 +30,7 @@ class MainViewModel
         init {
             appEntryUseCases.readAppEntryUseCase().onEach {
                     shouldStartFromHomeScreen ->
-                Timber.tag("should start from home screen").d(shouldStartFromHomeScreen.toString())
+//                Timber.tag("should start from home screen").d(shouldStartFromHomeScreen.toString())
                 startDestination =
                     if (shouldStartFromHomeScreen) {
                         Destinations.Welcome.route

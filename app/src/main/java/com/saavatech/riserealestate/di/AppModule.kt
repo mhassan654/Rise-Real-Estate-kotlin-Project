@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.saavatech.riserealestate.data.local.AppPreferences
-import com.saavatech.riserealestate.data.local.LocalUsermanagerImpl
+import com.saavatech.riserealestate.data.local.LocalUserManagerImpl
 import com.saavatech.riserealestate.data.models.ApiService
 import com.saavatech.riserealestate.data.repository.AuthRepositoryImpl
 import com.saavatech.riserealestate.data.repository.CategoryRepositoryImpl
@@ -53,7 +53,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserManager(application: Application): LocalUserManager = LocalUsermanagerImpl(application)
+    fun provideLocalUserManager(application: Application): LocalUserManager = LocalUserManagerImpl(application)
 
     @Provides
     @Singleton

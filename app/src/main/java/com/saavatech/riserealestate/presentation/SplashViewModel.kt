@@ -35,7 +35,7 @@ class SplashViewModel
 //                            "OnBoarding"
 //                        }
 
-                    Timber.d("Start Destination: ${_startDestination.value}")
+//                    Timber.d("Start Destination: ${_startDestination.value}")
                 }
                 _isLoading.value = false
             }

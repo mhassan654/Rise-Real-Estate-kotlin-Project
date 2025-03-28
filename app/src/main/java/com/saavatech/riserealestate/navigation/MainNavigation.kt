@@ -35,6 +35,7 @@ fun MainNavigation(
     Timber.tag("start screen").d(startScreen)
 
     NavHost(navController = navController, startDestination = startScreen) {
+
         composable(route = Destinations.LoginOption.route) {
             LoginScreenOption(destinationsNavigator)
         }
