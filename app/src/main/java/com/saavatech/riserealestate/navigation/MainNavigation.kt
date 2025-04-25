@@ -19,10 +19,12 @@ import com.saavatech.riserealestate.presentation.Register.RegisterScreen
 import com.saavatech.riserealestate.presentation.details.PropertyDetails
 import com.saavatech.riserealestate.presentation.home.Home
 import com.saavatech.riserealestate.presentation.login.LoginScreen
+import com.saavatech.riserealestate.presentation.login.LoginScreenOption
 import com.saavatech.riserealestate.presentation.onBoarding.OnBoardingScreen
 import com.saavatech.riserealestate.presentation.viewModel.OnBoardingViewModel
 import com.saavatech.riserealestate.presentation.viewModel.PropertyViewModel
 import com.saavatech.riserealestate.presentation.welcome.WelcomeScreen
+import timber.log.Timber
 
 @Composable
 fun MainNavigation(
@@ -30,8 +32,14 @@ fun MainNavigation(
     startScreen: String,
 ) {
     val destinationsNavigator = DestinationsNavigator(navController)
+    Timber.tag("start screen").d(startScreen)
 
     NavHost(navController = navController, startDestination = startScreen) {
+
+        composable(route = Destinations.LoginOption.route) {
+            LoginScreenOption(destinationsNavigator)
+        }
+
         composable(route = Destinations.Welcome.route) {
             WelcomeScreen(destinationsNavigator)
         }
@@ -53,9 +61,11 @@ fun MainNavigation(
             PromotionScreen(destinationsNavigator)
         }
 
-        composable(BottomScreens.Home.route) { backStackEntry ->
+        composable(BottomScreens.Home.route) {
+                backStackEntry ->
             val location = backStackEntry.arguments?.getInt("propertyId")
-            Home(destinationsNavigator) { propertyDetailsId ->
+            Home(destinationsNavigator) {
+                    propertyDetailsId ->
                 destinationsNavigator.navigateTo("PropertyDetails/$location")
             }
         }
@@ -65,18 +75,14 @@ fun MainNavigation(
             FeaturedEstate(destinationsNavigator)
         }
 
-        composable(
-            Destinations.EstateByCategory.route,
-            arguments = listOf(navArgument("categoryId") { type = NavType.IntType }),
-        ) {
-            RealEstateListByCategory(
-                destinationsNavigator,
-            )
+        composable(Destinations.EstateByCategory.route) {
+            RealEstateListByCategory(destinationsNavigator)
         }
 
         composable(Destinations.TopLocations.route) { backStackEntry ->
             val location = backStackEntry.arguments?.getInt("location")
-            TopLocationsScreen(destinationsNavigator) { locationDetailsId ->
+            TopLocationsScreen(destinationsNavigator) {
+                    locationDetailsId ->
                 destinationsNavigator.navigateTo("LocationDetails/$locationDetailsId")
             }
         }
@@ -85,7 +91,8 @@ fun MainNavigation(
             Destinations.LocationDetails.route,
             arguments = listOf(navArgument("location") { type = NavType.IntType }),
         ) {
-            LocationDetails { locationDetailsId ->
+            LocationDetails {
+                    locationDetailsId ->
                 destinationsNavigator.navigateTo("PropertyDetails/$locationDetailsId")
             }
         }
