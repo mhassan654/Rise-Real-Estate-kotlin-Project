@@ -12,7 +12,7 @@ import com.saavatech.riserealestate.util.Constants.USER_SETTINGS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LocalUsermanagerImpl(private val context: Context) : LocalUserManager {
+class LocalUserManagerImpl(private val context: Context) : LocalUserManager {
     override suspend fun saveAppEntry() {
         context.dataStore.edit { settings ->
             settings[PreferencesKey.APP_ENTRY] = true
@@ -21,7 +21,7 @@ class LocalUsermanagerImpl(private val context: Context) : LocalUserManager {
 
     override fun readAppEntry(): Flow<Boolean> {
         return context.dataStore.data.map { pref ->
-            pref[PreferencesKey.APP_ENTRY] ?: false
+            pref[PreferencesKey.APP_ENTRY] == true
         }
     }
 }
