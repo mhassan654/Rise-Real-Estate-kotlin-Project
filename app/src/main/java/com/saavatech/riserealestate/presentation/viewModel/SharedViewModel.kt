@@ -9,7 +9,7 @@ import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.domain.use_case.CategoriesUseCase
 import com.saavatech.riserealestate.domain.use_case.PropertyUseCase
-import com.saavatech.riserealestate.presentation.CategoriesState
+import com.saavatech.riserealestate.presentation.LoadingState
 import com.saavatech.riserealestate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,11 +24,11 @@ class SharedViewModel
         private val categoriesUseCase: CategoriesUseCase,
         private val propertyUseCase: PropertyUseCase,
     ) : ViewModel() {
-        private var _categoriesState = mutableStateOf(CategoriesState())
-        val categoriesState: State<CategoriesState> = _categoriesState
+        private var _loadingState = mutableStateOf(LoadingState())
+        val loadingState: State<LoadingState> = _loadingState
 
-        private var _nearbyPropertiesState = mutableStateOf(CategoriesState())
-        val nearbyPropertiesState: State<CategoriesState> = _nearbyPropertiesState
+        private var _nearbyPropertiesState = mutableStateOf(LoadingState())
+        val nearbyPropertiesState: State<LoadingState> = _nearbyPropertiesState
 
         private val _eventFlow = MutableSharedFlow<UiEvents>()
         val eventFlow = _eventFlow.asSharedFlow()
@@ -36,13 +36,13 @@ class SharedViewModel
         val categoriesListState: MutableState<List<CategoryResponse>> = mutableStateOf(emptyList())
         val nearbyPropertiesListState: MutableState<List<Property>> = mutableStateOf(emptyList())
 
-        suspend fun getCategories(): Any {
-            return try {
-                _categoriesState.value = categoriesState.value.copy(isLoading = true)
+        suspend fun getCategories(): Any =
+            try {
+                _loadingState.value = loadingState.value.copy(isLoading = true)
 
                 val fetchCategoryResults = categoriesUseCase()
 
-                _categoriesState.value = categoriesState.value.copy(isLoading = false)
+                _loadingState.value = loadingState.value.copy(isLoading = false)
 
                 when (fetchCategoryResults.result) {
                     is Resource.Success ->
@@ -58,10 +58,9 @@ class SharedViewModel
             } catch (e: Exception) {
                 Timber.tag("error").d(e)
             }
-        }
 
-        suspend fun getNearByProperties(): Any {
-            return try {
+        suspend fun getNearByProperties(): Any =
+            try {
                 _nearbyPropertiesState.value = nearbyPropertiesState.value.copy(isLoading = true)
 
                 val fetchNearByPropertiesResults = propertyUseCase.nearByProperties()
@@ -82,5 +81,4 @@ class SharedViewModel
             } catch (e: Exception) {
                 Timber.tag("error").d(e)
             }
-        }
     }

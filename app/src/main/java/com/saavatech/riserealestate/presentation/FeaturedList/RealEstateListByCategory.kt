@@ -20,12 +20,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CompareArrows
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +50,7 @@ import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.components.CustomTextField
 import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.TransparentTopAppBar
-import com.saavatech.riserealestate.presentation.viewModel.HomeViewModel
+import com.saavatech.riserealestate.presentation.viewModel.PropertyListByCategoryViewModel
 import com.saavatech.riserealestate.ui.theme.Purple80
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -58,9 +60,15 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 // @Preview
 @Composable
 fun RealEstateListByCategory(navController: DestinationsNavigator) {
-    val viewModel: HomeViewModel = hiltViewModel()
-    val featuredList = viewModel.featuredPropertiesListState.value
+//    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: PropertyListByCategoryViewModel = hiltViewModel()
+    val loadingState = viewModel.loadingState.value
+    val featuredList = viewModel.propertiesByCategoryListState.value
     var switchViewStyle by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = true) {
+//
+    }
     Scaffold(
         topBar =
             {
@@ -94,7 +102,9 @@ fun RealEstateListByCategory(navController: DestinationsNavigator) {
                             color = MaterialTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(13.dp))
-
+                        if (loadingState.isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        }
                         LazyRow {
                             items(featuredList) { featuredProperty ->
                                 FeatureCardItem(
@@ -127,7 +137,7 @@ fun RealEstateListByCategory(navController: DestinationsNavigator) {
                                                     fontWeight = FontWeight(700),
                                                 ),
                                         ) {
-                                            append("120")
+                                            append(featuredList.size.toString())
                                         }
                                         append(" ")
                                         withStyle(
@@ -159,10 +169,11 @@ fun RealEstateListByCategory(navController: DestinationsNavigator) {
                                 ) {
                                     Box(
                                         modifier =
-                                            Modifier.background(
-                                                color = if (switchViewStyle) Color.White else Color.Transparent,
-                                                shape = RoundedCornerShape(10.dp),
-                                            ).padding(horizontal = 5.dp, vertical = 2.dp),
+                                            Modifier
+                                                .background(
+                                                    color = if (switchViewStyle) Color.White else Color.Transparent,
+                                                    shape = RoundedCornerShape(10.dp),
+                                                ).padding(horizontal = 5.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
                                             onClick = { switchViewStyle = true },
@@ -180,10 +191,11 @@ fun RealEstateListByCategory(navController: DestinationsNavigator) {
 
                                     Box(
                                         modifier =
-                                            Modifier.background(
-                                                color = if (!switchViewStyle) Color.White else Color.Transparent,
-                                                shape = RoundedCornerShape(15.dp),
-                                            ).padding(horizontal = 4.dp, vertical = 2.dp),
+                                            Modifier
+                                                .background(
+                                                    color = if (!switchViewStyle) Color.White else Color.Transparent,
+                                                    shape = RoundedCornerShape(15.dp),
+                                                ).padding(horizontal = 4.dp, vertical = 2.dp),
                                     ) {
                                         IconButton(
                                             onClick = { switchViewStyle = false },
@@ -204,9 +216,11 @@ fun RealEstateListByCategory(navController: DestinationsNavigator) {
                         Spacer(modifier = Modifier.height(25.dp))
 
                         // Featured cards
-
+                        if (loadingState.isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        }
                         if (switchViewStyle) {
-//                            GridView(navigationCallback)
+                            GridView(featuredList, navController)
                         } else {
                             ListView(featuredList, navController)
                         }

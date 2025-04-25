@@ -115,7 +115,7 @@ fun LoginScreenOption(navController: DestinationsNavigator) {
                     icon = Icons.Default.MailOutline,
                     onClick = { navController.navigateTo(Destinations.Login.route) },
                     contentDescription = null,
-                    text = "Continue with Email",
+                    text = "Login",
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))

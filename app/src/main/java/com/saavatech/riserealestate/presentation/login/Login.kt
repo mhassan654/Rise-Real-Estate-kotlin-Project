@@ -205,28 +205,6 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.Bottom,
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth(),
-                        ) {
-                            SocialButton(
-                                icon = painterResource(id = R.drawable.google_48),
-                                onClick = {},
-                            )
-
-                            Spacer(modifier = Modifier.width(10.dp))
-
-                            SocialButton(
-                                icon = painterResource(id = R.drawable.icons8_facebook_48),
-                                onClick = {},
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(6.dp))
-
                         TextButton(
                             onClick = {
                                 navController.navigateUp()
@@ -271,6 +249,7 @@ fun LoginScreen(
     }
 }
 
+@Suppress("ktlint:standard:function-naming")
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {

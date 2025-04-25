@@ -36,9 +36,9 @@ fun MainNavigation(
 
     NavHost(navController = navController, startDestination = startScreen) {
 
-        composable(route = Destinations.LoginOption.route) {
-            LoginScreenOption(destinationsNavigator)
-        }
+//        composable(route = Destinations.LoginOption.route) {
+//            LoginScreenOption(destinationsNavigator)
+//        }
 
         composable(route = Destinations.Welcome.route) {
             WelcomeScreen(destinationsNavigator)
@@ -54,7 +54,7 @@ fun MainNavigation(
 
         composable(route = Destinations.OnBoarding.route) {
             val viewModel: OnBoardingViewModel = hiltViewModel()
-            OnBoardingScreen(event = viewModel::onEvent)
+            OnBoardingScreen() //event = viewModel::onEvent
         }
 
         composable(route = Destinations.PromotionScreen.route) {

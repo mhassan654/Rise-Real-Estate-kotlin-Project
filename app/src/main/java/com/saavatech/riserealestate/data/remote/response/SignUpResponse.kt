@@ -1,10 +1,11 @@
 package com.saavatech.riserealestate.data.remote.response
 
 import com.google.gson.annotations.SerializedName
+import com.saavatech.riserealestate.data.local.User
 
 data class SignUpResponse(
     @SerializedName("data")
-    val data: CategoryResponse,
+    val data: User,
     @SerializedName("error")
     val error: Boolean = false,
     @SerializedName("message")

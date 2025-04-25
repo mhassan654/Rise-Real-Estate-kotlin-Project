@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saavatech.riserealestate.components.ButtonTextComponent
-import com.saavatech.riserealestate.presentation.home.rowButton
+import com.saavatech.riserealestate.presentation.home.RowButton
 import com.saavatech.riserealestate.ui.theme.TextColorOne
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -93,12 +93,12 @@ fun AppBottomSheet(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    rowButton(
+                    RowButton(
                         location = "Old Kampala primary school , sir appolo road",
                         bgColor = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    rowButton(
+                    RowButton(
                         location = "Old Kampala primary school , sir appolo road",
                         bgColor = Color.White,
                     )

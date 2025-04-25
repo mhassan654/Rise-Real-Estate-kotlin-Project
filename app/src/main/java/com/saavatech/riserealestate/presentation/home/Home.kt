@@ -1,5 +1,6 @@
 package com.saavatech.riserealestate.presentation.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -72,6 +74,7 @@ import com.saavatech.riserealestate.components.FeatureCardItem
 import com.saavatech.riserealestate.components.PromotionCard
 import com.saavatech.riserealestate.components.VerticalPropertyCard
 import com.saavatech.riserealestate.components.sectionTitles
+import com.saavatech.riserealestate.data.local.User
 import com.saavatech.riserealestate.data.remote.response.CategoryResponse
 import com.saavatech.riserealestate.navigation.AppBottomSheet
 import com.saavatech.riserealestate.navigation.BottomNavigation
@@ -83,6 +86,7 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 import kotlinx.coroutines.launch
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
@@ -91,11 +95,12 @@ fun Home(
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
 
-    val categoryState = viewModel.categoriesState.value
+    val categoryState = viewModel.loadingState.value
     val nearbyState = viewModel.nearbyPropertiesState.value
     val categoryListState = viewModel.categoriesListState.value
     val nearbyListState = viewModel.nearbyPropertiesListState.value
     val featuredList = viewModel.featuredPropertiesListState.value
+    val userData = viewModel.user.value
 
     val lazyState = rememberLazyListState()
 
@@ -112,7 +117,13 @@ fun Home(
     // ui satrts
     Scaffold(
         topBar = {
-            TobBar { showBottomSheet = true }
+            userData?.let { user ->
+                TobBar(
+                    openBottomSheetClick = {},
+                    user = user,
+                    showBottomSheet = {},
+                )
+            }
         },
         bottomBar = {
             BottomNavigation()
@@ -124,11 +135,19 @@ fun Home(
                     .fillMaxSize()
                     .padding(10.dp),
         ) {
+            Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+                Image(
+                    painter = painterResource(R.drawable.home_top_banner),
+                    contentDescription = null,
+                )
+                Text(text = "jhdfsaf")
+            }
             LazyColumn(
                 state = lazyState,
                 modifier =
                     Modifier
-                        .fillMaxHeight().padding(innerPadding),
+                        .fillMaxHeight()
+                        .padding(innerPadding),
             ) {
                 item {
                     Column(
@@ -159,7 +178,9 @@ fun Home(
                                                 fontSize = 20.sp,
                                             ),
                                     ) {
-                                        append("Hassan Saava!")
+                                        if (userData != null) {
+                                            append(userData.name)
+                                        }
                                     }
                                 },
                             fontFamily = FontFamily.SansSerif,
@@ -186,8 +207,10 @@ fun Home(
                         }
                         LazyRow {
                             items(categoryListState) { category ->
-                                PropertCategory(category = category) {
-                                    navController.navigateTo("PropertyDetails/${category.id}")
+                                PropertyCategory(category = category) {
+                                    navController.navigateTo(
+                                        "EstateByCategory/${category.id}",
+                                    )
                                 }
                                 Spacer(modifier = Modifier.width(6.dp))
                             }
@@ -257,10 +280,12 @@ fun Home(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+//                        LazyVerticalGrid(columns , modifier = Modifier.padding(horizontal = 10.dp)) { }
                         nearbyListState.chunked(2).forEach { chunk ->
                             Row {
                                 chunk.firstOrNull()?.let { item ->
-                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        // Adjust weight for desired ratio
                                         VerticalPropertyCard(
                                             property = item,
                                         ) {
@@ -269,7 +294,8 @@ fun Home(
                                     }
                                 }
                                 chunk.getOrNull(1)?.let { secondItem ->
-                                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        // Adjust weight for desired ratio
                                         VerticalPropertyCard(
                                             property = secondItem,
                                         ) {
@@ -296,17 +322,17 @@ fun Home(
 
 // @Preview
 @Composable
-fun PropertCategory(
+fun PropertyCategory(
     category: CategoryResponse,
     clickAction: () -> Unit?,
 ) {
     Box(
         modifier =
-            Modifier.background(
-                shape = RoundedCornerShape(20.dp),
-                color = inputBg,
-            )
-                .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
+            Modifier
+                .background(
+                    shape = RoundedCornerShape(20.dp),
+                    color = inputBg,
+                ).border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                 .clickable {
                     clickAction.invoke()
                 },
@@ -319,7 +345,8 @@ fun PropertCategory(
             val painter =
                 rememberAsyncImagePainter(
                     model =
-                        ImageRequest.Builder(LocalContext.current)
+                        ImageRequest
+                            .Builder(LocalContext.current)
                             .data(category.image)
                             .decoderFactory(SvgDecoder.Factory()) // Configure SVG decoder
 //                            .placeholder(R.drawable.placeholder_image) // Optional placeholder
@@ -342,15 +369,20 @@ fun PropertCategory(
     }
 }
 
+
+//@Preview(showBackground = true)
 @Composable
-fun rowButton(
-    bgColor: Color,
-    location: String,
+fun RowButton(
+    bgColor: Color = Color.White,
+    location: String="",
 //    border:
 ) {
     Box(
         modifier =
-            Modifier.padding(8.dp).fillMaxWidth().heightIn(90.dp)
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .heightIn(90.dp)
                 .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                 .background(
                     color = bgColor,
@@ -358,7 +390,7 @@ fun rowButton(
                 ),
     ) {
         Row(
-            modifier = Modifier.padding(20.dp).fillMaxWidth(),
+            modifier = Modifier.padding(20.dp).fillMaxWidth().align(Alignment.TopStart),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -382,7 +414,11 @@ fun rowButton(
 
 // home screen top bar section
 @Composable
-fun TobBar(openBottomSheetClick: () -> Unit) {
+fun TobBar(
+    openBottomSheetClick: () -> Unit,
+    user: User,
+    showBottomSheet: () -> Unit,
+) {
     Box(
         modifier =
             Modifier
@@ -412,7 +448,7 @@ fun TobBar(openBottomSheetClick: () -> Unit) {
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "Old Kampala",
+                        text = user.address,
                         fontSize = 12.sp,
                         fontWeight = FontWeight(500),
                         color = TextColorOne,
@@ -451,8 +487,7 @@ fun TobBar(openBottomSheetClick: () -> Unit) {
                             .border(
                                 BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                                 shape = CircleShape,
-                            )
-                            .clip(CircleShape),
+                            ).clip(CircleShape),
                     contentScale = ContentScale.Crop,
                     painter = painterResource(id = R.drawable.profile_image),
                     contentDescription = null,
@@ -462,6 +497,7 @@ fun TobBar(openBottomSheetClick: () -> Unit) {
     }
 }
 
+//@Preview(showBackground = true)
 @Composable
 fun TopLocations() {
     LazyRow {
@@ -469,8 +505,8 @@ fun TopLocations() {
             Row(
                 modifier =
                     Modifier
-                        .background(inputBg, shape = RoundedCornerShape(32.dp))
-                        .padding(7.dp),
+                        .background(inputBg, shape = RoundedCornerShape(45.dp))
+                        .padding(6.dp).width(108.dp).height(56.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -487,9 +523,10 @@ fun TopLocations() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Saava",
-                    style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(600),
+                    style = MaterialTheme.typography.headlineMedium
+                        .copy(color = MaterialTheme.colorScheme.primary),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight(400),
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -497,30 +534,38 @@ fun TopLocations() {
     }
 }
 
+
+//@Preview(showBackground = true)
 @Composable
 fun TopAgents() {
     LazyRow {
         items(8) {
-            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.height(95.dp).width(70.dp)
+                ) {
+
                 Image(
                     modifier =
                         Modifier
-                            .size(80.dp)
-                            .clip(CircleShape),
-                    contentScale = ContentScale.Crop,
+                            .size(70.dp)
+                            .clip(CircleShape).
+                    border(BorderStroke(4.dp, inputBg), shape = CircleShape),
+                    contentScale = ContentScale.Inside,
                     painter = painterResource(id = R.drawable.profile_image),
                     contentDescription = null,
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+//                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Saava",
-                    style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(600),
+                    style = MaterialTheme
+                        .typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight(400),
                     textAlign = TextAlign.Center,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
         }
     }
 }

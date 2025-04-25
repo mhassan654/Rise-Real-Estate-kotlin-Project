@@ -17,11 +17,16 @@ import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,14 +40,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.saavatech.riserealestate.DestinationsNavigator
 import com.saavatech.riserealestate.R
+import com.saavatech.riserealestate.common.UiEvents
 import com.saavatech.riserealestate.components.AppBar
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.CustomOutlinedPasswordTextField
@@ -61,11 +64,35 @@ fun RegisterScreen(
     val email = viewModel.emailState.value
     val name = viewModel.nameState.value
     val passwordState = viewModel.passwordState.value
-    val address = viewModel.address.value
+    val mobileState = viewModel.mobileState.value
     val state = viewModel.loginState.value
+
+    val snackbarHostState =
+        remember {
+            SnackbarHostState()
+        }
 
     var passwordVisible by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    // Observing events from the ViewModel
+    LaunchedEffect(key1 = viewModel.eventFlow) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Indefinite,
+                        withDismissAction = true,
+                    )
+                }
+                is UiEvents.NavigationEvent -> {
+                    // Handle navigation event
+                    navController.navigateTo(event.route)
+                }
+            }
+        }
     }
     Scaffold(
         topBar = {
@@ -75,6 +102,9 @@ fun RegisterScreen(
                 icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 iconClickAction = { navController.navigateUp() },
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
     ) { innerPadding ->
 
@@ -123,8 +153,8 @@ fun RegisterScreen(
                     }
 
                     Text(
-                        text = "Welcome back, please sign up to continue to your account",
-                        fontSize = 12.sp,
+                        text = "Welcome back, please sign up to create your account",
+                        fontSize = 18.sp,
                         fontWeight = FontWeight(500),
                         color = TextColorOne,
                     )
@@ -178,6 +208,30 @@ fun RegisterScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
+
+                CustomOutlinedTextField(
+                    painterResource = painterResource(id = R.drawable.phonecall),
+                    lableValue = "Mobile",
+                    placeholder = { Text(text = "Enter phone number") },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                        ),
+                    onValueChange = { viewModel.setMobile(it) },
+                    textValue = mobileState.text,
+                    isError = mobileState.error != null,
+                )
+                // set email error validation
+                if (mobileState.error != "") {
+                    Text(
+                        text = mobileState.error ?: "",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                Spacer(modifier = Modifier.height(6.dp))
                 // password field
                 CustomOutlinedPasswordTextField(
                     passwordVisible = passwordVisible,
@@ -199,37 +253,6 @@ fun RegisterScreen(
                     )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                ) {
-                    TextButton(
-                        onClick = {
-                            navController.navigateTo(Destinations.Register.route)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            text =
-                                buildAnnotatedString {
-                                    withStyle(
-                                        style =
-                                            SpanStyle(
-                                                color = TextColorOne,
-                                                fontSize = 13.sp,
-                                                fontWeight = FontWeight(500),
-                                            ),
-                                    ) {
-                                        append(stringResource(id = R.string.terms_of_service))
-                                    }
-                                },
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.Center,
-                            color = TextColorBold,
-                        )
-                    }
-                }
-
                 Spacer(modifier = Modifier.height(30.dp))
 
                 Row(
@@ -242,15 +265,45 @@ fun RegisterScreen(
                         280.dp,
                     )
                 }
+
+                TextButton(
+                    onClick = {
+                        navController.navigateUp()
+                        navController.navigateTo(Destinations.Login.route)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text =
+                            buildAnnotatedString {
+                                withStyle(
+                                    style =
+                                        SpanStyle(
+                                            color = TextColorOne,
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight(400),
+                                        ),
+                                ) {
+                                    append(stringResource(id = R.string.ready_have_an_account))
+                                }
+                                append(" ")
+                                withStyle(
+                                    style =
+                                        SpanStyle(
+                                            color = TextColorBold,
+                                            fontWeight = FontWeight(700),
+                                            fontSize = 18.sp,
+                                        ),
+                                ) {
+                                    append(stringResource(id = R.string.login))
+                                }
+                            },
+                        fontFamily = FontFamily.SansSerif,
+                        textAlign = TextAlign.Center,
+                        color = TextColorBold,
+                    )
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RegisterPreview() {
-    val navController: NavHostController = rememberNavController()
-    val destinationsNavigator = DestinationsNavigator(navController)
-    RegisterScreen(destinationsNavigator)
 }

@@ -14,4 +14,8 @@ interface PropertyRepository {
         limit: Int,
         promoted: Boolean,
     ): Resource<PropertyDataResponse>
+
+    suspend fun fetchCategoryProperties(categoryId: Int): Resource<PropertyDataResponse>
+
+    suspend fun getTopVillaCategoryProperties(): Resource<PropertyDataResponse>
 }

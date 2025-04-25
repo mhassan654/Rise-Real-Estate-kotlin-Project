@@ -63,7 +63,7 @@ import com.saavatech.riserealestate.ui.theme.inputBg
 fun FeaturedEstate(navController: DestinationsNavigator) {
     val viewModel: HomeViewModel = hiltViewModel()
     val featuredList = viewModel.featuredPropertiesListState.value
-    val categoryState = viewModel.categoriesState.value
+    val categoryState = viewModel.loadingState.value
     var switchViewStyle by remember { mutableStateOf(false) }
     val lazyState = rememberLazyListState()
 
@@ -184,10 +184,11 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
                             ) {
                                 Box(
                                     modifier =
-                                        Modifier.background(
-                                            color = if (switchViewStyle) Color.White else Color.Transparent,
-                                            shape = RoundedCornerShape(10.dp),
-                                        ).padding(horizontal = 5.dp, vertical = 2.dp),
+                                        Modifier
+                                            .background(
+                                                color = if (switchViewStyle) Color.White else Color.Transparent,
+                                                shape = RoundedCornerShape(10.dp),
+                                            ).padding(horizontal = 5.dp, vertical = 2.dp),
                                 ) {
                                     IconButton(
                                         onClick = { switchViewStyle = true },
@@ -205,10 +206,11 @@ fun FeaturedEstate(navController: DestinationsNavigator) {
 
                                 Box(
                                     modifier =
-                                        Modifier.background(
-                                            color = if (!switchViewStyle) Color.White else Color.Transparent,
-                                            shape = RoundedCornerShape(15.dp),
-                                        ).padding(horizontal = 4.dp, vertical = 2.dp),
+                                        Modifier
+                                            .background(
+                                                color = if (!switchViewStyle) Color.White else Color.Transparent,
+                                                shape = RoundedCornerShape(15.dp),
+                                            ).padding(horizontal = 4.dp, vertical = 2.dp),
                                 ) {
                                     IconButton(
                                         onClick = { switchViewStyle = false },
@@ -256,7 +258,8 @@ fun GridView(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 chunk.firstOrNull()?.let { item ->
-                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                    Column(modifier = Modifier.weight(1f)) {
+                        // Adjust weight for desired ratio
                         VerticalPropertyCard(
                             property = item,
                         ) {
@@ -265,7 +268,8 @@ fun GridView(
                     }
                 }
                 chunk.getOrNull(1)?.let { secondItem ->
-                    Column(modifier = Modifier.weight(1f)) { // Adjust weight for desired ratio
+                    Column(modifier = Modifier.weight(1f)) {
+                        // Adjust weight for desired ratio
                         VerticalPropertyCard(
                             property = secondItem,
                         ) {

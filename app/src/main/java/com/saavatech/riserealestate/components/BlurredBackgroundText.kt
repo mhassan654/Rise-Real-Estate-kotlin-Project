@@ -21,13 +21,13 @@ fun TextWithBlurBg(content: @Composable () -> Unit) {
                     color = Color.Transparent, // MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(8.dp),
                 )
-                .padding(7.dp)
+                .padding(5.dp)
                 .clip(RoundedCornerShape(8.dp)) // Clip to ensure that the blur effect doesn't extend beyond the background
                 .background(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), // Semi-transparent black color for the blur effect
                     shape = RoundedCornerShape(8.dp),
                 )
-                .padding(7.dp) // Padding to ensure the blur effect covers the entire background
+                .padding(5.dp) // Padding to ensure the blur effect covers the entire background
                 .then(Modifier.graphicsLayer(alpha = 0.8f)), // Adjust alpha to control the intensity of blur
     ) {
         content()
