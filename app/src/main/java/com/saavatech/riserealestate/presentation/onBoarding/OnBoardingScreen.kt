@@ -48,10 +48,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.saavatech.riserealestate.R
 import com.saavatech.riserealestate.common.OnBoardingEvent
 import com.saavatech.riserealestate.components.ButtonTextComponent
 import com.saavatech.riserealestate.components.RoundedIconButton
+import com.saavatech.riserealestate.presentation.viewModel.OnBoardingViewModel
 import com.saavatech.riserealestate.ui.theme.ButtonBgOne
 import com.saavatech.riserealestate.ui.theme.TextColorBold
 import com.saavatech.riserealestate.ui.theme.TextColorOne
@@ -59,10 +61,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("SuspiciousIndentation")
+@Preview(showBackground = true)
 @Composable
 fun OnBoardingScreen(
-//    navController: DestinationsNavigator,
-    event: (OnBoardingEvent) -> Unit,
 ) {
     val pages =
         listOf(
@@ -72,6 +73,9 @@ fun OnBoardingScreen(
         )
 
     val scope = rememberCoroutineScope()
+    val event: (OnBoardingEvent) -> Unit = {}
+    val viewModel: OnBoardingViewModel = hiltViewModel()
+
     val pageState = rememberPagerState(pageCount = { 3 })
 
     Column(Modifier.fillMaxSize()) {
@@ -100,15 +104,15 @@ fun OnBoardingScreen(
                         pages[page],
                     )
                 }
-
                 Indicators(pages.size, pageState.currentPage)
+
                 FinishButton(
                     modifier = Modifier.height(50.dp),
                     pagerState = pageState,
                 ) {
                     scope.launch {
                         if (pageState.currentPage == 2) {
-                            event(OnBoardingEvent.SaveAppEntry)
+                            viewModel.onEvent(OnBoardingEvent.SaveAppEntry)
                         } else {
                             pageState.animateScrollToPage(page = pageState.currentPage + 1)
                         }
@@ -167,17 +171,17 @@ fun TopSection(onSkipClick: () -> Unit = {}) {
                 .padding(4.dp),
     ) {
         Image(
-            modifier = Modifier.size(60.dp),
+            modifier = Modifier.size(60.dp).align(Alignment.TopStart),
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
         )
 
         // skip button
-        TextButton(
+        Button(
+            colors = ButtonDefaults.buttonColors(containerColor = ButtonBgOne),
             modifier =
                 Modifier
-                    .align(Alignment.CenterEnd)
-                    .background(ButtonBgOne, shape = RoundedCornerShape(20.dp)),
+                    .align(Alignment.TopEnd).padding(8.dp),
             onClick = onSkipClick,
         ) {
             Text(
@@ -208,7 +212,7 @@ fun OnBoardingPagerScreen(onBoardingPage: OnBoardingPage) {
                     text = onBoardingPage.title1,
                     fontSize = 20.sp,
                     fontWeight = FontWeight(400),
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     color = TextColorOne,
                 )
 
@@ -249,7 +253,7 @@ fun OnBoardingPagerScreen(onBoardingPage: OnBoardingPage) {
                     text = onBoardingPage.description,
                     fontSize = 15.sp,
                     fontWeight = FontWeight(400),
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     color = TextColorOne,
                 )
             }
@@ -382,31 +386,5 @@ fun FinishButton(
                 Text(text = "Finish")
             }
         }
-    }
-}
-
-// preview on boarding screens
-
-@Preview(showBackground = true)
-@Composable
-fun FirstScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.First)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SecondScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.Second)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ThirdScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        OnBoardingPagerScreen(onBoardingPage = OnBoardingPage.Third)
     }
 }

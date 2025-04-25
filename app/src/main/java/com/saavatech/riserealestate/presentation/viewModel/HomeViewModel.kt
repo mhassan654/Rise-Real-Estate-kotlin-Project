@@ -1,5 +1,6 @@
 package com.saavatech.riserealestate.presentation.viewModel
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -83,7 +84,9 @@ class HomeViewModel
                         TODO()
                     }
                     null -> {
-                        TODO()
+                        viewModelScope.launch {
+                            _eventFlow.emit(UiEvents.SnackbarEvent("Something went wrong!"))
+                        }
                     }
 
                     else -> {}

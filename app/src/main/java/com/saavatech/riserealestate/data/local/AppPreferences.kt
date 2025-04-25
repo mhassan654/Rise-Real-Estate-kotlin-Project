@@ -43,6 +43,7 @@ class AppPreferences(
         dataStore.edit { pref ->
             pref[USER_KEY] = userJson
         }
+
     }
 
     suspend fun getUserData(): User? {
@@ -67,7 +68,7 @@ class AppPreferences(
                     throw exception
                 }
             }.map { preferences ->
-                val onBoardingState = preferences[PreferencesKey.onBoardingKey] ?: false
+                val onBoardingState = preferences[PreferencesKey.onBoardingKey] == true
                 onBoardingState
             }
 }

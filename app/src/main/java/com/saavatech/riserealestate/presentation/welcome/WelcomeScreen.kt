@@ -12,15 +12,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -38,24 +43,36 @@ fun WelcomeScreen(
     navController: DestinationsNavigator,
     modifier: Modifier = Modifier,
 ) {
+
+    val imageSize = remember {
+        mutableStateOf(IntSize.Zero)
+    }
+
+    val brush = Brush.verticalGradient(
+        colors = listOf(
+            Color.Transparent,
+            primaryBackground1,
+        ),
+        startY = imageSize.value.height.toFloat() / 8,
+    )
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
+            .background(primaryBackground1),
     ) {
         Image(
             painter = painterResource(id = R.drawable.welcome_image),
             contentScale = ContentScale.FillBounds,
-            colorFilter = ColorFilter.lighting(primaryBackground1, WelcomeBgTwo),
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush =
-                            Brush.linearGradient(
-                                listOf(WelcomeBgTwo, primaryBackground1),
-                            ),
-                    ),
+                Modifier.onGloballyPositioned{
+                    imageSize.value = it.size
+                }
+                    .alpha(0.6f)
+                    .fillMaxSize(),
             contentDescription = null,
         )
+
+        Box(modifier = Modifier.matchParentSize().background(brush = brush))
+
 
         // content
         Column(
@@ -63,8 +80,7 @@ fun WelcomeScreen(
             verticalArrangement = Arrangement.Center,
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp),
+                    .fillMaxSize(),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo),

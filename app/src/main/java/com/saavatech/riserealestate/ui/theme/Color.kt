@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val primaryBackground1 = Color(0xFF234F68)
 val WelcomeBgTwo = Color(0xFF21628A)
-val inputBg = Color(0xFFEEEEEE) // A very light gray
+val inputBg = Color(0xFFF5F4F8) // A very light gray
 
 val TextColorOne = Color(0xFF204D6C)
 val TextColorBold = Color(0xFF1F4C6B)
@@ -22,7 +22,7 @@ val GreenTwo = Color(0xFF8BC83D)
 
 val ButtonBgOne = Color(0xFFDFDFDF)
 val ButtonTextOne = Color(0xFF2A2A2A)
-val SocialButtonBgColor = Color(0xFFF5F4F8)
+val bg01 = Color(0xFFF5F4F8)
 val outlineInputunFocusedColor = Color(0xFFF5F4F8)
 val lightPrimary = Color(0xFF234F68)
 val lightGreen = Color(0xFFF4FAEC)

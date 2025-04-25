@@ -34,6 +34,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +42,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.saavatech.riserealestate.data.remote.response.Property
 import com.saavatech.riserealestate.ui.theme.TextColorOne
+import com.saavatech.riserealestate.ui.theme.bg01
 import com.saavatech.riserealestate.ui.theme.inputBg
 import com.saavatech.riserealestate.ui.theme.primaryBackground1
 
@@ -53,13 +55,14 @@ fun VerticalPropertyCard(
     Box(
         modifier =
             Modifier
+                .clickable { navigationCallback.invoke() }
                 .width(190.dp)
                 .height(300.dp)
-                .background(color = inputBg, shape = RoundedCornerShape(22.dp)),
+                .background(color = bg01, shape = RoundedCornerShape(22.dp)),
     ) {
         Box(
             Modifier
-                .clickable { navigationCallback.invoke() }
+
                 .fillMaxSize()
                 .padding(8.dp),
         ) {
@@ -102,7 +105,7 @@ fun VerticalPropertyCard(
                                             style =
                                                 SpanStyle(
                                                     color = Color.White,
-                                                    fontSize = 16.sp,
+                                                    fontSize = 14.sp,
                                                     fontWeight = FontWeight(400),
                                                 ),
                                         ) {
@@ -114,7 +117,7 @@ fun VerticalPropertyCard(
                                                 SpanStyle(
                                                     color = Color.White,
                                                     fontWeight = FontWeight(300),
-                                                    fontSize = 10.sp,
+                                                    fontSize = 8.sp,
                                                 ),
                                         ) {
                                             append("/month")
@@ -153,9 +156,16 @@ fun VerticalPropertyCard(
                 )
             }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
                 StarRating(4.9.toString(), textColor = null)
-                Row(modifier = Modifier.padding(6.dp)) {
+
+                Row(modifier = Modifier.padding(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,) {
                     Icon(
                         tint = primaryBackground1,
                         modifier = Modifier.size(12.dp),
@@ -163,7 +173,7 @@ fun VerticalPropertyCard(
                         contentDescription = null,
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.size(6.dp))
 
                     property?.state?.let {
                         Text(
@@ -171,6 +181,9 @@ fun VerticalPropertyCard(
                             fontSize = 14.sp,
                             fontWeight = FontWeight(400),
                             color = TextColorOne,
+                            modifier = Modifier,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

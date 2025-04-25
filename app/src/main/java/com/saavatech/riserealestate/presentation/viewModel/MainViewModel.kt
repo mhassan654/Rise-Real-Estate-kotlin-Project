@@ -39,12 +39,12 @@ class MainViewModel
                         if (shouldStartFromHomeScreen) {
                             val getToken = appPreferences.getAuthToken()
                             val getUser = appPreferences.getUserData()
-                            if (getToken != null) {
+                            if (getToken == null && getUser == null) {
                                 Timber.d("user token found: $getToken")
                                 Timber.d("user data found: $getUser")
                                 Destinations.Home.route
                             } else {
-                                Destinations.Login.route
+                                Destinations.Welcome.route
                             }
                         } else {
                             Destinations.OnBoarding.route

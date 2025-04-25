@@ -46,7 +46,7 @@ fun MainNavigation(
 
         composable(route = Destinations.OnBoarding.route) {
             val viewModel: OnBoardingViewModel = hiltViewModel()
-            OnBoardingScreen(event = viewModel::onEvent)
+            OnBoardingScreen() //event = viewModel::onEvent
         }
 
         composable(route = Destinations.PromotionScreen.route) {

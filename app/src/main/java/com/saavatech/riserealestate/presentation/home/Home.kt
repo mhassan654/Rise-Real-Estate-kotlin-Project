@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -133,6 +135,13 @@ fun Home(
                     .fillMaxSize()
                     .padding(10.dp),
         ) {
+            Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+                Image(
+                    painter = painterResource(R.drawable.home_top_banner),
+                    contentDescription = null,
+                )
+                Text(text = "jhdfsaf")
+            }
             LazyColumn(
                 state = lazyState,
                 modifier =
@@ -198,7 +207,7 @@ fun Home(
                         }
                         LazyRow {
                             items(categoryListState) { category ->
-                                PropertCategory(category = category) {
+                                PropertyCategory(category = category) {
                                     navController.navigateTo(
                                         "EstateByCategory/${category.id}",
                                     )
@@ -271,6 +280,7 @@ fun Home(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+//                        LazyVerticalGrid(columns , modifier = Modifier.padding(horizontal = 10.dp)) { }
                         nearbyListState.chunked(2).forEach { chunk ->
                             Row {
                                 chunk.firstOrNull()?.let { item ->
@@ -312,7 +322,7 @@ fun Home(
 
 // @Preview
 @Composable
-fun PropertCategory(
+fun PropertyCategory(
     category: CategoryResponse,
     clickAction: () -> Unit?,
 ) {
@@ -359,10 +369,12 @@ fun PropertCategory(
     }
 }
 
+
+//@Preview(showBackground = true)
 @Composable
-fun rowButton(
-    bgColor: Color,
-    location: String,
+fun RowButton(
+    bgColor: Color = Color.White,
+    location: String="",
 //    border:
 ) {
     Box(
@@ -378,7 +390,7 @@ fun rowButton(
                 ),
     ) {
         Row(
-            modifier = Modifier.padding(20.dp).fillMaxWidth(),
+            modifier = Modifier.padding(20.dp).fillMaxWidth().align(Alignment.TopStart),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -485,6 +497,7 @@ fun TobBar(
     }
 }
 
+//@Preview(showBackground = true)
 @Composable
 fun TopLocations() {
     LazyRow {
@@ -492,8 +505,8 @@ fun TopLocations() {
             Row(
                 modifier =
                     Modifier
-                        .background(inputBg, shape = RoundedCornerShape(32.dp))
-                        .padding(7.dp),
+                        .background(inputBg, shape = RoundedCornerShape(45.dp))
+                        .padding(6.dp).width(108.dp).height(56.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -510,9 +523,10 @@ fun TopLocations() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Saava",
-                    style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(600),
+                    style = MaterialTheme.typography.headlineMedium
+                        .copy(color = MaterialTheme.colorScheme.primary),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight(400),
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -520,30 +534,38 @@ fun TopLocations() {
     }
 }
 
+
+//@Preview(showBackground = true)
 @Composable
 fun TopAgents() {
     LazyRow {
         items(8) {
-            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.height(95.dp).width(70.dp)
+                ) {
+
                 Image(
                     modifier =
                         Modifier
-                            .size(80.dp)
-                            .clip(CircleShape),
-                    contentScale = ContentScale.Crop,
+                            .size(70.dp)
+                            .clip(CircleShape).
+                    border(BorderStroke(4.dp, inputBg), shape = CircleShape),
+                    contentScale = ContentScale.Inside,
                     painter = painterResource(id = R.drawable.profile_image),
                     contentDescription = null,
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+//                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Saava",
-                    style = MaterialTheme.typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(600),
+                    style = MaterialTheme
+                        .typography.headlineMedium.copy(color = MaterialTheme.colorScheme.primary),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight(400),
                     textAlign = TextAlign.Center,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
         }
     }
 }
