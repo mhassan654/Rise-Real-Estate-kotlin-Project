@@ -116,15 +116,6 @@ fun Home(
 
     // ui satrts
     Scaffold(
-        topBar = {
-            userData?.let { user ->
-                TobBar(
-                    openBottomSheetClick = {},
-                    user = user,
-                    showBottomSheet = {},
-                )
-            }
-        },
         bottomBar = {
             BottomNavigation()
         },
@@ -135,13 +126,9 @@ fun Home(
                     .fillMaxSize()
                     .padding(10.dp),
         ) {
-            Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
-                Image(
-                    painter = painterResource(R.drawable.home_top_banner),
-                    contentDescription = null,
-                )
-                Text(text = "jhdfsaf")
-            }
+
+
+
             LazyColumn(
                 state = lazyState,
                 modifier =
@@ -156,49 +143,8 @@ fun Home(
                                 .fillMaxWidth()
                                 .padding(10.dp),
                     ) {
-                        Text(
-                            text =
-                                buildAnnotatedString {
-                                    withStyle(
-                                        style =
-                                            SpanStyle(
-                                                color = TextColorOne,
-                                                fontSize = 20.sp,
-                                                fontWeight = FontWeight(400),
-                                            ),
-                                    ) {
-                                        append("Hey,")
-                                    }
-                                    append(" ")
-                                    withStyle(
-                                        style =
-                                            SpanStyle(
-                                                color = TextColorBold,
-                                                fontWeight = FontWeight(700),
-                                                fontSize = 20.sp,
-                                            ),
-                                    ) {
-                                        if (userData != null) {
-                                            append(userData.name)
-                                        }
-                                    }
-                                },
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.Center,
-                            color = TextColorBold,
-                        )
 
-                        Text(
-                            modifier =
-                                Modifier
-                                    .padding(top = 20.dp),
-                            text = "Let's start exploring",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight(600),
-                            textAlign = TextAlign.Center,
-                            color = TextColorOne,
-                        )
-
+                        HomeTopBanner(userData =userData)
                         CustomTextField(painterResource(id = R.drawable.search1), "Search House, Apartment, etc")
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -497,6 +443,137 @@ fun TobBar(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun HomeTopBanner(userData: User? = null)
+{
+    Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+        Image(
+            painter = painterResource(R.drawable.home_top_banner),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.width(300.dp).height(400.dp).align(Alignment.TopStart)
+        )
+
+        Column(modifier = Modifier,
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.Start) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+                verticalAlignment = Alignment.Top,
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    modifier =
+                        Modifier
+                            .clickable {  }
+                            .background(inputBg, shape = RoundedCornerShape(30.dp)),
+                ) {
+                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 15.dp)) {
+                        Icon(
+                            tint = primaryBackground1,
+                            modifier = Modifier.size(17.dp),
+                            imageVector = Icons.Rounded.Room,
+                            contentDescription = null,
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = userData?.address.toString(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight(500),
+                            color = TextColorOne,
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            modifier = Modifier.size(17.dp),
+                            imageVector = Icons.Rounded.KeyboardArrowDown,
+                            contentDescription = null,
+                        )
+                    }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    IconButton(
+                        modifier =
+                            Modifier
+                                .clip(shape = CircleShape)
+                                .border(
+                                    BorderStroke(1.dp, Color.Green),
+                                    shape = CircleShape,
+                                ),
+                        onClick = { },
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.bell), null)
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Image(
+                        modifier =
+                            Modifier
+                                .size(50.dp)
+                                .border(
+                                    BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                                    shape = CircleShape,
+                                ).clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        painter = painterResource(id = R.drawable.profile_image),
+                        contentDescription = null,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text =
+                    buildAnnotatedString {
+                        withStyle(
+                            style =
+                                SpanStyle(
+                                    color = TextColorOne,
+                                    fontSize = 23.sp,
+                                    fontWeight = FontWeight(400),
+                                ),
+                        ) {
+                            append("Hey,")
+                        }
+                        append(" ")
+                        withStyle(
+                            style =
+                                SpanStyle(
+                                    color = TextColorBold,
+                                    fontWeight = FontWeight(700),
+                                    fontSize = 20.sp,
+                                ),
+                        ) {
+                            if (userData != null) {
+                                append(userData.name)
+                            }
+                        }
+                    },
+                fontFamily = FontFamily.SansSerif,
+                textAlign = TextAlign.Center,
+                color = TextColorBold,
+            )
+
+            Text(
+                modifier =
+                    Modifier
+                        .padding(top = 20.dp),
+                text = "Let's start exploring",
+                fontSize = 20.sp,
+                fontWeight = FontWeight(600),
+                textAlign = TextAlign.Center,
+                color = TextColorOne,
+            )
+    }
+    }
+}
 //@Preview(showBackground = true)
 @Composable
 fun TopLocations() {

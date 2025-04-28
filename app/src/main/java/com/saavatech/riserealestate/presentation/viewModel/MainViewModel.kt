@@ -44,7 +44,7 @@ class MainViewModel
                                 Timber.d("user data found: $getUser")
                                 Destinations.Home.route
                             } else {
-                                Destinations.Welcome.route
+                                Destinations.Home.route
                             }
                         } else {
                             Destinations.OnBoarding.route
